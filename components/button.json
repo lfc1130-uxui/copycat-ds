@@ -1,0 +1,50 @@
+{
+  "name": "Button",
+  "layout": "horizontal",
+  "label": "Button",
+  "variantAxis": "Variant",
+  "sizeAxis": "Size",
+  "stateAxis": "State",
+  "axes": {
+    "Variant": ["Primary", "Secondary", "Ghost", "Danger"],
+    "Size": ["SM", "MD", "LG"],
+    "State": ["Default", "Hover", "Pressed", "Disabled", "Focus"]
+  },
+  "disabledBehavior": "explicit-color",
+  "disabledNote": "Disabled state uses neutral gray tokens (color/bg/disabled, color/text/disabled, color/border/disabled) that adapt per theme. No opacity dimming — previous opacity: 0.45 approach made disabled look like a tinted variant.",
+  "sizes": {
+    "SM": { "paddingH": 12, "paddingV": 8,  "gap": 6, "height": 32, "textStyle": "Label/Default", "radius": "borderRadius/md", "radiusFallback": 6  },
+    "MD": { "paddingH": 16, "paddingV": 10, "gap": 8, "height": 40, "textStyle": "Label/Large",   "radius": "borderRadius/lg", "radiusFallback": 8  },
+    "LG": { "paddingH": 20, "paddingV": 12, "gap": 8, "height": 48, "textStyle": "Label/Large",   "radius": "borderRadius/lg", "radiusFallback": 10 }
+  },
+  "styles": {
+    "Primary": {
+      "Default":  { "bg": "color/brand",        "bgHex": "#0068ff", "text": "color/text/inverse", "textHex": "#ffffff" },
+      "Hover":    { "bg": "color/brand/hover",   "bgHex": "#0054cc", "text": "color/text/inverse", "textHex": "#ffffff" },
+      "Pressed":  { "bg": "color/brand/active",  "bgHex": "#0040a0", "text": "color/text/inverse", "textHex": "#ffffff" },
+      "Disabled": { "bg": "color/bg/disabled",   "bgHex": { "light": "#e2e5ef", "dark": "#3a3a3a" }, "text": "color/text/disabled", "textHex": { "light": "#9198b4", "dark": "#6e6e6e" } },
+      "Focus":    { "bg": "color/brand",         "bgHex": "#0068ff", "text": "color/text/inverse", "textHex": "#ffffff", "focus": true }
+    },
+    "Secondary": {
+      "Default":  { "text": "color/brand",      "textHex": "#0068ff", "border": "color/brand",      "borderHex": "#0068ff" },
+      "Hover":    { "bg": "color/brand/subtle", "bgHex": "#eff5ff",  "text": "color/brand",         "textHex": "#0068ff", "border": "color/brand", "borderHex": "#0068ff" },
+      "Pressed":  { "bg": "color/brand/muted",  "bgHex": "#dce8ff",  "text": "color/brand",         "textHex": "#0068ff", "border": "color/brand", "borderHex": "#0068ff" },
+      "Disabled": { "text": "color/text/disabled", "textHex": { "light": "#9198b4", "dark": "#6e6e6e" }, "border": "color/border/disabled", "borderHex": { "light": "#c8cde0", "dark": "#4e4e4e" } },
+      "Focus":    { "text": "color/brand",      "textHex": "#0068ff", "border": "color/brand",      "borderHex": "#0068ff", "focus": true }
+    },
+    "Ghost": {
+      "Default":  { "text": "color/text/primary", "textHex": "#111422" },
+      "Hover":    { "bg": "color/bg/subtle",   "bgHex": "#f0f2f7", "text": "color/text/primary", "textHex": "#111422" },
+      "Pressed":  { "bg": "color/bg/muted",    "bgHex": "#e2e5ef", "text": "color/text/primary", "textHex": "#111422" },
+      "Disabled": { "text": "color/text/disabled", "textHex": { "light": "#9198b4", "dark": "#6e6e6e" } },
+      "Focus":    { "text": "color/text/primary", "textHex": "#111422", "focus": true }
+    },
+    "Danger": {
+      "Default":  { "bg": "color/error",         "bgHex": "#f03030", "text": "color/text/inverse", "textHex": "#ffffff" },
+      "Hover":    { "bg": "color/error/hover",   "bgHex": "#c81e1e", "text": "color/text/inverse", "textHex": "#ffffff" },
+      "Pressed":  { "bg": "color/error/pressed", "bgHex": "#9e1111", "text": "color/text/inverse", "textHex": "#ffffff" },
+      "Disabled": { "bg": "color/bg/disabled",   "bgHex": { "light": "#e2e5ef", "dark": "#3a3a3a" }, "text": "color/text/disabled", "textHex": { "light": "#9198b4", "dark": "#6e6e6e" } },
+      "Focus":    { "bg": "color/error",         "bgHex": "#f03030", "text": "color/text/inverse", "textHex": "#ffffff", "focus": true }
+    }
+  }
+}

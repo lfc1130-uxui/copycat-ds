@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portfolio Asset Library — Felipe Caracas</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream:       #F7F4EE;
+    --cream-dark:  #EDE9E0;
+    --green-dark:  #1C3A2A;
+    --green-mid:   #2D5A3D;
+    --green-light: #EBF2EA;
+    --peach:       #E8967A;
+    --peach-light: #FAE8E2;
+    --text:        #1A1A1A;
+    --text-muted:  #6B7B6F;
+    --border:      #E0DDD5;
+    --white:       #FFFFFF;
+    --shadow:      0 2px 16px rgba(26,58,42,0.08);
+    --shadow-lg:   0 8px 40px rgba(26,58,42,0.12);
+    --radius:      14px;
+    --radius-sm:   8px;
+    --radius-pill: 9999px;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #F0EDE6;
+    color: var(--text);
+    padding: 48px;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    margin-bottom: 64px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header h1 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .page-header p {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -.03em;
+  }
+
+  /* ── SECTION LABEL ── */
+  .asset-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-left: 4px;
+  }
+  .asset-wrap { margin-bottom: 64px; }
+
+  /* ═══════════════════════════════════════
+     01 — TOKENS
+  ═══════════════════════════════════════ */
+  .tokens-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+  .token-swatch {
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+  .swatch-color { height: 64px; }
+  .swatch-info { padding: 10px 12px; }
+  .swatch-name { font-size: 11px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .swatch-hex  { font-size: 10px; color: var(--text-muted); font-family: monospace; }
+
+  .type-scale { display: flex; flex-direction: column; gap: 16px; background: var(--white); padding: 32px; border-radius: var(--radius); box-shadow: var(--shadow); }
+  .type-row { display: flex; align-items: baseline; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .type-row:last-child { border: none; padding: 0; }
+  .type-meta { font-size: 10px; color: var(--text-muted); width: 120px; flex-shrink: 0; font-family: monospace; }
+
+  /* ═══════════════════════════════════════
+     02 — NAVIGATION
+  ═══════════════════════════════════════ */
+  .nav {
+    background: rgba(247,244,238,.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .nav-logo {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -.03em;
+    color: var(--green-dark);
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+    opacity: .7;
+  }
+  .nav-links a.active { opacity: 1; }
+  .nav-cta {
+    background: var(--green-dark);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 9px 22px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: -.01em;
+  }
+
+  /* ═══════════════════════════════════════
+     03 — HERO
+  ═══════════════════════════════════════ */
+  .hero {
+    background: var(--green-dark);
+    border-radius: var(--radius);
+    padding: 80px 64px;
+    position: relative;
+    overflow: hidden;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    box-shadow: var(--shadow-lg);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(44,90,61,.6) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(232,150,122,.15) 0%, transparent 50%);
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.5);
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero-headline {
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -.04em;
+    color: var(--white);
+    margin-bottom: 20px;
+    position: relative;
+    max-width: 640px;
+  }
+  .hero-headline em { font-style: normal; color: var(--peach); }
+  .hero-sub {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: rgba(255,255,255,.65);
+    max-width: 480px;
+    margin-bottom: 36px;
+    position: relative;
+  }
+  .hero-actions { display: flex; gap: 12px; position: relative; }
+  .btn-primary {
+    background: var(--white);
+    color: var(--green-dark);
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 14px 28px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: -.01em;
+  }
+  .btn-outline {
+    background: transparent;
+    color: rgba(255,255,255,.8);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: var(--radius-pill);
+    padding: 14px 28px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* ═══════════════════════════════════════
+     04 — TRUST BAR
+  ═══════════════════════════════════════ */
+  .trust-bar {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .trust-item { display: flex; align-items: center; gap: 10px; }
+  .trust-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--green-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .trust-label { font-size: 13px; font-weight: 500; color: var(--text); }
+  .trust-val   { font-size: 11px; color: var(--text-muted); }
+  .trust-divider { width: 1px; height: 32px; background: var(--border); }
+
+  /* ═══════════════════════════════════════
+     05 — PROJECT CARD
+  ═══════════════════════════════════════ */
+  .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .project-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: box-shadow .2s;
+  }
+  .card-thumb {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-thumb-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-thumb-bg.cream    { background: var(--cream); }
+  .card-thumb-bg.green    { background: var(--green-dark); }
+  .card-thumb-bg.peach    { background: var(--peach-light); }
+  .card-thumb-label {
+    font-size: 48px; font-weight: 900;
+    letter-spacing: -.05em;
+    opacity: .12;
+    color: var(--green-dark);
+  }
+  .card-thumb-label.light { color: var(--white); }
+  .card-tag {
+    position: absolute; top: 16px; left: 16px;
+    background: rgba(255,255,255,.9);
+    backdrop-filter: blur(8px);
+    border-radius: var(--radius-pill);
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+  }
+  .card-tag.dark {
+    background: rgba(28,58,42,.85);
+    color: var(--white);
+  }
+  .card-body { padding: 20px 24px 24px; }
+  .card-title {
+    font-size: 17px; font-weight: 700;
+    letter-spacing: -.02em; line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .card-desc {
+    font-size: 13px; font-weight: 400;
+    line-height: 1.55;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .card-meta { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+  .card-arrow {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--green-dark);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--white);
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  /* ═══════════════════════════════════════
+     06 — STATS BLOCK
+  ═══════════════════════════════════════ */
+  .stats-block {
+    background: var(--green-dark);
+    border-radius: var(--radius);
+    padding: 64px 56px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    box-shadow: var(--shadow-lg);
+  }
+  .stat-item { display: flex; flex-direction: column; gap: 8px; }
+  .stat-divider { width: 1px; background: rgba(255,255,255,.12); }
+  .stat-number {
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -.04em;
+    line-height: 1;
+    color: var(--white);
+  }
+  .stat-number span { color: var(--peach); }
+  .stat-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255,255,255,.6);
+    line-height: 1.4;
+    max-width: 160px;
+  }
+
+  /* ═══════════════════════════════════════
+     07 — FEATURE ROW
+  ═══════════════════════════════════════ */
+  .feature-row {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 400px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .feature-img {
+    background: var(--green-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    font-weight: 900;
+    color: rgba(28,58,42,.1);
+    letter-spacing: -.05em;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(28,58,42,.04) 0%, transparent 60%);
+  }
+  .feature-img.reversed { order: 2; background: var(--cream); }
+  .feature-content {
+    padding: 56px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+  }
+  .feature-eyebrow {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--peach);
+  }
+  .feature-title {
+    font-size: 32px; font-weight: 800;
+    letter-spacing: -.03em; line-height: 1.15;
+    color: var(--text);
+  }
+  .feature-body {
+    font-size: 15px; font-weight: 400;
+    line-height: 1.65; color: var(--text-muted);
+    max-width: 400px;
+  }
+  .feature-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 14px; font-weight: 600;
+    color: var(--green-dark);
+    text-decoration: none;
+    margin-top: 4px;
+  }
+  .feature-link-arrow {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--green-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+  }
+
+  /* ═══════════════════════════════════════
+     08 — TESTIMONIAL
+  ═══════════════════════════════════════ */
+  .testimonials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .testimonial-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .testi-stars { display: flex; gap: 3px; }
+  .testi-star  { font-size: 14px; color: #F59E0B; }
+  .testi-quote {
+    font-size: 16px; font-weight: 500;
+    line-height: 1.6; color: var(--text);
+    letter-spacing: -.01em;
+    flex: 1;
+  }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--green-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; color: var(--green-dark);
+    flex-shrink: 0;
+  }
+  .testi-name  { font-size: 13px; font-weight: 700; color: var(--text); }
+  .testi-role  { font-size: 12px; color: var(--text-muted); }
+
+  /* ═══════════════════════════════════════
+     09 — CTA SECTION
+  ═══════════════════════════════════════ */
+  .cta-section {
+    border-radius: var(--radius);
+    padding: 80px 64px;
+    background: linear-gradient(135deg, #D6EADB 0%, #EDF5E8 40%, #F5EDE8 100%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,150,122,.2) 0%, transparent 70%);
+    top: -100px; right: -100px;
+  }
+  .cta-label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--green-mid);
+    position: relative;
+  }
+  .cta-title {
+    font-size: 56px; font-weight: 800;
+    letter-spacing: -.04em; line-height: 1.05;
+    color: var(--green-dark);
+    max-width: 640px;
+    position: relative;
+  }
+  .cta-sub {
+    font-size: 16px; line-height: 1.6;
+    color: var(--text-muted); max-width: 440px;
+    position: relative;
+  }
+  .cta-btn {
+    background: var(--green-dark);
+    color: var(--white);
+    border: none; border-radius: var(--radius-pill);
+    padding: 16px 36px;
+    font-size: 15px; font-weight: 700;
+    cursor: pointer; letter-spacing: -.01em;
+    position: relative; margin-top: 8px;
+  }
+
+  /* ═══════════════════════════════════════
+     10 — FOOTER
+  ═══════════════════════════════════════ */
+  .footer {
+    background: var(--green-dark);
+    border-radius: var(--radius);
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow-lg);
+  }
+  .footer-logo {
+    font-size: 18px; font-weight: 700;
+    letter-spacing: -.03em; color: var(--white);
+  }
+  .footer-links {
+    display: flex; gap: 28px; list-style: none;
+  }
+  .footer-links a {
+    font-size: 13px; font-weight: 500;
+    color: rgba(255,255,255,.55);
+    text-decoration: none;
+  }
+  .footer-links a:hover { color: var(--white); }
+  .footer-social {
+    display: flex; gap: 10px;
+  }
+  .social-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.2);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,.7);
+    font-size: 13px; font-weight: 700;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Portfolio Asset Library</h1>
+  <p>Felipe Caracas — Inspired by Voy Health</p>
+</div>
+
+
+<!-- 01 TOKENS -->
+<div class="asset-wrap">
+  <div class="asset-label">01 — Color Tokens</div>
+  <div class="tokens-grid">
+    <div class="token-swatch">
+      <div class="swatch-color" style="background:#1C3A2A;"></div>
+      <div class="swatch-info"><div class="swatch-name">Green Dark</div><div class="swatch-hex">#1C3A2A</div></div>
+    </div>
+    <div class="token-swatch">
+      <div class="swatch-color" style="background:#2D5A3D;"></div>
+      <div class="swatch-info"><div class="swatch-name">Green Mid</div><div class="swatch-hex">#2D5A3D</div></div>
+    </div>
+    <div class="token-swatch">
+      <div class="swatch-color" style="background:#EBF2EA;"></div>
+      <div class="swatch-info"><div class="swatch-name">Green Light</div><div class="swatch-hex">#EBF2EA</div></div>
+    </div>
+    <div class="token-swatch">
+      <div class="swatch-color" style="background:#F7F4EE;"></div>
+      <div class="swatch-info"><div class="swatch-name">Cream</div><div class="swatch-hex">#F7F4EE</div></div>
+    </div>
+    <div class="token-swatch">
+      <div class="swatch-color" style="background:#E8967A;"></div>
+      <div class="swatch-info"><div class="swatch-name">Peach</div><div class="swatch-hex">#E8967A</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="asset-wrap">
+  <div class="asset-label">01 — Type Scale</div>
+  <div class="type-scale">
+    <div class="type-row">
+      <div class="type-meta">Display / 64px / 800</div>
+      <div style="font-size:48px;font-weight:800;letter-spacing:-.04em;line-height:1;">Design that moves</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">H1 / 40px / 700</div>
+      <div style="font-size:36px;font-weight:700;letter-spacing:-.03em;line-height:1.1;">Product Designer</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">H2 / 28px / 700</div>
+      <div style="font-size:26px;font-weight:700;letter-spacing:-.02em;">Selected work</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Body / 16px / 400</div>
+      <div style="font-size:16px;font-weight:400;line-height:1.65;color:#6B7B6F;">Passionate about crafting experiences that are both beautiful and meaningful. Available for freelance.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Label / 11px / 600</div>
+      <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#6B7B6F;">Case Study · UX Design</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 02 NAVIGATION -->
+<div class="asset-wrap">
+  <div class="asset-label">02 — Navigation</div>
+  <nav class="nav">
+    <div class="nav-logo">Felipe.design</div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Work</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Process</a></li>
+      <li><a href="#">Writing</a></li>
+    </ul>
+    <button class="nav-cta">Let's chat →</button>
+  </nav>
+</div>
+
+
+<!-- 03 HERO -->
+<div class="asset-wrap">
+  <div class="asset-label">03 — Hero Section</div>
+  <div class="hero">
+    <div class="hero-eyebrow">Product Designer · Based in Caracas & Remote</div>
+    <h1 class="hero-headline">Design that's <em>life</em> changing.</h1>
+    <p class="hero-sub">I craft digital products that put people first — from early discovery through polished delivery.</p>
+    <div class="hero-actions">
+      <button class="btn-primary">View my work</button>
+      <button class="btn-outline">Download CV</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- 04 TRUST BAR -->
+<div class="asset-wrap">
+  <div class="asset-label">04 — Trust / Social Proof Bar</div>
+  <div class="trust-bar">
+    <div class="trust-item">
+      <div class="trust-icon">🏆</div>
+      <div>
+        <div class="trust-label">8+ Years</div>
+        <div class="trust-val">Product design experience</div>
+      </div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">
+      <div class="trust-icon">🚀</div>
+      <div>
+        <div class="trust-label">40+ Projects</div>
+        <div class="trust-val">Shipped to production</div>
+      </div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">
+      <div class="trust-icon">🌍</div>
+      <div>
+        <div class="trust-label">12 Countries</div>
+        <div class="trust-val">Clients worldwide</div>
+      </div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">
+      <div class="trust-icon">⭐</div>
+      <div>
+        <div class="trust-label">4.9 / 5.0</div>
+        <div class="trust-val">Average client rating</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 05 PROJECT CARDS -->
+<div class="asset-wrap">
+  <div class="asset-label">05 — Project Cards</div>
+  <div class="cards-grid">
+    <div class="project-card">
+      <div class="card-thumb">
+        <div class="card-thumb-bg cream">
+          <div class="card-thumb-label">FC</div>
+        </div>
+        <span class="card-tag">UX Design</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Design System — Copycat DS</div>
+        <div class="card-desc">Built a scalable component library from scratch, reducing design-to-dev handoff time by 60%.</div>
+        <div class="card-footer">
+          <span class="card-meta">2024 · Figma + React</span>
+          <a href="#" class="card-arrow">→</a>
+        </div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="card-thumb">
+        <div class="card-thumb-bg green">
+          <div class="card-thumb-label" style="color:white;opacity:.1;">FP</div>
+        </div>
+        <span class="card-tag dark">Product</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Mobile Banking — FinPay</div>
+        <div class="card-desc">Redesigned the onboarding flow, increasing activation rate from 34% to 71% in three months.</div>
+        <div class="card-footer">
+          <span class="card-meta">2023 · iOS + Android</span>
+          <a href="#" class="card-arrow">→</a>
+        </div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="card-thumb">
+        <div class="card-thumb-bg peach">
+          <div class="card-thumb-label">SH</div>
+        </div>
+        <span class="card-tag">Research</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Health Platform — Salud</div>
+        <div class="card-desc">End-to-end UX research and product design for a telehealth platform serving 50k+ patients.</div>
+        <div class="card-footer">
+          <span class="card-meta">2023 · Web + Mobile</span>
+          <a href="#" class="card-arrow">→</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 06 STATS BLOCK -->
+<div class="asset-wrap">
+  <div class="asset-label">06 — Stats Block</div>
+  <div class="stats-block">
+    <div class="stat-item">
+      <div class="stat-number">8<span>+</span></div>
+      <div class="stat-label">Years of product design experience</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">40<span>+</span></div>
+      <div class="stat-label">Products shipped to production</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">2<span>×</span></div>
+      <div class="stat-label">Average improvement in conversion after redesign</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">97<span>%</span></div>
+      <div class="stat-label">Client satisfaction across all projects</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 07 FEATURE ROW -->
+<div class="asset-wrap">
+  <div class="asset-label">07 — Feature Row (Image + Text)</div>
+  <div class="feature-row">
+    <div class="feature-img">ABOUT</div>
+    <div class="feature-content">
+      <div class="feature-eyebrow">About me</div>
+      <div class="feature-title">Design is how I think, not just what I do.</div>
+      <div class="feature-body">I'm a product designer with 8 years of experience across fintech, health, and SaaS. I specialise in design systems, mobile, and turning fuzzy problems into clear, elegant solutions.</div>
+      <a href="#" class="feature-link">
+        Read full story
+        <span class="feature-link-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="asset-wrap" style="margin-top:20px;">
+  <div class="asset-label">07b — Feature Row (Reversed)</div>
+  <div class="feature-row">
+    <div class="feature-content">
+      <div class="feature-eyebrow">My process</div>
+      <div class="feature-title">From fuzzy brief to shipped product.</div>
+      <div class="feature-body">Discover → Define → Design → Deliver. I embed with your team, run structured sprints, and keep stakeholders aligned from kickoff to launch.</div>
+      <a href="#" class="feature-link">
+        See how I work
+        <span class="feature-link-arrow">→</span>
+      </a>
+    </div>
+    <div class="feature-img reversed">PROCESS</div>
+  </div>
+</div>
+
+
+<!-- 08 TESTIMONIALS -->
+<div class="asset-wrap">
+  <div class="asset-label">08 — Testimonials</div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="testi-stars">
+        <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+      </div>
+      <div class="testi-quote">"Felipe transformed our MVP into a product our users actually love. His ability to balance business goals with user needs is remarkable — and he delivers fast."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">MR</div>
+        <div>
+          <div class="testi-name">María Rodríguez</div>
+          <div class="testi-role">CEO, FinPay · Series A</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testi-stars">
+        <span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span>
+      </div>
+      <div class="testi-quote">"Working with Felipe felt like having a senior design lead in-house. He asked the right questions, challenged assumptions, and shipped a design system we still use today."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">JL</div>
+        <div>
+          <div class="testi-name">James Liu</div>
+          <div class="testi-role">Head of Product, Salud Health</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 09 CTA SECTION -->
+<div class="asset-wrap">
+  <div class="asset-label">09 — CTA Section</div>
+  <div class="cta-section">
+    <div class="cta-label">Open to new projects</div>
+    <h2 class="cta-title">Let's make something worth using.</h2>
+    <p class="cta-sub">Whether it's a design system, a product redesign, or a zero-to-one build — I'd love to hear what you're working on.</p>
+    <button class="cta-btn">Start a conversation →</button>
+  </div>
+</div>
+
+
+<!-- 10 FOOTER -->
+<div class="asset-wrap">
+  <div class="asset-label">10 — Footer</div>
+  <footer class="footer">
+    <div class="footer-logo">Felipe.design</div>
+    <ul class="footer-links">
+      <li><a href="#">Work</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Process</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="footer-social">
+      <a href="#" class="social-btn">in</a>
+      <a href="#" class="social-btn">tw</a>
+      <a href="#" class="social-btn">dr</a>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

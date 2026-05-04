@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portfolio Hero — Felipe Caracas</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet"/>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream:     #F7F4EE;
+  --green-dark:#152E1F;
+  --green-mid: #2D5A3D;
+  --peach:     #E8967A;
+  --sky:       #B8D4E8;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0E1E14;
+  overflow-x: hidden;
+}
+
+/* ─────────────────────────────────────────
+   HERO WRAPPER
+───────────────────────────────────────── */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ─────────────────────────────────────────
+   BACKGROUND — painterly landscape
+───────────────────────────────────────── */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Sky layer */
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 60% at 50% -10%,  #C8DFF0 0%, #A8C8E0 30%, transparent 70%),
+    radial-gradient(ellipse 80%  40% at 80% 10%,   #D4E8C0 0%, transparent 55%),
+    radial-gradient(ellipse 60%  50% at 10% 20%,   #B0CCE0 0%, transparent 50%),
+    linear-gradient(180deg, #9CBFD8 0%, #B8D4A8 28%, #8AAE78 50%, #5A8050 68%, #2E5030 85%, #1A3020 100%);
+}
+
+/* Sun glow */
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,240,200,0.55) 0%, rgba(255,220,150,0.2) 40%, transparent 70%);
+  top: 2%;
+  left: 52%;
+  transform: translateX(-50%);
+  filter: blur(20px);
+}
+
+/* Landscape hills */
+.hill {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Ground overlay — softens bottom */
+.ground-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    rgba(42,68,35,0.15) 40%,
+    rgba(30,50,25,0.55) 70%,
+    rgba(21,46,31,0.85) 90%,
+    #152E1F 100%
+  );
+  z-index: 2;
+}
+
+/* Vignette edges */
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(ellipse 110% 100% at 50% 50%, transparent 50%, rgba(10,20,12,0.55) 100%);
+}
+
+/* ─────────────────────────────────────────
+   NAV BAR
+───────────────────────────────────────── */
+.nav {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 60px;
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--cream);
+  letter-spacing: -0.02em;
+}
+
+.nav-logo span { color: var(--peach); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.nav-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(247,244,238,0.65);
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+
+.nav-link:hover { color: var(--cream); }
+
+.nav-cta {
+  background: rgba(247,244,238,0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(247,244,238,0.2);
+  border-radius: 100px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cream);
+  cursor: pointer;
+}
+
+/* ─────────────────────────────────────────
+   ANNOUNCEMENT BANNER
+───────────────────────────────────────── */
+.announce-wrap {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  padding: 0 60px;
+  margin-top: 8px;
+}
+
+.announce-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(21,46,31,0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 10px 16px 10px 14px;
+  max-width: 540px;
+}
+
+.announce-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--peach);
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.announce-text {
+  font-size: 12px;
+  color: rgba(247,244,238,0.75);
+  line-height: 1.4;
+  flex: 1;
+}
+
+.announce-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(247,244,238,0.5);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-left: 1px solid rgba(255,255,255,0.1);
+  padding-left: 16px;
+}
+
+/* ─────────────────────────────────────────
+   HERO COPY — centered
+───────────────────────────────────────── */
+.hero-copy {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 56px 60px 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(247,244,238,0.5);
+  margin-bottom: 16px;
+}
+
+.hero-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(52px, 7vw, 96px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--cream);
+  max-width: 820px;
+}
+
+.hero-headline em {
+  font-style: italic;
+  color: rgba(247,244,238,0.5);
+}
+
+.hero-sub {
+  font-size: 16px;
+  color: rgba(247,244,238,0.5);
+  line-height: 1.6;
+  margin-top: 20px;
+  max-width: 440px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 36px;
+  align-items: center;
+}
+
+.btn-primary {
+  background: var(--cream);
+  color: var(--green-dark);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 100px;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+}
+
+.btn-ghost {
+  background: rgba(247,244,238,0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(247,244,238,0.16);
+  color: rgba(247,244,238,0.75);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 28px;
+  border-radius: 100px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scroll-hint {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(247,244,238,0.3);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(to bottom, rgba(247,244,238,0.3), transparent);
+}
+
+/* ─────────────────────────────────────────
+   SERVICE CARDS — docked at bottom
+───────────────────────────────────────── */
+.cards-dock {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 12px;
+  padding: 40px 60px 56px;
+  margin-top: auto;
+}
+
+.service-card {
+  background: rgba(247,244,238,0.88);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
+/* Inner top shine */
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 10%, rgba(255,255,255,0.9) 50%, transparent 90%);
+}
+
+.card-wide { grid-column: 1 / -1; }
+
+/* Card top section */
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 22px 22px 0;
+}
+
+.card-info {}
+
+.card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1A1A1A;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.card-desc {
+  font-size: 12px;
+  color: rgba(26,26,26,0.5);
+  line-height: 1.5;
+  max-width: 280px;
+}
+
+.card-arrow {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(26,26,26,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.card-arrow svg {
+  width: 13px;
+  height: 13px;
+  stroke: #1A1A1A;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* Card preview */
+.card-preview {
+  margin: 16px 22px 0;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  height: 160px;
+}
+
+.card-preview-wide {
+  height: 120px;
+}
+
+/* ── Preview 1: DS tokens browser snippet ── */
+.prev-ds {
+  background: #F0EDE7;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  height: 100%;
+}
+
+.prev-ds-panel {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #EBEBEB;
+}
+
+.prev-ds-label {
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #CCC;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 7px;
+}
+
+.color-row {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.cswatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.type-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.type-sample {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.type-char {
+  font-family: 'Playfair Display', serif;
+  color: #1A1A1A;
+}
+
+.type-name {
+  font-size: 7px;
+  color: #CCC;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Preview 2: Mobile UI ── */
+.prev-product {
+  background: linear-gradient(135deg, #1C3A2A 0%, #2D5A3D 100%);
+  padding: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  height: 100%;
+}
+
+.mini-phone {
+  width: 72px;
+  background: #111;
+  border-radius: 14px;
+  padding: 5px;
+  flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.mini-phone-screen {
+  background: #F7F4EE;
+  border-radius: 10px;
+  height: 108px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.mps-header {
+  background: #152E1F;
+  padding: 6px 7px;
+}
+
+.mps-h-label {
+  font-size: 5px;
+  color: rgba(247,244,238,0.5);
+  font-family: 'Inter', sans-serif;
+}
+
+.mps-h-val {
+  font-size: 9px;
+  font-weight: 700;
+  color: #F7F4EE;
+  font-family: 'Inter', sans-serif;
+}
+
+.mps-body {
+  flex: 1;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mps-card {
+  background: #fff;
+  border-radius: 5px;
+  padding: 4px 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.mps-card-label {
+  font-size: 5px;
+  color: #AAA;
+  font-family: 'Inter', sans-serif;
+}
+
+.mps-card-val {
+  font-size: 10px;
+  font-weight: 700;
+  color: #1A1A1A;
+  font-family: 'Inter', sans-serif;
+}
+
+.prev-metric-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 1;
+}
+
+.metric-chip {
+  background: rgba(247,244,238,0.1);
+  border: 1px solid rgba(247,244,238,0.15);
+  border-radius: 8px;
+  padding: 7px 10px;
+}
+
+.mc-label {
+  font-size: 7px;
+  color: rgba(247,244,238,0.45);
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 2px;
+}
+
+.mc-val {
+  font-size: 16px;
+  font-weight: 700;
+  color: #F7F4EE;
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+}
+
+.mc-sub {
+  font-size: 7px;
+  color: #0CAF60;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Preview 3 (wide): Process timeline ── */
+.prev-process {
+  background: #FAFAF8;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 100%;
+  border-top: 1px solid #F0EDEA;
+}
+
+.process-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.process-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, #2D5A3D, #C8D8B0);
+  z-index: 0;
+}
+
+.step-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 7px;
+}
+
+.step-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #1A1A1A;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.step-sub {
+  font-size: 8px;
+  color: #AAA;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+
+  <!-- Background -->
+  <div class="hero-bg">
+    <!-- Hills -->
+    <div class="hill" style="width:1800px;height:600px;background:radial-gradient(ellipse at 50% 100%,#4A7840 0%,#3A6030 40%,transparent 70%);bottom:-80px;left:-400px;"></div>
+    <div class="hill" style="width:1200px;height:400px;background:radial-gradient(ellipse at 50% 100%,#5A8850 0%,#3E6835 50%,transparent 72%);bottom:60px;right:-200px;"></div>
+    <div class="hill" style="width:900px;height:320px;background:radial-gradient(ellipse at 50% 100%,#78A868 0%,#5A8850 55%,transparent 75%);bottom:120px;left:0;"></div>
+    <!-- Trees silhouette suggestion -->
+    <div class="hill" style="width:600px;height:200px;background:radial-gradient(ellipse at 50% 80%,#2A5028 0%,#1E3820 60%,transparent 80%);bottom:200px;right:80px;border-radius:40% 40% 50% 50%;"></div>
+    <div class="hill" style="width:400px;height:180px;background:radial-gradient(ellipse at 50% 80%,#2E5430 0%,#1E3820 65%,transparent 82%);bottom:180px;left:120px;border-radius:40% 40% 50% 50%;"></div>
+  </div>
+  <div class="ground-fade"></div>
+  <div class="vignette"></div>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-logo">FC<span>.</span></div>
+    <div class="nav-links">
+      <div class="nav-link">Work</div>
+      <div class="nav-link">About</div>
+      <div class="nav-link">Process</div>
+      <div class="nav-link">Writing</div>
+    </div>
+    <div class="nav-cta">Get in touch →</div>
+  </nav>
+
+  <!-- Announcement bar -->
+  <div class="announce-wrap">
+    <div class="announce-bar">
+      <div class="announce-badge">New</div>
+      <div class="announce-text">Now available for 2025 projects — design systems, product design, and brand identity.</div>
+      <div class="announce-logo">felipecaracas.com</div>
+    </div>
+  </div>
+
+  <!-- Hero copy -->
+  <div class="hero-copy">
+    <div class="hero-eyebrow">Felipe Caracas · Product Designer</div>
+    <h1 class="hero-headline">Design that<br><em>moves</em> people</h1>
+    <p class="hero-sub">I build design systems, shape product experiences, and craft visual identities for teams that care about quality.</p>
+    <div class="hero-actions">
+      <div class="btn-primary">View selected work</div>
+      <div class="btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="7" cy="7" r="5.5"/>
+          <path d="M5.5 7l1.5 1.5 2.5-2.5"/>
+        </svg>
+        Available for work
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </div>
+
+  <!-- Cards dock -->
+  <div class="cards-dock">
+
+    <!-- Card 1: Design Systems -->
+    <div class="service-card">
+      <div class="card-top">
+        <div class="card-info">
+          <div class="card-title">Design Systems</div>
+          <div class="card-desc">Token architecture and component libraries built for real teams.</div>
+        </div>
+        <div class="card-arrow">
+          <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <div class="card-preview">
+        <div class="prev-ds">
+          <div class="prev-ds-panel">
+            <div class="prev-ds-label">Color tokens</div>
+            <div class="color-row">
+              <div class="cswatch" style="background:#152E1F;"></div>
+              <div class="cswatch" style="background:#2D5A3D;"></div>
+              <div class="cswatch" style="background:#8BAF8E;"></div>
+              <div class="cswatch" style="background:#E8967A;"></div>
+              <div class="cswatch" style="background:#F7F4EE;"></div>
+            </div>
+            <div class="color-row" style="margin-top:4px;">
+              <div class="cswatch" style="background:#0068FF;"></div>
+              <div class="cswatch" style="background:#0CAF60;"></div>
+              <div class="cswatch" style="background:#F03030;"></div>
+              <div class="cswatch" style="background:#F0A500;"></div>
+            </div>
+          </div>
+          <div class="prev-ds-panel">
+            <div class="prev-ds-label">Typography</div>
+            <div class="type-row">
+              <div class="type-sample">
+                <span class="type-char" style="font-size:20px;">Aa</span>
+                <span class="type-name">Display / 48</span>
+              </div>
+              <div class="type-sample">
+                <span class="type-char" style="font-size:14px;font-family:'Inter',sans-serif;">Aa</span>
+                <span class="type-name">Body / 14</span>
+              </div>
+              <div class="type-sample">
+                <span class="type-char" style="font-size:9px;font-family:'Inter',sans-serif;font-weight:600;">Aa</span>
+                <span class="type-name">Label / 11</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Product Design -->
+    <div class="service-card">
+      <div class="card-top">
+        <div class="card-info">
+          <div class="card-title">Product Design</div>
+          <div class="card-desc">End-to-end UX for mobile and web — research to handoff.</div>
+        </div>
+        <div class="card-arrow">
+          <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <div class="card-preview">
+        <div class="prev-product">
+          <!-- Phone -->
+          <div class="mini-phone">
+            <div class="mini-phone-screen">
+              <div class="mps-header">
+                <div class="mps-h-label">Dashboard</div>
+                <div class="mps-h-val">€4,820</div>
+              </div>
+              <div class="mps-body">
+                <div class="mps-card">
+                  <div class="mps-card-label">Sessions</div>
+                  <div class="mps-card-val">24</div>
+                </div>
+                <div class="mps-card">
+                  <div class="mps-card-label">Conversion</div>
+                  <div class="mps-card-val" style="color:#E8967A;">38%</div>
+                </div>
+                <svg width="100%" height="20" viewBox="0 0 60 20" preserveAspectRatio="none" style="margin-top:2px;">
+                  <polyline points="0,16 12,12 24,14 36,7 48,9 60,4" fill="none" stroke="#2D5A3D" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <!-- Metric chips -->
+          <div class="prev-metric-stack">
+            <div class="metric-chip">
+              <div class="mc-label">Retention rate</div>
+              <div class="mc-val">91%</div>
+              <div class="mc-sub">↑ +12% QoQ</div>
+            </div>
+            <div class="metric-chip">
+              <div class="mc-label">NPS Score</div>
+              <div class="mc-val">78</div>
+              <div class="mc-sub">↑ Excellent</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Wide — Process -->
+    <div class="service-card card-wide">
+      <div class="card-top">
+        <div class="card-info">
+          <div class="card-title">My Process</div>
+          <div class="card-desc">Discovery → Define → Design → Deliver — every project, every time.</div>
+        </div>
+        <div class="card-arrow">
+          <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <div class="card-preview card-preview-wide">
+        <div class="prev-process">
+
+          <div class="process-step">
+            <div class="step-dot" style="background:#EBF2EA;color:#2D5A3D;">1</div>
+            <div class="step-label">Discover</div>
+            <div class="step-sub">Research & audit</div>
+          </div>
+
+          <div class="process-step">
+            <div class="step-dot" style="background:#2D5A3D;color:#F7F4EE;">2</div>
+            <div class="step-label">Define</div>
+            <div class="step-sub">Architecture & tokens</div>
+          </div>
+
+          <div class="process-step">
+            <div class="step-dot" style="background:#1C3A2A;color:#F7F4EE;">3</div>
+            <div class="step-label">Design</div>
+            <div class="step-sub">Components & flows</div>
+          </div>
+
+          <div class="process-step">
+            <div class="step-dot" style="background:#E8967A;color:#fff;">4</div>
+            <div class="step-label">Test</div>
+            <div class="step-sub">Validate & iterate</div>
+          </div>
+
+          <div class="process-step">
+            <div class="step-dot" style="background:#152E1F;color:#F7F4EE;">5</div>
+            <div class="step-label">Deliver</div>
+            <div class="step-sub">Handoff & docs</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-dock -->
+
+</div>
+
+</body>
+</html>

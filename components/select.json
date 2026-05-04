@@ -1,0 +1,30 @@
+{
+  "name": "Select",
+  "type": "select",
+  "layout": "vertical",
+  "label": "Label",
+  "variantAxis": "State",
+  "sizeAxis": "Size",
+  "labelStyle": "Label/Small",
+  "placeholderStyle": "Body/Small",
+  "axes": {
+    "State": ["Default", "Focus", "Error", "Success", "Loading", "Disabled"],
+    "Value": ["Empty", "Filled"],
+    "Icon":  ["None", "Leading"],
+    "Size":  ["SM", "MD", "LG"]
+  },
+  "sizes": {
+    "SM": { "paddingH": 12, "height": 32, "radius": "borderRadius/sm", "radiusFallback": 4 },
+    "MD": { "paddingH": 12, "height": 40, "radius": "borderRadius/md", "radiusFallback": 6 },
+    "LG": { "paddingH": 12, "height": 48, "radius": "borderRadius/lg", "radiusFallback": 8 }
+  },
+  "styles": {
+    "Default":  { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/border/default",  "borderHex": "#e2e5ef", "text": "color/text/primary",  "textHex": "#111422" },
+    "Focus":    { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/border/focus",    "borderHex": "#0068ff", "text": "color/text/primary",  "textHex": "#111422", "focus": true },
+    "Error":    { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/error",           "borderHex": "#f03030", "text": "color/text/primary",  "textHex": "#111422" },
+    "Success":  { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/success",         "borderHex": "#0caf60", "text": "color/text/primary",  "textHex": "#111422" },
+    "Loading":  { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/border/default",  "borderHex": "#e2e5ef", "text": "color/text/primary",  "textHex": "#111422" },
+    "Disabled": { "bg": "color/bg/disabled", "bgHex": "#e2e5ef", "border": "color/border/disabled", "borderHex": "#c8cde0", "text": "color/text/disabled", "textHex": "#9198b4" }
+  },
+  "disabledNote": "Disabled uses color/bg/disabled and color/text/disabled tokens — no opacity. Placeholder text always uses color/text/tertiary regardless of state."
+}

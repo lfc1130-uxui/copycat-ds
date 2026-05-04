@@ -1,0 +1,22 @@
+{
+  "name": "Badge",
+  "layout": "horizontal",
+  "label": "Label",
+  "variantAxis": "Variant",
+  "sizeAxis": "Size",
+  "axes": {
+    "Variant": ["Default", "Success", "Warning", "Error", "Info"],
+    "Size": ["SM", "MD"]
+  },
+  "sizes": {
+    "SM": { "paddingH": 8,  "paddingV": 2, "gap": 4, "height": 20, "textStyle": "Label/Small",   "radiusFallback": 999 },
+    "MD": { "paddingH": 10, "paddingV": 4, "gap": 4, "height": 24, "textStyle": "Label/Default", "radiusFallback": 999 }
+  },
+  "styles": {
+    "Default": { "bg": "color/bg/subtle",      "bgHex": "#f0f2f7", "text": "color/text/secondary", "textHex": "#464d6b" },
+    "Success": { "bg": "color/success/subtle", "bgHex": "#edfaf3", "text": "color/success",        "textHex": "#0caf60" },
+    "Warning": { "bg": "color/warning/subtle", "bgHex": "#fff8eb", "text": "color/warning",        "textHex": "#ff9a0d" },
+    "Error":   { "bg": "color/error/subtle",   "bgHex": "#fff0f0", "text": "color/error",          "textHex": "#f03030" },
+    "Info":    { "bg": "color/info/subtle",    "bgHex": "#eff5ff", "text": "color/info",           "textHex": "#0068ff" }
+  }
+}

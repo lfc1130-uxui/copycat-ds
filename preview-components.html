@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Copycat — Components</title>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue-400: #3d87ff;
+    --blue-500: #0068ff;
+    --neutral-0:   #ffffff;
+    --neutral-50:  #f8f9fc;
+    --neutral-100: #f0f2f7;
+    --neutral-200: #e2e5ef;
+    --neutral-300: #c8cde0;
+    --neutral-400: #9198b4;
+    --neutral-500: #636a88;
+    --neutral-600: #464d6b;
+    --neutral-700: #313750;
+    --neutral-800: #1e2235;
+    --neutral-900: #111422;
+    --green-50:  #edfaf3;
+    --green-300: #68d4a0;
+    --green-700: #06703d;
+    --amber-50:  #fff8eb;
+    --amber-300: #fcc05e;
+    --amber-700: #b55900;
+    --red-50:    #fff0f0;
+    --red-300:   #ff7b7b;
+    --red-700:   #9e1111;
+    --red-500:   #f03030;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--neutral-50);
+    color: var(--neutral-900);
+    padding: 48px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--neutral-400);
+    margin-bottom: 32px;
+  }
+
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--neutral-400);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--neutral-200);
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* ── BUTTON ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+  }
+
+  .btn--sm { height: 36px; padding: 0 20px; font-size: 12px; }
+  .btn--md { height: 44px; padding: 0 28px; font-size: 14px; }
+  .btn--lg { height: 52px; padding: 0 36px; font-size: 16px; }
+
+  .btn--primary {
+    background: linear-gradient(160deg, #0068ff 0%, #3d87ff 100%);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 4px 14px rgba(0,104,255,0.28);
+  }
+  .btn--secondary {
+    background: transparent;
+    color: #0068ff;
+    border-color: #0068ff;
+  }
+  .btn--ghost {
+    background: transparent;
+    color: var(--neutral-900);
+    border-color: transparent;
+  }
+  .btn--danger {
+    background: #f03030;
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 4px 14px rgba(240,48,48,0.20);
+  }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    border-radius: 9999px;
+    white-space: nowrap;
+  }
+  .badge--sm { height: 22px; padding: 0 10px; font-size: 10px; }
+  .badge--md { height: 26px; padding: 0 12px; font-size: 12px; }
+
+  .badge--default { background: var(--neutral-100); color: var(--neutral-600); }
+  .badge--success { background: var(--green-50);   color: var(--green-700); }
+  .badge--warning { background: var(--amber-50);   color: var(--amber-700); }
+  .badge--error   { background: var(--red-50);     color: var(--red-700); }
+  .badge--info    { background: #eff5ff;            color: #0040a0; }
+</style>
+</head>
+<body>
+
+<h1>Copycat — Component Library</h1>
+
+<!-- BUTTON -->
+<div class="section">
+  <div class="section-label">Button — Variants</div>
+  <div class="row">
+    <button class="btn btn--primary btn--md">Primary</button>
+    <button class="btn btn--secondary btn--md">Secondary</button>
+    <button class="btn btn--ghost btn--md">Ghost</button>
+    <button class="btn btn--danger btn--md">Danger</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Button — Sizes</div>
+  <div class="row">
+    <button class="btn btn--primary btn--sm">Small</button>
+    <button class="btn btn--primary btn--md">Medium</button>
+    <button class="btn btn--primary btn--lg">Large</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Button — Disabled</div>
+  <div class="row">
+    <button class="btn btn--primary btn--md" disabled>Primary</button>
+    <button class="btn btn--secondary btn--md" disabled>Secondary</button>
+    <button class="btn btn--ghost btn--md" disabled>Ghost</button>
+    <button class="btn btn--danger btn--md" disabled>Danger</button>
+  </div>
+</div>
+
+<!-- BADGE -->
+<div class="section">
+  <div class="section-label">Badge — Variants</div>
+  <div class="row">
+    <span class="badge badge--default badge--md">Default</span>
+    <span class="badge badge--success badge--md">Active</span>
+    <span class="badge badge--warning badge--md">Pending</span>
+    <span class="badge badge--error badge--md">Failed</span>
+    <span class="badge badge--info badge--md">Beta</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Badge — Sizes</div>
+  <div class="row">
+    <span class="badge badge--success badge--sm">Active</span>
+    <span class="badge badge--success badge--md">Active</span>
+    <span class="badge badge--warning badge--sm">Pending</span>
+    <span class="badge badge--warning badge--md">Pending</span>
+    <span class="badge badge--error badge--sm">Failed</span>
+    <span class="badge badge--error badge--md">Failed</span>
+  </div>
+</div>
+
+</body>
+</html>

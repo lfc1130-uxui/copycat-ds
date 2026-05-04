@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Copycat</title>
+  <style>
+
+    /* ═══════════════════════════════════════════════════════════════
+       DESIGN TOKENS  (mirrored from src/styles/tokens.css)
+    ═══════════════════════════════════════════════════════════════ */
+    /* sync-start:tokens */
+    :root {
+      --blue-50:#eff5ff;--blue-100:#dce8ff;--blue-200:#b8d2ff;--blue-300:#84b3ff;--blue-400:#3d87ff;--blue-500:#0068ff;--blue-600:#0054cc;--blue-700:#0040a0;--blue-800:#003180;--blue-900:#00225a;--blue-950:#001438;--neutral-0:#ffffff;--neutral-50:#f8f9fc;--neutral-100:#f0f2f7;--neutral-200:#e2e5ef;--neutral-300:#c8cde0;--neutral-400:#9198b4;--neutral-500:#636a88;--neutral-600:#464d6b;--neutral-700:#313750;--neutral-800:#1e2235;--neutral-900:#111422;--neutral-950:#090b14;--green-50:#edfaf3;--green-100:#d2f4e2;--green-200:#a6e8c6;--green-300:#68d4a0;--green-400:#2abd76;--green-500:#0caf60;--green-600:#07914e;--green-700:#06703d;--green-800:#045530;--green-900:#023b21;--amber-50:#fff8eb;--amber-100:#feeccc;--amber-200:#fdd896;--amber-300:#fcc05e;--amber-400:#fba32d;--amber-500:#ff9a0d;--amber-600:#e07500;--amber-700:#b55900;--amber-800:#8a4200;--amber-900:#5e2c00;--red-50:#fff0f0;--red-100:#ffd9d9;--red-200:#ffb0b0;--red-300:#ff7b7b;--red-400:#ff4040;--red-500:#f03030;--red-600:#c81e1e;--red-700:#9e1111;--red-800:#780a0a;--red-900:#520404;--color-bg-page:var(--neutral-50);--color-bg-surface:var(--neutral-0);--color-bg-subtle:var(--neutral-100);--color-bg-muted:var(--neutral-200);--color-bg-inverse:var(--neutral-900);--color-bg-disabled:var(--neutral-200);--color-text-primary:var(--neutral-900);--color-text-secondary:var(--neutral-600);--color-text-tertiary:var(--neutral-400);--color-text-disabled:var(--neutral-400);--color-text-inverse:var(--neutral-0);--color-text-link:var(--blue-600);--color-text-link-hover:var(--blue-700);--color-border-default:var(--neutral-200);--color-border-strong:var(--neutral-300);--color-border-subtle:var(--neutral-100);--color-border-focus:var(--blue-500);--color-border-disabled:var(--neutral-300);--color-brand:var(--blue-500);--color-brand-hover:var(--blue-600);--color-brand-active:var(--blue-700);--color-brand-subtle:var(--blue-50);--color-brand-muted:var(--blue-100);--color-brand-text:var(--blue-700);--color-success:var(--green-500);--color-success-hover:var(--green-600);--color-success-subtle:var(--green-50);--color-success-text:var(--green-700);--color-warning:var(--amber-500);--color-warning-hover:var(--amber-600);--color-warning-subtle:var(--amber-50);--color-warning-text:var(--amber-700);--color-error:var(--red-500);--color-error-hover:var(--red-600);--color-error-pressed:var(--red-700);--color-error-subtle:var(--red-50);--color-error-text:var(--red-700);--color-info:var(--blue-500);--color-info-subtle:var(--blue-50);--color-info-text:var(--blue-700);--font-sans:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;--font-mono:'JetBrains Mono','Cascadia Code','Fira Code',monospace;--text-xs:10px;--text-sm:12px;--text-base:14px;--text-md:16px;--text-lg:18px;--text-xl:20px;--text-2xl:24px;--text-3xl:30px;--text-4xl:36px;--text-5xl:48px;--text-6xl:60px;--text-7xl:72px;--weight-regular:400;--weight-medium:500;--weight-semibold:600;--weight-bold:700;--weight-extrabold:800;--leading-none:1;--leading-tight:1.25;--leading-snug:1.375;--leading-normal:1.5;--leading-relaxed:1.625;--leading-loose:2;--tracking-tighter:-0.04em;--tracking-tight:-0.02em;--tracking-normal:0em;--tracking-wide:0.025em;--tracking-wider:0.05em;--tracking-widest:0.1em;--space-0:0px;--space-px:1px;--space-0-5:2px;--space-1:4px;--space-1-5:6px;--space-2:8px;--space-2-5:10px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-7:28px;--space-8:32px;--space-9:36px;--space-10:40px;--space-12:48px;--space-14:56px;--space-16:64px;--space-20:80px;--space-24:96px;--space-32:128px;--radius-none:0px;--radius-xs:2px;--radius-sm:4px;--radius-md:6px;--radius-lg:8px;--radius-xl:12px;--radius-2xl:16px;--radius-3xl:24px;--radius-full:9999px;--shadow-xs:0px 1px 2px rgba(17,20,34,0.06);--shadow-sm:0px 1px 3px rgba(17,20,34,0.10),0px 1px 2px rgba(17,20,34,0.06);--shadow-md:0px 4px 6px -1px rgba(17,20,34,0.10),0px 2px 4px -2px rgba(17,20,34,0.06);--shadow-lg:0px 10px 15px -3px rgba(17,20,34,0.10),0px 4px 6px -4px rgba(17,20,34,0.06);--shadow-xl:0px 20px 25px -5px rgba(17,20,34,0.10),0px 8px 10px -6px rgba(17,20,34,0.06);--shadow-2xl:0px 25px 50px -12px rgba(17,20,34,0.25);--shadow-inner:inset 0px 2px 4px rgba(17,20,34,0.08);--shadow-brand:0px 0px 0px 3px rgba(0,104,255,0.20);--shadow-none:none;--border-0:0px;--border-1:1px;--border-2:2px;--border-4:4px;--z-0:0;--z-10:10;--z-20:20;--z-30:30;--z-40:40;--z-50:50;--z-modal:100;--z-toast:200;--z-tooltip:300;--ease-in:cubic-bezier(0.4,0,1,1);--ease-out:cubic-bezier(0,0,0.2,1);--ease-in-out:cubic-bezier(0.4,0,0.2,1);--ease-spring:cubic-bezier(0.34,1.56,0.64,1);--duration-75:75ms;--duration-100:100ms;--duration-150:150ms;--duration-200:200ms;--duration-300:300ms;--duration-500:500ms;
+    }
+    /* sync-end:tokens */
+
+    /* ── Dark mode token overrides ─────────────────────────────────────── */
+    .dark {
+      --color-bg-page:    var(--neutral-950);
+      --color-bg-surface: var(--neutral-900);
+      --color-bg-subtle:  var(--neutral-800);
+      --color-bg-muted:   var(--neutral-700);
+      --color-bg-inverse:   var(--neutral-0);
+      --color-bg-disabled:  #3a3a3a;
+
+      --color-text-primary:    var(--neutral-50);
+      --color-text-secondary:  var(--neutral-300);
+      --color-text-tertiary:   var(--neutral-500);
+      --color-text-disabled:   #6e6e6e;
+      --color-text-inverse:    var(--neutral-900);
+      --color-text-link:       var(--blue-300);
+      --color-text-link-hover: var(--blue-200);
+
+      --color-border-default:   var(--neutral-700);
+      --color-border-strong:    var(--neutral-600);
+      --color-border-subtle:    var(--neutral-800);
+      --color-border-focus:     var(--blue-400);
+      --color-border-disabled:  #4e4e4e;
+
+      --color-brand:        var(--blue-400);
+      --color-brand-hover:  var(--blue-300);
+      --color-brand-active: var(--blue-200);
+      --color-brand-subtle: rgba(0, 104, 255, 0.12);
+      --color-brand-muted:  rgba(0, 104, 255, 0.20);
+      --color-brand-text:   var(--blue-300);
+
+      --color-success:        var(--green-400);
+      --color-success-hover:  var(--green-300);
+      --color-success-subtle: rgba(12, 175, 96, 0.12);
+      --color-success-text:   var(--green-300);
+
+      --color-warning:        var(--amber-400);
+      --color-warning-hover:  var(--amber-300);
+      --color-warning-subtle: rgba(255, 154, 13, 0.12);
+      --color-warning-text:   var(--amber-300);
+
+      --color-error:         var(--red-400);
+      --color-error-hover:   var(--red-300);
+      --color-error-pressed: var(--red-500);
+      --color-error-subtle:  rgba(240, 48, 48, 0.12);
+      --color-error-text:    var(--red-300);
+
+      --color-info:        var(--blue-400);
+      --color-info-subtle: rgba(0, 104, 255, 0.12);
+      --color-info-text:   var(--blue-300);
+
+      --shadow-xs:    0px 1px 2px rgba(0,0,0,.30);
+      --shadow-sm:    0px 1px 3px rgba(0,0,0,.40), 0px 1px 2px rgba(0,0,0,.24);
+      --shadow-md:    0px 4px 6px -1px rgba(0,0,0,.40), 0px 2px 4px -2px rgba(0,0,0,.24);
+      --shadow-lg:    0px 10px 15px -3px rgba(0,0,0,.40), 0px 4px 6px -4px rgba(0,0,0,.24);
+      --shadow-xl:    0px 20px 25px -5px rgba(0,0,0,.40), 0px 8px 10px -6px rgba(0,0,0,.24);
+      --shadow-2xl:   0px 25px 50px -12px rgba(0,0,0,.70);
+      --shadow-inner: inset 0px 2px 4px rgba(0,0,0,.30);
+      --shadow-brand: 0px 0px 0px 3px rgba(61,135,255,.30);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SHELL LAYOUT
+    ═══════════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; overflow: hidden; }
+
+    body {
+      display: flex;
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      background: var(--color-bg-page);
+      color: var(--color-text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SIDEBAR
+    ═══════════════════════════════════════════════════════════════ */
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      height: 100vh;
+      background: var(--neutral-900);
+      border-right: 1px solid var(--neutral-800);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-5) var(--space-4);
+      border-bottom: 1px solid var(--neutral-800);
+    }
+    .brand-mark {
+      width: 32px; height: 32px;
+      border-radius: var(--radius-full);
+      background: linear-gradient(160deg, #0068ff, #3d87ff);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0,104,255,.40);
+    }
+    .brand-mark svg { width: 16px; height: 16px; }
+    .brand-name {
+      font-size: var(--text-base);
+      font-weight: var(--weight-bold);
+      color: var(--neutral-0);
+      letter-spacing: var(--tracking-tight);
+      line-height: 1;
+    }
+    .brand-name span { color: var(--blue-400); }
+    .brand-version {
+      font-size: var(--text-xs);
+      color: var(--neutral-600);
+      margin-top: 2px;
+    }
+
+    .sidebar-nav { flex: 1; padding: var(--space-4) 0; }
+
+    .nav-group { margin-bottom: var(--space-4); }
+    .nav-group-label {
+      font-size: 9px;
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--neutral-600);
+      padding: 0 var(--space-4) var(--space-1-5);
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2-5);
+      padding: var(--space-1-5) var(--space-4);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      color: var(--neutral-400);
+      cursor: pointer;
+      border-radius: 0;
+      transition: color var(--duration-150) var(--ease-in-out),
+                  background var(--duration-150) var(--ease-in-out);
+      user-select: none;
+      border-left: 2px solid transparent;
+      margin: 1px 0;
+    }
+    .nav-item:hover { color: var(--neutral-100); background: rgba(255,255,255,.04); }
+    .nav-item.active {
+      color: var(--blue-300);
+      background: rgba(61,135,255,.08);
+      border-left-color: var(--blue-400);
+      font-weight: var(--weight-semibold);
+    }
+    .nav-item-icon {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      opacity: .6;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-item.active .nav-item-icon { opacity: 1; }
+
+    .nav-badge {
+      margin-left: auto;
+      font-size: 9px;
+      font-weight: var(--weight-bold);
+      background: linear-gradient(160deg, rgba(0,104,255,.20), rgba(61,135,255,.15));
+      color: var(--blue-400);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.02em;
+    }
+
+    .sidebar-footer {
+      padding: var(--space-4);
+      border-top: 1px solid var(--neutral-800);
+    }
+    .mode-toggle {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      background: var(--neutral-800);
+      border: 1px solid var(--neutral-700);
+      border-radius: var(--radius-full);
+      color: var(--neutral-400);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: background var(--duration-150) var(--ease-in-out),
+                  color var(--duration-150) var(--ease-in-out);
+    }
+    .mode-toggle:hover { background: var(--neutral-700); color: var(--neutral-200); }
+
+    /* ═══════════════════════════════════════════════════════════════
+       MAIN CONTENT
+    ═══════════════════════════════════════════════════════════════ */
+    .main {
+      flex: 1;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .view {
+      display: none;
+      width: 100%; height: 100%;
+    }
+    .view.active { display: flex; flex-direction: column; }
+
+    /* Foundations iframe view */
+    .view-iframe iframe {
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* Doc views */
+    .view-doc {
+      overflow-y: auto;
+    }
+    .doc-content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: var(--space-10) var(--space-8);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       DOC PAGE TYPOGRAPHY
+    ═══════════════════════════════════════════════════════════════ */
+    .doc-header { margin-bottom: var(--space-10); }
+    .doc-eyebrow {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--color-brand);
+      margin-bottom: var(--space-2);
+    }
+    .doc-title {
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-extrabold);
+      letter-spacing: var(--tracking-tight);
+      color: var(--color-text-primary);
+      line-height: var(--leading-tight);
+      margin-bottom: var(--space-3);
+    }
+    .doc-desc {
+      font-size: var(--text-md);
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    .doc-section { margin-bottom: var(--space-12); }
+    .doc-section-title {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--color-text-tertiary);
+      margin-bottom: var(--space-4);
+      padding-bottom: var(--space-2);
+      border-bottom: 1px solid var(--color-border-default);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .doc-section-title::before {
+      content: '';
+      width: 3px; height: 12px;
+      background: var(--color-brand);
+      border-radius: var(--radius-full);
+      display: inline-block;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       DEMO STAGE
+    ═══════════════════════════════════════════════════════════════ */
+    .demo-stage {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .demo-canvas {
+      min-height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-10);
+      background: var(--color-bg-page);
+      border-bottom: 1px solid var(--color-border-default);
+      position: relative;
+    }
+    .demo-canvas-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
+        linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+    .demo-canvas-inner {
+      position: relative; z-index: 1;
+      display: flex; flex-wrap: wrap; gap: var(--space-3);
+      align-items: center; justify-content: center;
+    }
+    .demo-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-6);
+      padding: var(--space-4) var(--space-5);
+      background: var(--color-bg-surface);
+      transition: background var(--duration-150) var(--ease-in-out);
+    }
+    .demo-sep {
+      width: 1px;
+      background: var(--color-border-default);
+      align-self: stretch;
+      flex-shrink: 0;
+      margin: 0 var(--space-1);
+    }
+    .demo-canvas { transition: background var(--duration-150) var(--ease-in-out); }
+    .demo-stage  { transition: border-color var(--duration-150) var(--ease-in-out); }
+
+    /* ── Demo canvas dark mode ── */
+    .demo-stage.dark { border-color: var(--neutral-700); }
+    .demo-stage.dark .demo-canvas {
+      background: var(--neutral-950);
+      border-bottom-color: var(--neutral-800);
+    }
+    .demo-stage.dark .demo-canvas-grid {
+      background-image:
+        linear-gradient(var(--neutral-800) 1px, transparent 1px),
+        linear-gradient(90deg, var(--neutral-800) 1px, transparent 1px);
+    }
+    .demo-stage.dark .demo-controls {
+      background: var(--neutral-900);
+    }
+    .demo-stage.dark .demo-sep { background: var(--neutral-700); }
+    .demo-stage.dark .demo-control-label { color: var(--neutral-500); }
+    .demo-stage.dark .demo-chip {
+      background: var(--neutral-800);
+      border-color: var(--neutral-700);
+      color: var(--neutral-400);
+    }
+    .demo-stage.dark .demo-chip:hover { border-color: var(--blue-400); color: var(--blue-400); }
+    .demo-stage.dark .demo-chip.active {
+      background: rgba(61,135,255,.12);
+      border-color: var(--blue-400);
+      color: var(--blue-400);
+    }
+    /* Component tokens inside dark canvas */
+    .demo-stage.dark .btn--secondary { color: var(--blue-400); border-color: var(--blue-400); }
+    .demo-stage.dark .btn--ghost     { color: var(--neutral-100); }
+    .demo-stage.dark .btn--ghost:hover:not(:disabled) { background: rgba(255,255,255,.08); }
+    .demo-stage.dark .btn--primary:disabled,.demo-stage.dark .btn--danger:disabled { background:#3a3a3a; color:#6e6e6e; }
+    .demo-stage.dark .btn--secondary:disabled { color:#6e6e6e; border-color:#4e4e4e; }
+    .demo-stage.dark .btn--ghost:disabled { color:#6e6e6e; }
+    .demo-stage.dark .btn--secondary .btn__spinner { border-color:rgba(61,135,255,.20); border-top-color:var(--blue-400); }
+    .demo-stage.dark .btn--ghost .btn__spinner { border-color:rgba(255,255,255,.12); border-top-color:var(--neutral-100); }
+    .demo-stage.dark .badge--default { background: var(--neutral-800); color: var(--neutral-300); }
+    .demo-stage.dark .badge--success { background: rgba(12,175,96,.15);  color: var(--green-300); }
+    .demo-stage.dark .badge--warning { background: rgba(255,154,13,.15); color: var(--amber-300); }
+    .demo-stage.dark .badge--error   { background: rgba(240,48,48,.15);  color: var(--red-300); }
+    .demo-stage.dark .badge--info    { background: rgba(0,104,255,.15);  color: var(--blue-300); }
+    .demo-control-group { display: flex; flex-direction: column; gap: var(--space-1-5); }
+    .demo-control-label {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      color: var(--color-text-tertiary);
+    }
+    .demo-control-options { display: flex; gap: var(--space-1); flex-wrap: wrap; }
+    .demo-chip {
+      padding: var(--space-1) var(--space-3);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      font-family: var(--font-sans);
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-full);
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      transition: all var(--duration-150) var(--ease-in-out);
+    }
+    .demo-chip:hover { border-color: var(--color-brand); color: var(--color-brand); }
+    .demo-chip.active {
+      background: var(--color-brand-subtle);
+      border-color: var(--color-brand);
+      color: var(--color-brand);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       VARIANT SHOWCASE — all variants in a row
+    ═══════════════════════════════════════════════════════════════ */
+    .variant-grid {
+      display: grid;
+      gap: var(--space-3);
+    }
+    .variant-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-lg);
+      transition: background var(--duration-150) var(--ease-in-out),
+                  border-color var(--duration-150) var(--ease-in-out);
+    }
+
+    .variant-label {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-tertiary);
+      width: 80px;
+      flex-shrink: 0;
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+    }
+    .variant-items {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       PROPS TABLE
+    ═══════════════════════════════════════════════════════════════ */
+    .props-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      font-size: var(--text-sm);
+    }
+    .props-table th {
+      text-align: left;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--color-text-tertiary);
+      padding: var(--space-3) var(--space-5);
+      background: var(--color-bg-subtle);
+      border-bottom: 1px solid var(--color-border-default);
+    }
+    .props-table td {
+      padding: var(--space-3) var(--space-5);
+      border-bottom: 1px solid var(--color-border-subtle);
+      vertical-align: top;
+    }
+    .props-table tr:last-child td { border-bottom: none; }
+    .props-table tr:hover td { background: var(--color-bg-subtle); }
+    .prop-name { font-family: var(--font-mono); color: var(--blue-700); font-weight: var(--weight-medium); }
+    .prop-type { font-family: var(--font-mono); color: var(--color-text-secondary); font-size: var(--text-xs); }
+    .prop-default { font-family: var(--font-mono); color: var(--color-text-tertiary); font-size: var(--text-xs); }
+    .prop-desc { color: var(--color-text-secondary); line-height: 1.5; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       CODE BLOCK
+    ═══════════════════════════════════════════════════════════════ */
+    .code-block {
+      background: var(--neutral-900);
+      border: 1px solid var(--neutral-700);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .code-block-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-2-5) var(--space-4);
+      background: var(--neutral-800);
+      border-bottom: 1px solid var(--neutral-700);
+    }
+    .code-lang {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      color: var(--neutral-500);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+    }
+    .code-copy {
+      font-size: var(--text-xs);
+      color: var(--neutral-500);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      padding: 2px var(--space-2);
+      border-radius: var(--radius-sm);
+      transition: color var(--duration-150);
+    }
+    .code-copy:hover { color: var(--neutral-200); }
+    .code-block pre {
+      padding: var(--space-4) var(--space-5);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      line-height: 1.7;
+      color: var(--neutral-200);
+      overflow-x: auto;
+      margin: 0;
+    }
+    .c-kw  { color: #c792ea; }
+    .c-fn  { color: #82aaff; }
+    .c-str { color: #c3e88d; }
+    .c-tag { color: #f07178; }
+    .c-attr{ color: #ffcb6b; }
+    .c-cmt { color: #546e7a; font-style: italic; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BUTTON COMPONENT CSS  (from src/components/Button/Button.css)
+    ═══════════════════════════════════════════════════════════════ */
+    /* sync-start:button-css */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);font-family:var(--font-sans);font-weight:var(--weight-bold);line-height:var(--leading-none);letter-spacing:0.01em;white-space:nowrap;text-decoration:none;border:var(--border-1) solid transparent;border-radius:var(--radius-full);cursor:pointer;outline:none;transition:background var(--duration-150) var(--ease-in-out),border-color var(--duration-150) var(--ease-in-out),color var(--duration-150) var(--ease-in-out),box-shadow var(--duration-150) var(--ease-in-out),filter var(--duration-150) var(--ease-in-out),transform var(--duration-100) var(--ease-out);}.btn:active:not(:disabled){transform:scale(0.97);}.btn:disabled{cursor:not-allowed;}.btn--sm{height:36px;padding:0 var(--space-5);gap:var(--space-1-5);font-size:var(--text-sm);}.btn--md{height:44px;padding:0 var(--space-7);gap:var(--space-2);font-size:var(--text-base);}.btn--lg{height:52px;padding:0 var(--space-9);gap:var(--space-2-5);font-size:var(--text-md);}.btn--primary{background:linear-gradient(160deg,var(--blue-500) 0%,var(--blue-400) 100%);color:var(--neutral-0);border-color:transparent;box-shadow:0 4px 14px rgba(0,104,255,0.28);}.btn--primary:hover:not(:disabled){filter:brightness(1.08);box-shadow:0 6px 20px rgba(0,104,255,0.40);}.btn--primary:focus-visible{box-shadow:var(--shadow-brand),0 4px 14px rgba(0,104,255,0.28);}.btn--secondary{background:transparent;color:var(--color-brand);border-color:var(--color-brand);}.btn--secondary:hover:not(:disabled){background:var(--color-brand-subtle);}.btn--secondary:active:not(:disabled){background:var(--color-brand-muted);}.btn--secondary:focus-visible{box-shadow:var(--shadow-brand);}.btn--ghost{background:transparent;color:var(--color-text-primary);border-color:transparent;}.btn--ghost:hover:not(:disabled){background:var(--color-bg-subtle);}.btn--ghost:active:not(:disabled){background:var(--color-bg-muted);}.btn--ghost:focus-visible{box-shadow:var(--shadow-brand);}.btn--danger{background:var(--color-error);color:var(--neutral-0);border-color:transparent;box-shadow:0 4px 14px rgba(240,48,48,0.20);}.btn--danger:hover:not(:disabled){filter:brightness(1.08);box-shadow:0 6px 20px rgba(240,48,48,0.30);}.btn--danger:focus-visible{box-shadow:0 0 0 3px rgba(240,48,48,0.25);}.btn--primary:disabled,.btn--danger:disabled{background:var(--color-bg-disabled);color:var(--color-text-disabled);box-shadow:none;filter:none;}.btn--secondary:disabled{background:transparent;color:var(--color-text-disabled);border-color:var(--color-border-disabled);}.btn--ghost:disabled{background:transparent;color:var(--color-text-disabled);}.btn--full{width:100%;}.btn--loading{position:relative;cursor:not-allowed;pointer-events:none;}.btn__ghost{opacity:0;pointer-events:none;user-select:none;}.btn__spinner{position:absolute;left:50%;top:50%;border-radius:50%;flex-shrink:0;animation:btn-spin 0.75s linear infinite;}.btn--sm .btn__spinner{width:14px;height:14px;}.btn--md .btn__spinner{width:16px;height:16px;}.btn--lg .btn__spinner{width:18px;height:18px;}.btn--primary .btn__spinner{border:2px solid rgba(255,255,255,0.25);border-top-color:#fff;}.btn--secondary .btn__spinner{border:2px solid rgba(0,104,255,0.20);border-top-color:var(--color-brand);}.btn--ghost .btn__spinner{border:2px solid rgba(0,0,0,0.12);border-top-color:var(--color-text-primary);}.btn--danger .btn__spinner{border:2px solid rgba(255,255,255,0.25);border-top-color:#fff;}@keyframes btn-spin{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(360deg);}}
+    /* sync-end:button-css */
+
+    /* ═══════════════════════════════════════════════════════════════
+       BADGE COMPONENT CSS  (from src/components/Badge/Badge.css)
+    ═══════════════════════════════════════════════════════════════ */
+    /* sync-start:badge-css */
+    .badge{display:inline-flex;align-items:center;gap:var(--space-1);font-family:var(--font-sans);font-weight:var(--weight-semibold);line-height:var(--leading-none);border-radius:var(--radius-full);white-space:nowrap;}.badge--sm{height:22px;padding:0 var(--space-2-5);font-size:var(--text-xs);letter-spacing:0.01em;}.badge--md{height:26px;padding:0 var(--space-3);font-size:var(--text-sm);letter-spacing:0.01em;}.badge--default{background:var(--color-bg-subtle);color:var(--color-text-secondary);}.badge--success{background:var(--color-success-subtle);color:var(--color-success-text);}.badge--warning{background:var(--color-warning-subtle);color:var(--color-warning-text);}.badge--error{background:var(--color-error-subtle);color:var(--color-error-text);}.badge--info{background:var(--color-info-subtle);color:var(--color-info-text);}
+    /* sync-end:badge-css */
+
+    /* ═══════════════════════════════════════════════════════════════
+       INPUT COMPONENT CSS  (from src/components/Input/Input.css)
+    ═══════════════════════════════════════════════════════════════ */
+    /* sync-start:input-css */
+    .input-root{display:inline-flex;flex-direction:column;gap:var(--space-1);}.input-root--full{width:100%;}.input-label{font-family:var(--font-sans);font-size:var(--text-sm);font-weight:var(--weight-medium);line-height:var(--leading-normal);color:var(--color-text-primary);}.input-required{color:var(--color-error);}.input-wrapper{position:relative;display:inline-flex;align-items:center;background:var(--color-bg-surface);border:var(--border-1) solid var(--color-border-default);border-radius:var(--radius-md);transition:border-color var(--duration-150) var(--ease-in-out),box-shadow var(--duration-150) var(--ease-in-out),background var(--duration-150) var(--ease-in-out);}.input-wrapper--full{width:100%;}.input-wrapper:focus-within:not(.input-wrapper--disabled):not(.input-wrapper--readonly){border-color:var(--color-border-focus);box-shadow:0 0 0 3px rgba(0,104,255,0.18);}.input-wrapper--sm{height:32px;border-radius:var(--radius-sm);}.input-wrapper--md{height:40px;border-radius:var(--radius-md);}.input-wrapper--lg{height:48px;border-radius:var(--radius-lg);}.input-field{flex:1;min-width:0;height:100%;padding:0 var(--space-3);background:transparent;border:none;outline:none;text-align:left;direction:ltr;font-family:var(--font-sans);font-size:var(--text-base);font-weight:var(--weight-regular);line-height:var(--leading-normal);color:var(--color-text-primary);}.input-wrapper--sm .input-field{font-size:var(--text-sm);}.input-wrapper--lg .input-field{font-size:var(--text-md);}.input-field::placeholder{color:var(--color-text-tertiary);}.input-wrapper--has-leading-icon .input-field{padding-left:var(--space-2);}.input-wrapper--has-prefix .input-field{padding-left:0;}.input-wrapper--has-trailing .input-field{padding-right:0;}.input-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--color-text-tertiary);}.input-icon--leading{padding-left:var(--space-2);}.input-icon--trailing{padding-right:var(--space-3);}.input-icon--interactive{cursor:pointer;color:var(--color-text-secondary);border-radius:var(--radius-sm);transition:color var(--duration-100) var(--ease-in-out);}.input-icon--interactive:hover{color:var(--color-text-primary);}.input-icon--success{color:var(--color-success);}.input-icon--error{color:var(--color-error);}.input-prefix,.input-suffix{flex-shrink:0;display:flex;align-items:center;padding:0 var(--space-3);font-family:var(--font-sans);font-size:var(--text-base);font-weight:var(--weight-regular);color:var(--color-text-secondary);white-space:nowrap;user-select:none;}.input-wrapper--sm .input-prefix,.input-wrapper--sm .input-suffix{font-size:var(--text-sm);}.input-prefix{border-radius:var(--radius-md) 0 0 var(--radius-md);}.input-suffix{border-left:var(--border-1) solid var(--color-border-default);border-radius:0 var(--radius-md) var(--radius-md) 0;}.input-wrapper--error{border-color:var(--color-error);}.input-wrapper--error:focus-within{border-color:var(--color-error);box-shadow:0 0 0 3px rgba(240,48,48,0.15);}.input-wrapper--success{border-color:var(--color-success);}.input-wrapper--success:focus-within{border-color:var(--color-success);box-shadow:0 0 0 3px rgba(12,175,96,0.15);}.input-wrapper--disabled{background:var(--color-bg-disabled);border-color:var(--color-border-disabled);cursor:not-allowed;}.input-wrapper--disabled .input-field{color:var(--color-text-disabled);cursor:not-allowed;}.input-wrapper--disabled .input-field::placeholder{color:var(--color-text-disabled);}.input-wrapper--disabled .input-prefix,.input-wrapper--disabled .input-suffix,.input-wrapper--disabled .input-icon{color:var(--color-text-disabled);}.input-wrapper--readonly{background:var(--color-bg-subtle);}.input-wrapper--readonly .input-field{cursor:default;}.input-spinner{flex-shrink:0;margin-right:var(--space-3);border-radius:50%;animation:input-spin 0.75s linear infinite;border:2px solid var(--color-border-default);border-top-color:var(--color-brand);}.input-wrapper--sm .input-spinner{width:12px;height:12px;}.input-wrapper--md .input-spinner{width:14px;height:14px;}.input-wrapper--lg .input-spinner{width:16px;height:16px;}@keyframes input-spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}.input-helper{font-family:var(--font-sans);font-size:var(--text-sm);font-weight:var(--weight-regular);line-height:var(--leading-normal);color:var(--color-text-secondary);margin:0;}.input-helper--error{color:var(--color-error-text);}.input-helper--success{color:var(--color-success-text);}
+    /* sync-end:input-css */
+
+    /* ═══════════════════════════════════════════════════════════════
+       SELECT COMPONENT CSS  (from src/components/Select/Select.css)
+    ═══════════════════════════════════════════════════════════════ */
+    /* sync-start:select-css */
+    .select-root{display:inline-flex;flex-direction:column;gap:var(--space-1);}.select-root--full{width:100%;}.select-label{font-family:var(--font-sans);font-size:var(--text-sm);font-weight:var(--weight-medium);line-height:var(--leading-normal);color:var(--color-text-primary);}.select-required{color:var(--color-error);}.select-positioner{position:relative;display:inline-block;}.select-positioner--full{width:100%;}.select-trigger{display:inline-flex;align-items:center;gap:var(--space-2);width:max-content;min-width:160px;padding:0 var(--space-3);background:var(--color-bg-surface);border:var(--border-1) solid var(--color-border-default);border-radius:var(--radius-md);cursor:pointer;text-align:left;transition:border-color var(--duration-150) var(--ease-in-out),box-shadow var(--duration-150) var(--ease-in-out),background var(--duration-150) var(--ease-in-out);}.select-trigger--full{width:100%;}.select-trigger--sm{height:32px;border-radius:var(--radius-sm);}.select-trigger--md{height:40px;border-radius:var(--radius-md);}.select-trigger--lg{height:48px;border-radius:var(--radius-lg);}.select-trigger:focus-visible{outline:none;border-color:var(--color-border-focus);box-shadow:0 0 0 3px rgba(0,104,255,0.18);}.select-trigger--open{border-color:var(--color-border-focus);box-shadow:0 0 0 3px rgba(0,104,255,0.18);}.select-trigger--error{border-color:var(--color-error);}.select-trigger--error:focus-visible,.select-trigger--error.select-trigger--open{border-color:var(--color-error);box-shadow:0 0 0 3px rgba(240,48,48,0.15);}.select-trigger--success{border-color:var(--color-success);}.select-trigger--success:focus-visible,.select-trigger--success.select-trigger--open{border-color:var(--color-success);box-shadow:0 0 0 3px rgba(12,175,96,0.15);}.select-trigger--disabled{background:var(--color-bg-disabled);border-color:var(--color-border-disabled);cursor:not-allowed;}.select-trigger--disabled .select-trigger-label,.select-trigger--disabled .select-icon{color:var(--color-text-disabled);}.select-trigger-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--font-sans);font-size:var(--text-base);font-weight:var(--weight-regular);color:var(--color-text-primary);}.select-trigger--sm .select-trigger-label{font-size:var(--text-sm);}.select-trigger--lg .select-trigger-label{font-size:var(--text-md);}.select-trigger--placeholder .select-trigger-label{color:var(--color-text-tertiary);}.select-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--color-text-tertiary);pointer-events:none;}.select-icon--leading{color:var(--color-text-secondary);}.select-icon--trailing{transition:transform var(--duration-150) var(--ease-in-out);}.select-icon--chevron-open{transform:rotate(180deg);}.select-icon--success{color:var(--color-success);}.select-icon--error{color:var(--color-error);}.select-spinner{flex-shrink:0;border-radius:50%;animation:select-spin 0.75s linear infinite;border:2px solid var(--color-border-default);border-top-color:var(--color-brand);}.select-trigger--sm .select-spinner{width:12px;height:12px;}.select-trigger--md .select-spinner{width:14px;height:14px;}.select-trigger--lg .select-spinner{width:16px;height:16px;}@keyframes select-spin{to{transform:rotate(360deg);}}.select-dropdown{position:absolute;top:calc(100% + var(--space-1));left:0;right:0;z-index:200;list-style:none;margin:0;padding:var(--space-1);background:var(--color-bg-surface);border:var(--border-1) solid var(--color-border-default);border-radius:var(--radius-lg);box-shadow:0 4px 6px -1px rgba(0,0,0,0.08),0 10px 24px -4px rgba(0,0,0,0.12);max-height:240px;overflow-y:auto;outline:none;animation:select-dropdown-in var(--duration-150) var(--ease-in-out) both;}.select-dropdown::-webkit-scrollbar{width:6px;}.select-dropdown::-webkit-scrollbar-track{background:transparent;}.select-dropdown::-webkit-scrollbar-thumb{background:var(--color-border-default);border-radius:999px;}@keyframes select-dropdown-in{from{opacity:0;transform:translateY(-6px) scale(0.98);}to{opacity:1;transform:translateY(0) scale(1);}}.select-option{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:var(--text-base);font-weight:var(--weight-regular);color:var(--color-text-primary);cursor:pointer;user-select:none;transition:background var(--duration-100) var(--ease-in-out);}.select-option-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.select-option-check{flex-shrink:0;display:flex;align-items:center;color:var(--color-brand);}.select-option:not(.select-option--disabled):hover,.select-option--focused:not(.select-option--disabled){background:var(--color-bg-subtle);}.select-option--selected{background:var(--color-brand-subtle);color:var(--color-brand-text);font-weight:var(--weight-medium);}.select-option--selected:hover,.select-option--selected.select-option--focused{background:var(--color-brand-muted);}.select-option--disabled{color:var(--color-text-disabled);cursor:not-allowed;}.select-helper{font-family:var(--font-sans);font-size:var(--text-sm);font-weight:var(--weight-regular);line-height:var(--leading-normal);color:var(--color-text-secondary);margin:0;}.select-helper--error{color:var(--color-error-text);}.select-helper--success{color:var(--color-success-text);}
+    /* sync-end:select-css */
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
+  <aside class="sidebar">
+
+    <!-- Brand -->
+    <div class="sidebar-brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 16 16" fill="none">
+          <path d="M8 1L14 4.5V11.5L8 15L2 11.5V4.5L8 1Z" fill="white" opacity=".9"/>
+          <path d="M8 4L12 6.5V11L8 13.5L4 11V6.5L8 4Z" fill="#0068ff"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">Copycat</div>
+        <div class="brand-version">v1.0.0</div>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="sidebar-nav">
+
+      <div class="nav-group">
+        <div class="nav-group-label">Design</div>
+        <div class="nav-item active" data-view="foundations">
+          <span class="nav-item-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <rect x="1" y="1" width="5" height="5" rx="1" fill="currentColor"/>
+              <rect x="8" y="1" width="5" height="5" rx="1" fill="currentColor" opacity=".5"/>
+              <rect x="1" y="8" width="5" height="5" rx="1" fill="currentColor" opacity=".5"/>
+              <rect x="8" y="8" width="5" height="5" rx="1" fill="currentColor" opacity=".3"/>
+            </svg>
+          </span>
+          Foundations
+        </div>
+        <div class="nav-item" data-view="icons">
+          <span class="nav-item-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </span>
+          Icons
+          <span class="nav-badge">56</span>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">Components</div>
+        <div class="nav-item" data-view="button">
+          <span class="nav-item-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <rect x="1" y="3.5" width="12" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </span>
+          Button
+          <span class="nav-badge" id="nav-badge-button">4v</span>
+        </div>
+        <div class="nav-item" data-view="badge">
+          <span class="nav-item-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <rect x="1" y="4" width="12" height="6" rx="3" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </span>
+          Badge
+          <span class="nav-badge" id="nav-badge-badge">5v</span>
+        </div>
+        <div class="nav-item" data-view="input">
+          <span class="nav-item-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <rect x="1" y="3" width="12" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="4" y1="7" x2="4.5" y2="7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          Input
+          <span class="nav-badge" id="nav-badge-input">7v</span>
+        </div>
+        <div class="nav-item" data-view="select">
+          <span class="nav-item-icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <rect x="1" y="3" width="12" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <polyline points="5,8 7,10.5 9,8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Select
+          <span class="nav-badge" id="nav-badge-select">6v</span>
+        </div>
+      </div>
+
+    </nav>
+
+    <!-- Footer -->
+    <div class="sidebar-footer">
+      <button class="mode-toggle" id="mode-toggle">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <circle cx="6.5" cy="6.5" r="3" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="6.5" y1="0.5" x2="6.5" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="6.5" y1="11" x2="6.5" y2="12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="0.5" y1="6.5" x2="2" y2="6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="11" y1="6.5" x2="12.5" y2="6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Light mode
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- ════════════════════════════ MAIN CONTENT ════════════════════════════ -->
+  <main class="main">
+
+    <!-- VIEW: FOUNDATIONS -->
+    <div class="view view-iframe active" id="view-foundations">
+      <iframe src="./foundations.html" title="Design Foundations"></iframe>
+    </div>
+
+    <!-- VIEW: BUTTON -->
+    <div class="view view-doc" id="view-button">
+      <div class="doc-content">
+
+        <div class="doc-header">
+          <div class="doc-eyebrow">Components</div>
+          <h1 class="doc-title">Button</h1>
+          <p class="doc-desc">Triggers actions or navigation. Comes in 4 variants, 3 sizes, and 5 interactive states — all wired to design tokens.</p>
+        </div>
+
+        <!-- Interactive demo -->
+        <div class="doc-section">
+          <div class="doc-section-title">Interactive Demo</div>
+          <div class="demo-stage">
+            <div class="demo-canvas">
+              <div class="demo-canvas-grid"></div>
+              <div class="demo-canvas-inner" id="button-demo-canvas"></div>
+            </div>
+            <div class="demo-controls" id="button-demo-controls"></div>
+          </div>
+        </div>
+
+        <!-- All variants -->
+        <div class="doc-section">
+          <div class="doc-section-title">All Variants</div>
+          <div class="variant-grid" id="button-showcase"></div>
+        </div>
+
+        <!-- Props -->
+        <div class="doc-section">
+          <div class="doc-section-title">Props</div>
+          <table class="props-table">
+            <thead>
+              <tr>
+                <th>Name</th><th>Type</th><th>Default</th><th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code class="prop-name">variant</code></td>
+                <td><code class="prop-type">'primary' | 'secondary' | 'ghost' | 'danger'</code></td>
+                <td><code class="prop-default">'primary'</code></td>
+                <td class="prop-desc">Visual style of the button</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">size</code></td>
+                <td><code class="prop-type">'sm' | 'md' | 'lg'</code></td>
+                <td><code class="prop-default">'md'</code></td>
+                <td class="prop-desc">Height and padding scale (32 / 40 / 48px)</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">disabled</code></td>
+                <td><code class="prop-type">boolean</code></td>
+                <td><code class="prop-default">false</code></td>
+                <td class="prop-desc">Prevents interaction. Applies neutral gray colors — does not use opacity dimming.</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">icon</code></td>
+                <td><code class="prop-type">IconName</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Name of the icon to render inside the button (e.g. <code>"search"</code>, <code>"trash"</code>)</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">iconPosition</code></td>
+                <td><code class="prop-type">'leading' | 'trailing'</code></td>
+                <td><code class="prop-default">'leading'</code></td>
+                <td class="prop-desc">Position of the icon relative to the label</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">loading</code></td>
+                <td><code class="prop-type">boolean</code></td>
+                <td><code class="prop-default">false</code></td>
+                <td class="prop-desc">Replaces content with a spinner and disables interaction. Button keeps its natural width.</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">fullWidth</code></td>
+                <td><code class="prop-type">boolean</code></td>
+                <td><code class="prop-default">false</code></td>
+                <td class="prop-desc">Stretches button to fill its container</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">type</code></td>
+                <td><code class="prop-type">'button' | 'submit' | 'reset'</code></td>
+                <td><code class="prop-default">'button'</code></td>
+                <td class="prop-desc">Native HTML button type</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">children</code></td>
+                <td><code class="prop-type">ReactNode</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Label, icon, or any React content</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Usage -->
+        <div class="doc-section">
+          <div class="doc-section-title">Usage</div>
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">TSX</span>
+              <button class="code-copy" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><span class="c-kw">import</span> { Button } <span class="c-kw">from</span> <span class="c-str">'@copycat/design-system'</span>;
+
+<span class="c-cmt">// Variants</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-str">"primary"</span>&gt;Save changes&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-str">"secondary"</span>&gt;Cancel&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-str">"ghost"</span>&gt;Learn more&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-str">"danger"</span>&gt;Delete account&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// Sizes</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">size</span>=<span class="c-str">"sm"</span>&gt;Compact&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">size</span>=<span class="c-str">"lg"</span>&gt;Prominent&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// With icon</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-str">"primary"</span> <span class="c-attr">icon</span>=<span class="c-str">"search"</span>&gt;Search&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">variant</span>=<span class="c-str">"primary"</span> <span class="c-attr">icon</span>=<span class="c-str">"download"</span> <span class="c-attr">iconPosition</span>=<span class="c-str">"trailing"</span>&gt;Download&lt;/<span class="c-tag">Button</span>&gt;
+
+<span class="c-cmt">// States</span>
+&lt;<span class="c-tag">Button</span> <span class="c-attr">loading</span>&gt;Saving…&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">disabled</span>&gt;Unavailable&lt;/<span class="c-tag">Button</span>&gt;
+&lt;<span class="c-tag">Button</span> <span class="c-attr">fullWidth</span>&gt;Full width&lt;/<span class="c-tag">Button</span>&gt;</pre>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VIEW: BADGE -->
+    <div class="view view-doc" id="view-badge">
+      <div class="doc-content">
+
+        <div class="doc-header">
+          <div class="doc-eyebrow">Components</div>
+          <h1 class="doc-title">Badge</h1>
+          <p class="doc-desc">Compact status indicators for labels, counts, and contextual tags. 5 semantic variants driven entirely by design tokens.</p>
+        </div>
+
+        <!-- Interactive demo -->
+        <div class="doc-section">
+          <div class="doc-section-title">Interactive Demo</div>
+          <div class="demo-stage">
+            <div class="demo-canvas">
+              <div class="demo-canvas-grid"></div>
+              <div class="demo-canvas-inner" id="badge-demo-canvas"></div>
+            </div>
+            <div class="demo-controls" id="badge-demo-controls"></div>
+          </div>
+        </div>
+
+        <!-- All variants -->
+        <div class="doc-section">
+          <div class="doc-section-title">All Variants</div>
+          <div class="variant-grid" id="badge-showcase"></div>
+        </div>
+
+        <!-- Props -->
+        <div class="doc-section">
+          <div class="doc-section-title">Props</div>
+          <table class="props-table">
+            <thead>
+              <tr><th>Name</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code class="prop-name">variant</code></td>
+                <td><code class="prop-type">'default' | 'success' | 'warning' | 'error' | 'info'</code></td>
+                <td><code class="prop-default">'default'</code></td>
+                <td class="prop-desc">Semantic color role</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">size</code></td>
+                <td><code class="prop-type">'sm' | 'md'</code></td>
+                <td><code class="prop-default">'md'</code></td>
+                <td class="prop-desc">Height scale (20 / 24px)</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">children</code></td>
+                <td><code class="prop-type">ReactNode</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Badge text or content</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Usage -->
+        <div class="doc-section">
+          <div class="doc-section-title">Usage</div>
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">TSX</span>
+              <button class="code-copy" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><span class="c-kw">import</span> { Badge } <span class="c-kw">from</span> <span class="c-str">'@copycat/design-system'</span>;
+
+<span class="c-cmt">// Semantic variants</span>
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">variant</span>=<span class="c-str">"success"</span>&gt;Active&lt;/<span class="c-tag">Badge</span>&gt;
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">variant</span>=<span class="c-str">"warning"</span>&gt;Pending&lt;/<span class="c-tag">Badge</span>&gt;
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">variant</span>=<span class="c-str">"error"</span>&gt;Failed&lt;/<span class="c-tag">Badge</span>&gt;
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">variant</span>=<span class="c-str">"info"</span>&gt;Beta&lt;/<span class="c-tag">Badge</span>&gt;
+
+<span class="c-cmt">// Sizes</span>
+&lt;<span class="c-tag">Badge</span> <span class="c-attr">variant</span>=<span class="c-str">"success"</span> <span class="c-attr">size</span>=<span class="c-str">"sm"</span>&gt;Compact&lt;/<span class="c-tag">Badge</span>&gt;</pre>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VIEW: INPUT -->
+    <div class="view view-doc" id="view-input">
+      <div class="doc-content">
+
+        <div class="doc-header">
+          <div class="doc-eyebrow">Components</div>
+          <h1 class="doc-title">Input</h1>
+          <p class="doc-desc">Single-line text field with 7 validation states, icon slots, prefix/suffix, password toggle, and full token coverage. Built for banking-grade form flows.</p>
+        </div>
+
+        <!-- Interactive demo -->
+        <div class="doc-section">
+          <div class="doc-section-title">Interactive Demo</div>
+          <div class="demo-stage">
+            <div class="demo-canvas">
+              <div class="demo-canvas-grid"></div>
+              <div class="demo-canvas-inner" id="input-demo-canvas"></div>
+            </div>
+            <div class="demo-controls" id="input-demo-controls"></div>
+          </div>
+        </div>
+
+        <!-- All states -->
+        <div class="doc-section">
+          <div class="doc-section-title">All States</div>
+          <div class="variant-grid" id="input-showcase"></div>
+        </div>
+
+        <!-- Props -->
+        <div class="doc-section">
+          <div class="doc-section-title">Props</div>
+          <table class="props-table">
+            <thead>
+              <tr><th>Name</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code class="prop-name">size</code></td>
+                <td><code class="prop-type">'sm' | 'md' | 'lg'</code></td>
+                <td><code class="prop-default">'md'</code></td>
+                <td class="prop-desc">Height scale — 32 / 40 / 48px</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">validationState</code></td>
+                <td><code class="prop-type">'default' | 'error' | 'success' | 'loading'</code></td>
+                <td><code class="prop-default">'default'</code></td>
+                <td class="prop-desc">Controls border color and the trailing icon slot</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">label</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Label rendered above the field</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">helperText</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Hint text below the field. Always visible unless replaced by errorMessage</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">errorMessage</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Red error text shown below when <code>validationState="error"</code></td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">leadingIcon</code></td>
+                <td><code class="prop-type">IconName</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Icon rendered inside the left edge of the field</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">trailingIcon</code></td>
+                <td><code class="prop-type">IconName</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Icon rendered inside the right edge. Overridden by validation state icons</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">prefix</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Inline text before the field (e.g. <code>"$"</code>). Sits flush, no divider</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">suffix</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Inline text after the field (e.g. <code>"USD"</code>). Separated by a left border</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">fullWidth</code></td>
+                <td><code class="prop-type">boolean</code></td>
+                <td><code class="prop-default">false</code></td>
+                <td class="prop-desc">Stretches the input to fill its container</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">disabled</code></td>
+                <td><code class="prop-type">boolean</code></td>
+                <td><code class="prop-default">false</code></td>
+                <td class="prop-desc">Uses <code>color/bg/disabled</code> and <code>color/text/disabled</code> tokens — no opacity dimming</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">readOnly</code></td>
+                <td><code class="prop-type">boolean</code></td>
+                <td><code class="prop-default">false</code></td>
+                <td class="prop-desc">Subtle background, default border — signals non-editable but readable</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">required</code></td>
+                <td><code class="prop-type">boolean</code></td>
+                <td><code class="prop-default">false</code></td>
+                <td class="prop-desc">Appends a red asterisk to the label</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">type</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">'text'</code></td>
+                <td class="prop-desc">Native input type. <code>password</code> adds a show/hide toggle in the trailing slot</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Usage -->
+        <div class="doc-section">
+          <div class="doc-section-title">Usage</div>
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">TSX</span>
+              <button class="code-copy" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><span class="c-kw">import</span> { Input } <span class="c-kw">from</span> <span class="c-str">'@copycat/design-system'</span>;
+
+<span class="c-cmt">// Basic</span>
+&lt;<span class="c-tag">Input</span> <span class="c-attr">label</span>=<span class="c-str">"Account number"</span> <span class="c-attr">placeholder</span>=<span class="c-str">"Enter 10-digit number"</span> /&gt;
+
+<span class="c-cmt">// Validation states</span>
+&lt;<span class="c-tag">Input</span> <span class="c-attr">validationState</span>=<span class="c-str">"error"</span>   <span class="c-attr">errorMessage</span>=<span class="c-str">"Account not found"</span> /&gt;
+&lt;<span class="c-tag">Input</span> <span class="c-attr">validationState</span>=<span class="c-str">"success"</span> <span class="c-attr">helperText</span>=<span class="c-str">"Account verified"</span> /&gt;
+&lt;<span class="c-tag">Input</span> <span class="c-attr">validationState</span>=<span class="c-str">"loading"</span> <span class="c-attr">helperText</span>=<span class="c-str">"Checking…"</span> /&gt;
+
+<span class="c-cmt">// With icons and prefix/suffix</span>
+&lt;<span class="c-tag">Input</span> <span class="c-attr">leadingIcon</span>=<span class="c-str">"search"</span> <span class="c-attr">placeholder</span>=<span class="c-str">"Search transactions"</span> /&gt;
+&lt;<span class="c-tag">Input</span> <span class="c-attr">prefix</span>=<span class="c-str">"$"</span> <span class="c-attr">suffix</span>=<span class="c-str">"USD"</span> <span class="c-attr">placeholder</span>=<span class="c-str">"0.00"</span> /&gt;
+
+<span class="c-cmt">// Password with show/hide toggle</span>
+&lt;<span class="c-tag">Input</span> <span class="c-attr">type</span>=<span class="c-str">"password"</span> <span class="c-attr">label</span>=<span class="c-str">"Password"</span> <span class="c-attr">helperText</span>=<span class="c-str">"At least 8 characters"</span> /&gt;
+
+<span class="c-cmt">// Disabled / Read-only</span>
+&lt;<span class="c-tag">Input</span> <span class="c-attr">disabled</span> /&gt;
+&lt;<span class="c-tag">Input</span> <span class="c-attr">readOnly</span> <span class="c-attr">defaultValue</span>=<span class="c-str">"ACC-00129834"</span> <span class="c-attr">helperText</span>=<span class="c-str">"Contact support to change"</span> /&gt;</pre>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VIEW: SELECT -->
+    <div class="view view-doc" id="view-select">
+      <div class="doc-content">
+
+        <div class="doc-header">
+          <div class="doc-eyebrow">Components</div>
+          <h1 class="doc-title">Select</h1>
+          <p class="doc-desc">Custom listbox dropdown with 6 validation states, optional leading icon, 3 sizes, and full keyboard navigation. Click any trigger below to open the live dropdown.</p>
+        </div>
+
+        <!-- Interactive demo -->
+        <div class="doc-section">
+          <div class="doc-section-title">Interactive Demo</div>
+          <div class="demo-stage">
+            <div class="demo-canvas">
+              <div class="demo-canvas-grid"></div>
+              <div class="demo-canvas-inner" id="select-demo-canvas"></div>
+            </div>
+            <div class="demo-controls" id="select-demo-controls"></div>
+          </div>
+        </div>
+
+        <!-- All states -->
+        <div class="doc-section">
+          <div class="doc-section-title">All States</div>
+          <div class="variant-grid" id="select-showcase"></div>
+        </div>
+
+        <!-- Props -->
+        <div class="doc-section">
+          <div class="doc-section-title">Props</div>
+          <table class="props-table">
+            <thead>
+              <tr><th>Name</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code class="prop-name">options</code></td>
+                <td><code class="prop-type">SelectOption[]</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Array of <code>&#123; value, label, disabled? &#125;</code> objects</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">value</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Controlled selected value</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">defaultValue</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Initial value for uncontrolled usage</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">onChange</code></td>
+                <td><code class="prop-type">(value: string) =&gt; void</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Called when the user selects an option</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">size</code></td>
+                <td><code class="prop-type">'sm' | 'md' | 'lg'</code></td>
+                <td><code class="prop-default">'md'</code></td>
+                <td class="prop-desc">Height scale — 32 / 40 / 48px</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">validationState</code></td>
+                <td><code class="prop-type">'default' | 'error' | 'success' | 'loading'</code></td>
+                <td><code class="prop-default">'default'</code></td>
+                <td class="prop-desc">Controls border color and the trailing icon slot</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">label</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Label rendered above the field</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">placeholder</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">'Select…'</code></td>
+                <td class="prop-desc">Tertiary-colored text shown when no value is selected</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">helperText</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Hint text below the field</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">errorMessage</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Red error text shown when <code>validationState="error"</code></td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">leadingIcon</code></td>
+                <td><code class="prop-type">IconName</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Icon rendered inside the left edge of the trigger</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">fullWidth</code></td>
+                <td><code class="prop-type">boolean</code></td>
+                <td><code class="prop-default">false</code></td>
+                <td class="prop-desc">Stretches the trigger and dropdown to fill its container</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">disabled</code></td>
+                <td><code class="prop-type">boolean</code></td>
+                <td><code class="prop-default">false</code></td>
+                <td class="prop-desc">Uses <code>color/bg/disabled</code> and <code>color/text/disabled</code> tokens — no opacity</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">required</code></td>
+                <td><code class="prop-type">boolean</code></td>
+                <td><code class="prop-default">false</code></td>
+                <td class="prop-desc">Appends a red asterisk to the label</td>
+              </tr>
+              <tr>
+                <td><code class="prop-name">name</code></td>
+                <td><code class="prop-type">string</code></td>
+                <td><code class="prop-default">—</code></td>
+                <td class="prop-desc">Hidden <code>&lt;input&gt;</code> name for form submission</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Usage -->
+        <div class="doc-section">
+          <div class="doc-section-title">Usage</div>
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">TSX</span>
+              <button class="code-copy" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><span class="c-kw">import</span> { Select } <span class="c-kw">from</span> <span class="c-str">'@copycat/design-system'</span>;
+
+<span class="c-kw">const</span> options = [
+  { value: <span class="c-str">'current'</span>,  label: <span class="c-str">'Current account — ••4582'</span> },
+  { value: <span class="c-str">'savings'</span>,  label: <span class="c-str">'Savings account — ••1293'</span> },
+  { value: <span class="c-str">'isa'</span>,      label: <span class="c-str">'Cash ISA — ••8801'</span> },
+];
+
+<span class="c-cmt">// Basic uncontrolled</span>
+&lt;<span class="c-tag">Select</span> <span class="c-attr">label</span>=<span class="c-str">"Account"</span> <span class="c-attr">placeholder</span>=<span class="c-str">"Select account"</span> <span class="c-attr">options</span>={options} /&gt;
+
+<span class="c-cmt">// Controlled</span>
+&lt;<span class="c-tag">Select</span> <span class="c-attr">label</span>=<span class="c-str">"Account"</span> <span class="c-attr">value</span>={value} <span class="c-attr">onChange</span>={setValue} <span class="c-attr">options</span>={options} /&gt;
+
+<span class="c-cmt">// Validation states</span>
+&lt;<span class="c-tag">Select</span> <span class="c-attr">validationState</span>=<span class="c-str">"error"</span>   <span class="c-attr">errorMessage</span>=<span class="c-str">"Please select an account"</span> <span class="c-attr">options</span>={options} /&gt;
+&lt;<span class="c-tag">Select</span> <span class="c-attr">validationState</span>=<span class="c-str">"success"</span> <span class="c-attr">helperText</span>=<span class="c-str">"Account verified"</span> <span class="c-attr">options</span>={options} /&gt;
+&lt;<span class="c-tag">Select</span> <span class="c-attr">validationState</span>=<span class="c-str">"loading"</span> <span class="c-attr">options</span>={options} /&gt;
+
+<span class="c-cmt">// With leading icon</span>
+&lt;<span class="c-tag">Select</span> <span class="c-attr">leadingIcon</span>=<span class="c-str">"globe"</span> <span class="c-attr">label</span>=<span class="c-str">"Country"</span> <span class="c-attr">options</span>={options} /&gt;
+
+<span class="c-cmt">// Disabled / Required</span>
+&lt;<span class="c-tag">Select</span> <span class="c-attr">disabled</span> <span class="c-attr">options</span>={options} /&gt;
+&lt;<span class="c-tag">Select</span> <span class="c-attr">required</span> <span class="c-attr">label</span>=<span class="c-str">"Account"</span> <span class="c-attr">options</span>={options} /&gt;</pre>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VIEW: ICONS -->
+    <div class="view view-doc" id="view-icons">
+      <div class="doc-content">
+
+        <div class="doc-header">
+          <div class="doc-eyebrow">Design</div>
+          <h1 class="doc-title">Icons</h1>
+          <p class="doc-desc">50 stroke-based icons at 24×24. All use <code>currentColor</code> so they inherit text color and adapt to any theme.</p>
+        </div>
+
+        <style>
+          .icon-section { margin-bottom: var(--space-8); }
+          .icon-section-label {
+            font-size: var(--text-xs); font-weight: var(--weight-bold);
+            text-transform: uppercase; letter-spacing: var(--tracking-widest);
+            color: var(--color-text-tertiary); margin-bottom: var(--space-3);
+            padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border-default);
+          }
+          .icon-grid {
+            display: flex; flex-wrap: wrap; gap: var(--space-2);
+          }
+          .icon-tile {
+            display: flex; flex-direction: column; align-items: center;
+            gap: var(--space-1); width: 72px; padding: var(--space-2-5) var(--space-2);
+            border-radius: var(--radius-md); cursor: default;
+            transition: background var(--duration-150) var(--ease-in-out);
+            border: 1px solid transparent;
+          }
+          .icon-tile:hover { background: var(--color-bg-subtle); border-color: var(--color-border-default); }
+          .icon-tile svg { color: var(--color-text-primary); }
+          .icon-tile-name {
+            font-size: 9px; color: var(--color-text-tertiary);
+            text-align: center; word-break: break-all; line-height: 1.3;
+          }
+        </style>
+
+        <div id="icon-gallery"></div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // COMPONENT SCHEMAS
+    // To update: paste new JSON from the Figma plugin Export tab → Component schema
+    // Only these two objects need changing when component structure changes in Figma
+    // ═══════════════════════════════════════════════════════════════════════════
+    var SCHEMAS = {
+      button: {
+        "name": "Button",
+        "layout": "horizontal",
+        "label": "Button",
+        "variantAxis": "Variant",
+        "sizeAxis": "Size",
+        "stateAxis": "State",
+        "axes": {
+          "Variant": ["Primary", "Secondary", "Ghost", "Danger"],
+          "Size": ["SM", "MD", "LG"],
+          "State": ["Default", "Disabled", "Loading"],
+          "Icon":  ["None", "Leading", "Trailing"]
+        },
+        "iconAxis": "Icon",
+        "sizes": {
+          "SM": { "paddingH": 12, "paddingV": 8,  "gap": 6, "height": 32 },
+          "MD": { "paddingH": 16, "paddingV": 10, "gap": 8, "height": 40 },
+          "LG": { "paddingH": 20, "paddingV": 12, "gap": 8, "height": 48 }
+        }
+      },
+      badge: {
+        "name": "Badge",
+        "layout": "horizontal",
+        "label": "Label",
+        "variantAxis": "Variant",
+        "sizeAxis": "Size",
+        "axes": {
+          "Variant": ["Default", "Success", "Warning", "Error", "Info"],
+          "Size": ["SM", "MD"]
+        },
+        "sizes": {
+          "SM": { "paddingH": 8,  "paddingV": 2, "height": 20 },
+          "MD": { "paddingH": 10, "paddingV": 4, "height": 24 }
+        }
+      },
+      input: {
+        "name": "Input",
+        "variantAxis": "State",
+        "sizeAxis": "Size",
+        "showcaseSize": "SM",
+        "iconAxis": "Icon",
+        "axes": {
+          "State": ["Default", "Focus", "Error", "Success", "Loading", "Disabled", "ReadOnly"],
+          "Size": ["SM", "MD", "LG"],
+          "Icon": ["None", "Leading"]
+        },
+        "sizes": {
+          "SM": { "height": 32 },
+          "MD": { "height": 40 },
+          "LG": { "height": 48 }
+        }
+      },
+      select: {
+        "name": "Select",
+        "variantAxis": "State",
+        "sizeAxis": "Size",
+        "showcaseSize": "MD",
+        "iconAxis": "Icon",
+        "axes": {
+          "State": ["Default", "Focus", "Error", "Success", "Loading", "Disabled"],
+          "Size": ["SM", "MD", "LG"],
+          "Icon": ["None", "Leading"]
+        },
+        "sizes": {
+          "SM": { "height": 32 },
+          "MD": { "height": 40 },
+          "LG": { "height": 48 }
+        }
+      }
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // COMPONENT RENDER CONFIG
+    // Defines how each schema maps to actual HTML elements and CSS classes
+    // ═══════════════════════════════════════════════════════════════════════════
+    var COMP_CONFIG = {
+      button: {
+        canvasId:   'button-demo-canvas',
+        controlsId: 'button-demo-controls',
+        showcaseId: 'button-showcase',
+        navBadgeId: 'nav-badge-button',
+        makeEl: function(variant, size, opts) {
+          var el = document.createElement('button');
+          var v = variant.toLowerCase(), s = size.toLowerCase();
+          el.className = 'btn btn--' + v + ' btn--' + s;
+          if (opts && opts.disabled) { el.disabled = true; }
+          if (opts && opts.loading) {
+            el.className += ' btn--loading';
+            el.disabled = true;
+            var spinner = document.createElement('span');
+            spinner.className = 'btn__spinner';
+            var ghost = document.createElement('span');
+            ghost.className = 'btn__ghost';
+            ghost.textContent = 'Button';
+            el.appendChild(spinner);
+            el.appendChild(ghost);
+          } else if (opts && opts.icon === 'leading') {
+            var iconEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            iconEl.setAttribute('width', '16'); iconEl.setAttribute('height', '16');
+            iconEl.setAttribute('viewBox', '0 0 24 24'); iconEl.setAttribute('fill', 'none');
+            iconEl.setAttribute('stroke', 'currentColor'); iconEl.setAttribute('stroke-width', '1.5');
+            iconEl.setAttribute('stroke-linecap', 'round'); iconEl.setAttribute('stroke-linejoin', 'round');
+            iconEl.innerHTML = '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>';
+            var iconWrap = document.createElement('span'); iconWrap.className = 'btn__icon';
+            iconWrap.appendChild(iconEl);
+            el.appendChild(iconWrap);
+            el.appendChild(document.createTextNode('Search'));
+          } else if (opts && opts.icon === 'trailing') {
+            el.appendChild(document.createTextNode('Download'));
+            var iconEl2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            iconEl2.setAttribute('width', '16'); iconEl2.setAttribute('height', '16');
+            iconEl2.setAttribute('viewBox', '0 0 24 24'); iconEl2.setAttribute('fill', 'none');
+            iconEl2.setAttribute('stroke', 'currentColor'); iconEl2.setAttribute('stroke-width', '1.5');
+            iconEl2.setAttribute('stroke-linecap', 'round'); iconEl2.setAttribute('stroke-linejoin', 'round');
+            iconEl2.innerHTML = '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>';
+            var iconWrap2 = document.createElement('span'); iconWrap2.className = 'btn__icon';
+            iconWrap2.appendChild(iconEl2);
+            el.appendChild(iconWrap2);
+          } else {
+            el.textContent = 'Button';
+          }
+          return el;
+        }
+      },
+      badge: {
+        canvasId:   'badge-demo-canvas',
+        controlsId: 'badge-demo-controls',
+        showcaseId: 'badge-showcase',
+        navBadgeId: 'nav-badge-badge',
+        makeEl: function(variant, size) {
+          var el = document.createElement('span');
+          el.className = 'badge badge--' + variant.toLowerCase() + ' badge--' + size.toLowerCase();
+          el.textContent = variant;
+          return el;
+        }
+      },
+      input: {
+        canvasId:   'input-demo-canvas',
+        controlsId: 'input-demo-controls',
+        showcaseId: 'input-showcase',
+        navBadgeId: 'nav-badge-input',
+        makeEl: function(state, size, opts) {
+          var root = document.createElement('div');
+          root.className = 'input-root';
+          var s = (size || 'MD').toLowerCase();
+          var st = (state || 'Default').toLowerCase();
+          var hasLeading = opts && opts.icon === 'leading';
+
+          // Label (always visible)
+          var label = document.createElement('label');
+          label.className = 'input-label';
+          label.textContent = 'Label';
+          root.appendChild(label);
+
+          var wrapCls = 'input-wrapper input-wrapper--' + s;
+          if (st === 'error')    wrapCls += ' input-wrapper--error';
+          if (st === 'success')  wrapCls += ' input-wrapper--success';
+          if (st === 'disabled') wrapCls += ' input-wrapper--disabled';
+          if (st === 'readonly') wrapCls += ' input-wrapper--readonly';
+          if (hasLeading)        wrapCls += ' input-wrapper--has-leading-icon';
+          if (st === 'loading' || st === 'success' || st === 'error') wrapCls += ' input-wrapper--has-trailing';
+          var wrap = document.createElement('div');
+          wrap.className = wrapCls;
+
+          if (hasLeading) {
+            var iconSpan = document.createElement('span');
+            iconSpan.className = 'input-icon input-icon--leading';
+            iconSpan.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+            wrap.appendChild(iconSpan);
+          }
+
+          var input = document.createElement('input');
+          input.className = 'input-field';
+          if (st === 'disabled') { input.disabled = true; input.placeholder = 'Not available'; }
+          else if (st === 'readonly') { input.readOnly = true; input.value = 'ACC-00129834'; }
+          else if (st === 'focus' || st === 'error' || st === 'success') { input.value = 'Entered value'; }
+          else { input.placeholder = 'Placeholder text'; }
+          wrap.appendChild(input);
+
+          if (st === 'loading') {
+            var spinner = document.createElement('span');
+            spinner.className = 'input-spinner';
+            wrap.appendChild(spinner);
+          }
+          if (st === 'success') {
+            var trail = document.createElement('span');
+            trail.className = 'input-icon input-icon--trailing input-icon--success';
+            trail.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+            wrap.appendChild(trail);
+          }
+          if (st === 'error') {
+            var trail2 = document.createElement('span');
+            trail2.className = 'input-icon input-icon--trailing input-icon--error';
+            trail2.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+            wrap.appendChild(trail2);
+          }
+          root.appendChild(wrap);
+
+          // Helper text (always shown for relevant states)
+          if (st === 'error') {
+            var helper = document.createElement('p');
+            helper.className = 'input-helper input-helper--error';
+            helper.textContent = 'Account number not found';
+            root.appendChild(helper);
+          } else if (st === 'success') {
+            var helper2 = document.createElement('p');
+            helper2.className = 'input-helper input-helper--success';
+            helper2.textContent = 'Account verified';
+            root.appendChild(helper2);
+          } else if (st === 'default' || st === 'loading') {
+            var helper3 = document.createElement('p');
+            helper3.className = 'input-helper';
+            helper3.textContent = 'Helper text';
+            root.appendChild(helper3);
+          }
+          return root;
+        }
+      },
+
+      select: {
+        canvasId:   'select-demo-canvas',
+        controlsId: 'select-demo-controls',
+        showcaseId: 'select-showcase',
+        navBadgeId: 'nav-badge-select',
+        makeEl: function(state, size, opts) {
+          var st = (state || 'Default').toLowerCase();
+          var s  = (size  || 'MD').toLowerCase();
+          var hasLeading = opts && opts.icon === 'leading';
+          var isDisabled = st === 'disabled';
+          var isLoading  = st === 'loading';
+          var isError    = st === 'error';
+          var isSuccess  = st === 'success';
+          var isFocus    = st === 'focus';
+          var isFilled   = isError || isSuccess;
+
+          function makeSvg(path, w) {
+            return '<svg width="' + (w||16) + '" height="' + (w||16) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' + path + '</svg>';
+          }
+          var SVG_GLOBE   = '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>';
+          var SVG_CHEVRON = '<polyline points="6 9 12 15 18 9"/>';
+          var SVG_CHECK_C = '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>';
+          var SVG_ERROR   = '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>';
+          var SVG_CHECK   = '<polyline points="20 6 9 17 4 12"/>';
+
+          var root = document.createElement('div');
+          root.className = 'select-root';
+
+          var lbl = document.createElement('label');
+          lbl.className = 'select-label';
+          lbl.textContent = 'Label';
+          root.appendChild(lbl);
+
+          var pos = document.createElement('div');
+          pos.className = 'select-positioner';
+
+          var trigCls = 'select-trigger select-trigger--' + s;
+          if (isError)    trigCls += ' select-trigger--error';
+          if (isSuccess)  trigCls += ' select-trigger--success';
+          if (isFocus)    trigCls += ' select-trigger--open';
+          if (isDisabled) trigCls += ' select-trigger--disabled';
+          if (!isFilled)  trigCls += ' select-trigger--placeholder';
+
+          var trig = document.createElement('button');
+          trig.type = 'button';
+          trig.className = trigCls;
+          if (isDisabled) trig.disabled = true;
+
+          if (hasLeading) {
+            var leadSpan = document.createElement('span');
+            leadSpan.className = 'select-icon select-icon--leading';
+            leadSpan.innerHTML = makeSvg(SVG_GLOBE);
+            trig.appendChild(leadSpan);
+          }
+
+          var valSpan = document.createElement('span');
+          valSpan.className = 'select-trigger-label';
+          valSpan.textContent = isFilled ? 'Current account — ••4582' : 'Select account…';
+          trig.appendChild(valSpan);
+
+          if (isLoading) {
+            var sp = document.createElement('span');
+            sp.className = 'select-spinner';
+            trig.appendChild(sp);
+          } else {
+            var trailSpan = document.createElement('span');
+            trailSpan.className = 'select-icon select-icon--trailing' +
+              (isSuccess ? ' select-icon--success' : isError ? ' select-icon--error' : '');
+            trailSpan.innerHTML = isSuccess ? makeSvg(SVG_CHECK_C) : isError ? makeSvg(SVG_ERROR) : makeSvg(SVG_CHEVRON);
+            trig.appendChild(trailSpan);
+          }
+
+          pos.appendChild(trig);
+
+          if (!isDisabled && !isLoading) {
+            var OPT_LIST = ['Current account — ••4582','Savings account — ••1293','Cash ISA — ••8801','Business account — ••3370'];
+            var selectedVal = isFilled ? OPT_LIST[0] : null;
+            trig.addEventListener('click', function(e) {
+              e.stopPropagation();
+              var existing = pos.querySelector('.select-dropdown');
+              if (existing) {
+                pos.removeChild(existing);
+                if (!isError && !isSuccess && !isFocus) trig.classList.remove('select-trigger--open');
+                trailSpan && trailSpan.classList.remove('select-icon--chevron-open');
+                return;
+              }
+              document.querySelectorAll('.select-dropdown').forEach(function(d) {
+                var p = d.parentNode; if (p) {
+                  var t = p.querySelector('.select-trigger');
+                  if (t && !t.classList.contains('select-trigger--error') && !t.classList.contains('select-trigger--success')) t.classList.remove('select-trigger--open');
+                  p.removeChild(d);
+                }
+              });
+              var drop = document.createElement('ul');
+              drop.className = 'select-dropdown';
+              OPT_LIST.forEach(function(opt) {
+                var li = document.createElement('li');
+                li.className = 'select-option' + (opt === selectedVal ? ' select-option--selected' : '');
+                var lspan = document.createElement('span');
+                lspan.className = 'select-option-label';
+                lspan.textContent = opt;
+                li.appendChild(lspan);
+                if (opt === selectedVal) {
+                  var ck = document.createElement('span');
+                  ck.className = 'select-option-check';
+                  ck.innerHTML = makeSvg(SVG_CHECK, 14);
+                  li.appendChild(ck);
+                }
+                li.addEventListener('mouseenter', function() {
+                  drop.querySelectorAll('.select-option').forEach(function(o) { o.classList.remove('select-option--focused'); });
+                  li.classList.add('select-option--focused');
+                });
+                li.addEventListener('mousedown', function(ev) { ev.preventDefault(); });
+                li.addEventListener('click', function() {
+                  selectedVal = opt;
+                  valSpan.textContent = opt;
+                  trig.classList.remove('select-trigger--placeholder');
+                  if (pos.contains(drop)) pos.removeChild(drop);
+                  if (!isError && !isSuccess && !isFocus) trig.classList.remove('select-trigger--open');
+                  trailSpan && trailSpan.classList.remove('select-icon--chevron-open');
+                });
+                drop.appendChild(li);
+              });
+              if (!isError && !isSuccess && !isFocus) trig.classList.add('select-trigger--open');
+              trailSpan && trailSpan.classList.add('select-icon--chevron-open');
+              pos.appendChild(drop);
+              setTimeout(function() {
+                document.addEventListener('click', function closeH(ev) {
+                  if (!pos.contains(ev.target)) {
+                    if (pos.querySelector('.select-dropdown')) pos.removeChild(drop);
+                    if (!isError && !isSuccess && !isFocus) trig.classList.remove('select-trigger--open');
+                    trailSpan && trailSpan.classList.remove('select-icon--chevron-open');
+                    document.removeEventListener('click', closeH);
+                  }
+                });
+              }, 0);
+            });
+          }
+
+          root.appendChild(pos);
+
+          var helperEl = document.createElement('p');
+          if (isError) {
+            helperEl.className = 'select-helper select-helper--error';
+            helperEl.textContent = 'Please select an account';
+          } else if (isSuccess) {
+            helperEl.className = 'select-helper select-helper--success';
+            helperEl.textContent = 'Account verified';
+          } else if (!isDisabled) {
+            helperEl.className = 'select-helper';
+            helperEl.textContent = 'Select an option to continue';
+          } else { helperEl = null; }
+          if (helperEl) root.appendChild(helperEl);
+
+          return root;
+        }
+      }
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SCHEMA-DRIVEN RENDERING
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    // Render the live demo element into the canvas
+    function renderDemo(compKey, state) {
+      var schema  = SCHEMAS[compKey];
+      var cfg     = COMP_CONFIG[compKey];
+      var canvas  = document.getElementById(cfg.canvasId);
+      if (!canvas) return;
+      canvas.innerHTML = '';
+      var variant = schema.variantAxis ? state[schema.variantAxis] : Object.keys(schema.axes)[0];
+      var size    = schema.sizeAxis    ? state[schema.sizeAxis]    : Object.keys(schema.sizes || {})[0] || 'MD';
+      var stateVal = schema.stateAxis ? state[schema.stateAxis] : '';
+      var iconVal  = schema.iconAxis  ? state[schema.iconAxis]  : 'None';
+      var opts = {
+        disabled: stateVal && stateVal.toLowerCase() === 'disabled',
+        loading:  stateVal && stateVal.toLowerCase() === 'loading',
+        icon:     iconVal && iconVal.toLowerCase() !== 'none' ? iconVal.toLowerCase() : null
+      };
+      canvas.appendChild(cfg.makeEl(variant, size, opts));
+    }
+
+    // Build the interactive demo controls (chip groups) from the schema
+    function buildDemoControls(compKey) {
+      var schema = SCHEMAS[compKey];
+      var cfg    = COMP_CONFIG[compKey];
+      var wrap   = document.getElementById(cfg.controlsId);
+      if (!wrap) return;
+      wrap.innerHTML = '';
+
+      var axes  = [];
+      if (schema.variantAxis) axes.push(schema.variantAxis);
+      if (schema.sizeAxis)    axes.push(schema.sizeAxis);
+      if (schema.stateAxis)   axes.push(schema.stateAxis);
+      if (schema.iconAxis)    axes.push(schema.iconAxis);
+
+      // state object tracks current selection per axis
+      var state = {};
+      axes.forEach(function(ax) { state[ax] = schema.axes[ax][0]; });
+
+      axes.forEach(function(ax) {
+        var group = document.createElement('div');
+        group.className = 'demo-control-group';
+
+        var lbl = document.createElement('div');
+        lbl.className = 'demo-control-label';
+        lbl.textContent = ax;
+
+        var opts = document.createElement('div');
+        opts.className = 'demo-control-options';
+        opts.dataset.axis = ax;
+
+        schema.axes[ax].forEach(function(val, i) {
+          var chip = document.createElement('button');
+          chip.className = 'demo-chip' + (i === 0 ? ' active' : '');
+          chip.textContent = val;
+          chip.dataset.val = val;
+          opts.appendChild(chip);
+        });
+
+        group.appendChild(lbl);
+        group.appendChild(opts);
+        wrap.appendChild(group);
+      });
+
+      // Wire axis chip clicks
+      wrap.addEventListener('click', function(e) {
+        var chip = e.target.closest('.demo-chip[data-val]');
+        if (!chip) return;
+        var optsEl = chip.closest('.demo-control-options');
+        if (!optsEl.dataset.axis) return;
+        optsEl.querySelectorAll('.demo-chip').forEach(function(c) { c.classList.remove('active'); });
+        chip.classList.add('active');
+        state[optsEl.dataset.axis] = chip.dataset.val;
+        renderDemo(compKey, state);
+      });
+
+      // Separator
+      var sep = document.createElement('div');
+      sep.className = 'demo-sep';
+      wrap.appendChild(sep);
+
+      // Theme toggle group
+      var themeGroup = document.createElement('div');
+      themeGroup.className = 'demo-control-group';
+
+      var themeLbl = document.createElement('div');
+      themeLbl.className = 'demo-control-label';
+      themeLbl.textContent = 'Theme';
+
+      var themeOpts = document.createElement('div');
+      themeOpts.className = 'demo-control-options';
+
+      var stage = wrap.closest('.demo-stage');
+
+      [
+        { label: 'Light', icon: '<svg width="11" height="11" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="2.5" stroke="currentColor" stroke-width="1.5"/><line x1="6.5" y1="0.5" x2="6.5" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="6.5" y1="11" x2="6.5" y2="12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="0.5" y1="6.5" x2="2" y2="6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="11" y1="6.5" x2="12.5" y2="6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="1.96" y1="1.96" x2="2.97" y2="2.97" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="10.03" y1="10.03" x2="11.04" y2="11.04" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="10.03" y1="2.97" x2="11.04" y2="1.96" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="1.96" y1="11.04" x2="2.97" y2="10.03" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' },
+        { label: 'Dark',  icon: '<svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M11 7.5A5 5 0 0 1 5.5 2a5 5 0 1 0 5.5 5.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' }
+      ].forEach(function(theme, i) {
+        var chip = document.createElement('button');
+        chip.className = 'demo-chip' + (i === 0 ? ' active' : '');
+        chip.innerHTML = theme.icon + ' ' + theme.label;
+        chip.style.cssText = 'display:inline-flex;align-items:center;gap:5px;';
+        chip.addEventListener('click', function() {
+          themeOpts.querySelectorAll('.demo-chip').forEach(function(c) { c.classList.remove('active'); });
+          chip.classList.add('active');
+          stage.classList.toggle('dark', theme.label === 'Dark');
+        });
+        themeOpts.appendChild(chip);
+      });
+
+      themeGroup.appendChild(themeLbl);
+      themeGroup.appendChild(themeOpts);
+      wrap.appendChild(themeGroup);
+
+      renderDemo(compKey, state);
+    }
+
+    // Build the All Variants showcase grid from the schema
+    function buildShowcase(compKey) {
+      var schema  = SCHEMAS[compKey];
+      var cfg     = COMP_CONFIG[compKey];
+      var grid    = document.getElementById(cfg.showcaseId);
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      var variants = schema.variantAxis ? schema.axes[schema.variantAxis] : [];
+      var sizes    = schema.sizeAxis    ? schema.axes[schema.sizeAxis]    : ['MD'];
+      // If the schema pins a single showcase size, use only that one
+      var showcaseSizes = schema.showcaseSize ? [schema.showcaseSize] : sizes;
+      var hasDisabled = schema.stateAxis &&
+                        schema.axes[schema.stateAxis].indexOf('Disabled') !== -1;
+      var defaultSize  = schema.showcaseSize || (sizes.length > 1 ? sizes[1] : sizes[0]);
+
+      variants.forEach(function(variant) {
+        var row   = document.createElement('div');
+        row.className = 'variant-row';
+
+        var lbl   = document.createElement('div');
+        lbl.className = 'variant-label';
+        lbl.textContent = variant;
+
+        var items = document.createElement('div');
+        items.className = 'variant-items';
+
+        showcaseSizes.forEach(function(size) {
+          items.appendChild(cfg.makeEl(variant, size, {}));
+        });
+
+        if (hasDisabled) {
+          items.appendChild(cfg.makeEl(variant, defaultSize, { disabled: true }));
+        }
+        var hasLoading = schema.stateAxis &&
+                         schema.axes[schema.stateAxis].indexOf('Loading') !== -1;
+        if (hasLoading) {
+          items.appendChild(cfg.makeEl(variant, defaultSize, { loading: true }));
+        }
+        var hasIcon = schema.iconAxis;
+        if (hasIcon) {
+          items.appendChild(cfg.makeEl(variant, defaultSize, { icon: 'leading' }));
+          var iconVals = schema.axes[schema.iconAxis] || [];
+          if (iconVals.indexOf('Trailing') !== -1) {
+            items.appendChild(cfg.makeEl(variant, defaultSize, { icon: 'trailing' }));
+          }
+        }
+
+        row.appendChild(lbl);
+        row.appendChild(items);
+        grid.appendChild(row);
+      });
+    }
+
+    // Update sidebar nav badge counts from schema
+    function updateNavBadges() {
+      Object.keys(SCHEMAS).forEach(function(key) {
+        var schema = SCHEMAS[key];
+        var el     = document.getElementById('nav-badge-' + key);
+        if (!el || !schema.variantAxis) return;
+        el.textContent = schema.axes[schema.variantAxis].length + 'v';
+      });
+    }
+
+    // Boot — build all schema-driven UI
+    function initComponents() {
+      Object.keys(SCHEMAS).forEach(function(key) {
+        buildDemoControls(key);
+        buildShowcase(key);
+      });
+      updateNavBadges();
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // NAVIGATION
+    // ═══════════════════════════════════════════════════════════════════════════
+    var navItems = document.querySelectorAll('.nav-item');
+    var views    = document.querySelectorAll('.view');
+
+    navItems.forEach(function(item) {
+      item.addEventListener('click', function() {
+        var target = item.dataset.view;
+        navItems.forEach(function(n) { n.classList.remove('active'); });
+        views.forEach(function(v)    { v.classList.remove('active'); });
+        item.classList.add('active');
+        document.getElementById('view-' + target).classList.add('active');
+      });
+    });
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // DARK MODE
+    // ═══════════════════════════════════════════════════════════════════════════
+    var modeToggle = document.getElementById('mode-toggle');
+    var isDark = false;
+
+    modeToggle.addEventListener('click', function() {
+      isDark = !isDark;
+      document.body.classList.toggle('dark', isDark);
+      modeToggle.innerHTML = isDark
+        ? '<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M11 7.5A5 5 0 0 1 5.5 2a5 5 0 1 0 5.5 5.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Dark mode'
+        : '<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="3" stroke="currentColor" stroke-width="1.5"/><line x1="6.5" y1="0.5" x2="6.5" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="6.5" y1="11" x2="6.5" y2="12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="0.5" y1="6.5" x2="2" y2="6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="11" y1="6.5" x2="12.5" y2="6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Light mode';
+    });
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // COPY CODE
+    // ═══════════════════════════════════════════════════════════════════════════
+    function copyCode(btn) {
+      var pre = btn.closest('.code-block').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(function() {
+        var orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = orig; }, 1500);
+      });
+    }
+
+    // ── ICON GALLERY ──────────────────────────────────────────────────────────
+    var ICON_GROUPS = [
+      { label: 'Navigation',    icons: ['home','menu','chevron-up','chevron-down','chevron-left','chevron-right','arrow-left','arrow-right','external-link'] },
+      { label: 'Actions',       icons: ['search','plus','minus','close','check','edit','trash','copy','share','download','upload','refresh'] },
+      { label: 'User & Auth',   icons: ['user','users','lock','unlock','eye','eye-off'] },
+      { label: 'Feedback',      icons: ['info','warning','error','check-circle','bell','question'] },
+      { label: 'Content',       icons: ['star','heart','bookmark','tag','filter','sort'] },
+      { label: 'Media',         icons: ['image','camera','play','pause'] },
+      { label: 'Files',         icons: ['file','folder','link'] },
+      { label: 'Communication', icons: ['mail','message'] },
+      { label: 'Layout',        icons: ['grid','list','more-horizontal','more-vertical'] },
+      { label: 'Misc',          icons: ['calendar','clock','globe','settings'] }
+    ];
+
+    // sync-start:icon-paths
+    var ICON_PATHS = {
+      'home'            : '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+      'menu'            : '<line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>',
+      'chevron-up'      : '<polyline points="18 15 12 9 6 15"/>',
+      'chevron-down'    : '<polyline points="6 9 12 15 18 9"/>',
+      'chevron-left'    : '<polyline points="15 18 9 12 15 6"/>',
+      'chevron-right'   : '<polyline points="9 18 15 12 9 6"/>',
+      'arrow-left'      : '<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>',
+      'arrow-right'     : '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>',
+      'external-link'   : '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>',
+      'search'          : '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+      'plus'            : '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+      'minus'           : '<line x1="5" y1="12" x2="19" y2="12"/>',
+      'close'           : '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+      'check'           : '<polyline points="20 6 9 17 4 12"/>',
+      'edit'            : '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',
+      'trash'           : '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>',
+      'copy'            : '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+      'share'           : '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>',
+      'download'        : '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>',
+      'upload'          : '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>',
+      'refresh'         : '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',
+      'user'            : '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+      'users'           : '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+      'lock'            : '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+      'unlock'          : '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
+      'eye'             : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+      'eye-off'         : '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>',
+      'info'            : '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+      'warning'         : '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+      'error'           : '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+      'check-circle'    : '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+      'bell'            : '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+      'question'        : '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+      'star'            : '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+      'heart'           : '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+      'bookmark'        : '<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>',
+      'tag'             : '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>',
+      'filter'          : '<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>',
+      'sort'            : '<path d="M8 15l4 4 4-4"/><path d="M8 9l4-4 4 4"/>',
+      'image'           : '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>',
+      'camera'          : '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+      'play'            : '<polygon points="5 3 19 12 5 21 5 3"/>',
+      'pause'           : '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>',
+      'file'            : '<path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/>',
+      'folder'          : '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+      'link'            : '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+      'mail'            : '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>',
+      'message'         : '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+      'phone'           : '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.72 3.41 2 2 0 0 1 3.7 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16z"/>',
+      'grid'            : '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+      'list'            : '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
+      'more-horizontal' : '<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
+      'more-vertical'   : '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
+      'calendar'        : '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+      'clock'           : '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+      'globe'           : '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+      'settings'        : '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>'
+    };
+    // sync-end:icon-paths
+
+    function buildIconGallery() {
+      var gallery = document.getElementById('icon-gallery');
+      if (!gallery) return;
+      ICON_GROUPS.forEach(function(group) {
+        var section = document.createElement('div');
+        section.className = 'icon-section';
+        var label = document.createElement('div');
+        label.className = 'icon-section-label';
+        label.textContent = group.label;
+        section.appendChild(label);
+        var grid = document.createElement('div');
+        grid.className = 'icon-grid';
+        group.icons.forEach(function(name) {
+          var tile = document.createElement('div');
+          tile.className = 'icon-tile';
+          var svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svgEl.setAttribute('width', '20'); svgEl.setAttribute('height', '20');
+          svgEl.setAttribute('viewBox', '0 0 24 24'); svgEl.setAttribute('fill', 'none');
+          svgEl.setAttribute('stroke', 'currentColor'); svgEl.setAttribute('stroke-width', '1.5');
+          svgEl.setAttribute('stroke-linecap', 'round'); svgEl.setAttribute('stroke-linejoin', 'round');
+          svgEl.innerHTML = ICON_PATHS[name] || '';
+          var nameEl = document.createElement('span');
+          nameEl.className = 'icon-tile-name';
+          nameEl.textContent = name;
+          tile.appendChild(svgEl);
+          tile.appendChild(nameEl);
+          grid.appendChild(tile);
+        });
+        section.appendChild(grid);
+        gallery.appendChild(section);
+      });
+    }
+
+    // ── RUN ───────────────────────────────────────────────────────────────────
+    initComponents();
+    buildIconGallery();
+
+  </script>
+
+</body>
+</html>

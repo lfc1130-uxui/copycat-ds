@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portfolio Pricing — Felipe Caracas</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet"/>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #EDE9E1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ─────────────────────────────
+   SCENE WRAPPER
+───────────────────────────── */
+.scene {
+  position: relative;
+  width: 1200px;
+  height: 760px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─────────────────────────────
+   BLOB SHAPES
+───────────────────────────── */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────
+   SECTION LABEL (top-left)
+───────────────────────────── */
+.scene-label {
+  position: absolute;
+  top: 40px;
+  left: 60px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(26,26,26,0.35);
+  z-index: 10;
+}
+
+/* ─────────────────────────────
+   CARDS ROW
+───────────────────────────── */
+.cards-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+  z-index: 5;
+}
+
+/* ─────────────────────────────
+   PHONE CARD — glass frame
+───────────────────────────── */
+.phone-card {
+  width: 280px;
+  height: 560px;
+  border-radius: 36px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px 24px;
+  transition: transform 0.3s ease;
+}
+
+/* Side cards: lighter glass */
+.phone-card.side {
+  background: rgba(255,255,255,0.38);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid rgba(255,255,255,0.65);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+}
+
+/* Center card: stronger glass with tint */
+.phone-card.center {
+  background: rgba(255,255,255,0.52);
+  backdrop-filter: blur(30px) saturate(1.6);
+  -webkit-backdrop-filter: blur(30px) saturate(1.6);
+  border: 1px solid rgba(255,255,255,0.75);
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.9) inset,
+    0 24px 80px rgba(0,0,0,0.14),
+    0 4px 20px rgba(0,0,0,0.06);
+  transform: translateY(-32px) scale(1.04);
+  z-index: 3;
+}
+
+.phone-card.left  { transform: translateX(24px) rotate(-4deg); z-index: 2; }
+.phone-card.right { transform: translateX(-24px) rotate(4deg); z-index: 2; }
+
+/* Top shine */
+.phone-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 16px; right: 16px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95), transparent);
+  border-radius: 100px;
+}
+
+/* ─────────────────────────────
+   PLAN LABEL (inside card top)
+───────────────────────────── */
+.plan-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(26,26,26,0.35);
+  margin-bottom: 16px;
+}
+
+/* ─────────────────────────────
+   INNER WHITE CARD
+───────────────────────────── */
+.inner-card {
+  width: 100%;
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px 18px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Illustration area */
+.illus {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Abstract SVG illustration placeholders */
+.illus svg {
+  position: relative;
+  z-index: 1;
+}
+
+/* Plan info */
+.plan-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 500;
+  color: #1A1A1A;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.plan-desc {
+  font-size: 12px;
+  color: rgba(26,26,26,0.5);
+  line-height: 1.55;
+  text-align: center;
+  max-width: 200px;
+}
+
+/* CTA button */
+.plan-btn {
+  display: inline-block;
+  padding: 11px 28px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-top: 4px;
+  letter-spacing: -0.01em;
+}
+
+/* ─────────────────────────────
+   PAGINATION DOTS
+───────────────────────────── */
+.pg-dots {
+  display: flex;
+  gap: 5px;
+  margin-top: 18px;
+}
+
+.pg-d {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(26,26,26,0.18);
+}
+
+.pg-d.on {
+  width: 16px;
+  background: rgba(26,26,26,0.45);
+}
+
+.pg-d.off { width: 8px; }
+
+/* ─────────────────────────────
+   SECTION FOOTER
+───────────────────────────── */
+.scene-footer {
+  position: absolute;
+  bottom: 40px;
+  left: 0; right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  z-index: 10;
+}
+
+.footer-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: rgba(26,26,26,0.45);
+}
+
+.footer-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+</style>
+</head>
+<body>
+<div class="scene">
+
+  <!-- BLOBS -->
+  <!-- Large peach blob top-right -->
+  <div class="blob" style="
+    width: 480px; height: 480px;
+    background: radial-gradient(circle, #E8967A 0%, #D4785C 50%, transparent 75%);
+    top: -120px; right: -60px;
+    opacity: 0.75;
+    filter: blur(2px);
+  "></div>
+
+  <!-- Large peach blob bottom-left -->
+  <div class="blob" style="
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, #E8967A 0%, #D4785C 55%, transparent 80%);
+    bottom: -80px; left: -40px;
+    opacity: 0.65;
+    filter: blur(2px);
+  "></div>
+
+  <!-- Sage green mid blob -->
+  <div class="blob" style="
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, #8BAF8E 0%, #5A8C65 60%, transparent 80%);
+    top: 60px; left: 80px;
+    opacity: 0.45;
+    filter: blur(4px);
+  "></div>
+
+  <!-- Dark green blob bottom-right -->
+  <div class="blob" style="
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, #2D5A3D 0%, transparent 70%);
+    bottom: 60px; right: 120px;
+    opacity: 0.3;
+    filter: blur(8px);
+  "></div>
+
+  <!-- Scene label -->
+  <div class="scene-label">Choose your engagement</div>
+
+  <!-- Cards -->
+  <div class="cards-row">
+
+    <!-- LEFT: Consultation -->
+    <div class="phone-card side left">
+      <div class="plan-label">Consultation</div>
+      <div class="inner-card">
+
+        <!-- Illustration: calendar / discovery -->
+        <div class="illus" style="background: linear-gradient(135deg, #EBF2EA 0%, #D5E8D5 100%);">
+          <svg width="140" height="160" viewBox="0 0 140 160" fill="none">
+            <!-- Calendar shape -->
+            <rect x="20" y="30" width="100" height="90" rx="10" fill="#fff" stroke="#C8DCC8" stroke-width="2"/>
+            <rect x="20" y="30" width="100" height="24" rx="10" fill="#2D5A3D"/>
+            <rect x="20" y="44" width="100" height="10" fill="#2D5A3D"/>
+            <!-- Calendar pins -->
+            <rect x="42" y="22" width="8" height="16" rx="4" fill="#8BAF8E"/>
+            <rect x="90" y="22" width="8" height="16" rx="4" fill="#8BAF8E"/>
+            <!-- Grid dots -->
+            <circle cx="42" cy="78" r="5" fill="#EBF2EA"/>
+            <circle cx="62" cy="78" r="5" fill="#EBF2EA"/>
+            <circle cx="82" cy="78" r="5" fill="#2D5A3D"/>
+            <circle cx="102" cy="78" r="5" fill="#EBF2EA"/>
+            <circle cx="42" cy="98" r="5" fill="#EBF2EA"/>
+            <circle cx="62" cy="98" r="5" fill="#EBF2EA"/>
+            <circle cx="82" cy="98" r="5" fill="#EBF2EA"/>
+            <circle cx="102" cy="98" r="5" fill="#EBF2EA"/>
+            <!-- Floating chat bubble -->
+            <rect x="60" y="112" width="64" height="30" rx="8" fill="#1C3A2A"/>
+            <polygon points="72,142 80,152 88,142" fill="#1C3A2A"/>
+            <text x="92" y="131" font-size="9" font-family="Inter,sans-serif" font-weight="600" fill="#F7F4EE" text-anchor="middle">30 min</text>
+            <text x="92" y="143" font-size="7" font-family="Inter,sans-serif" fill="rgba(247,244,238,0.6)" text-anchor="middle">free call</text>
+          </svg>
+        </div>
+
+        <div class="plan-name">Discovery</div>
+        <div class="plan-desc">A free 30-minute call to understand your needs and see if we're a fit.</div>
+        <div class="plan-btn" style="background: #EBF2EA; color: #1C3A2A;">Book a call →</div>
+      </div>
+
+      <div class="pg-dots">
+        <div class="pg-d on"></div>
+        <div class="pg-d off"></div>
+        <div class="pg-d off"></div>
+      </div>
+    </div>
+
+    <!-- CENTER: Design Sprint (featured) -->
+    <div class="phone-card center">
+      <div class="plan-label">Most popular</div>
+      <div class="inner-card">
+
+        <!-- Illustration: design system / components -->
+        <div class="illus" style="background: linear-gradient(135deg, #FFF0EB 0%, #FAE0D5 100%);">
+          <svg width="160" height="170" viewBox="0 0 160 170" fill="none">
+            <!-- Main component frame -->
+            <rect x="18" y="18" width="124" height="90" rx="10" fill="#fff" stroke="#F0C8B8" stroke-width="1.5"/>
+            <!-- Top bar -->
+            <rect x="18" y="18" width="124" height="18" rx="10" fill="#E8967A"/>
+            <rect x="18" y="26" width="124" height="10" fill="#E8967A"/>
+            <!-- Dots -->
+            <circle cx="30" cy="27" r="3" fill="rgba(255,255,255,0.5)"/>
+            <circle cx="40" cy="27" r="3" fill="rgba(255,255,255,0.5)"/>
+            <circle cx="50" cy="27" r="3" fill="rgba(255,255,255,0.5)"/>
+            <!-- URL bar -->
+            <rect x="60" y="22" width="72" height="10" rx="5" fill="rgba(255,255,255,0.25)"/>
+            <!-- Component grid -->
+            <rect x="28" y="44" width="48" height="20" rx="5" fill="#E8967A"/>
+            <rect x="84" y="44" width="48" height="20" rx="5" fill="#FAE0D5" stroke="#F0C8B8" stroke-width="1"/>
+            <rect x="28" y="70" width="104" height="10" rx="3" fill="#FAE0D5"/>
+            <rect x="28" y="84" width="60" height="10" rx="3" fill="#FAE0D5"/>
+            <!-- Floating token card -->
+            <rect x="8" y="90" width="72" height="52" rx="10" fill="#1C3A2A"/>
+            <text x="44" y="108" font-size="8" font-family="Inter,sans-serif" font-weight="600" fill="rgba(247,244,238,0.5)" text-anchor="middle">COLOR</text>
+            <circle cx="22" cy="122" r="7" fill="#E8967A"/>
+            <circle cx="36" cy="122" r="7" fill="#2D5A3D"/>
+            <circle cx="50" cy="122" r="7" fill="#F7F4EE"/>
+            <circle cx="64" cy="122" r="7" fill="#8BAF8E"/>
+            <text x="44" y="136" font-size="7" font-family="Inter,sans-serif" fill="rgba(247,244,238,0.4)" text-anchor="middle">4 semantic groups</text>
+            <!-- Floating badge -->
+            <rect x="94" y="96" width="58" height="22" rx="11" fill="#E8967A"/>
+            <text x="123" y="111" font-size="9" font-family="Inter,sans-serif" font-weight="700" fill="#fff" text-anchor="middle">80+ tokens</text>
+            <!-- Arrow decoration -->
+            <path d="M88 148 Q110 138 128 148" stroke="#E8967A" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="3 3"/>
+            <circle cx="128" cy="148" r="4" fill="#E8967A"/>
+          </svg>
+        </div>
+
+        <div class="plan-name">Design Sprint</div>
+        <div class="plan-desc">Two focused weeks to solve a specific design challenge end-to-end.</div>
+        <div class="plan-btn" style="background: #E8967A; color: #fff;">Start at $4,800</div>
+      </div>
+
+      <div class="pg-dots">
+        <div class="pg-d off"></div>
+        <div class="pg-d on"></div>
+        <div class="pg-d off"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Full System -->
+    <div class="phone-card side right">
+      <div class="plan-label">Full engagement</div>
+      <div class="inner-card">
+
+        <!-- Illustration: full system / layers -->
+        <div class="illus" style="background: linear-gradient(135deg, #F0EDE7 0%, #E8E2D8 100%);">
+          <svg width="140" height="160" viewBox="0 0 140 160" fill="none">
+            <!-- Stacked layer cards -->
+            <rect x="10" y="70" width="120" height="60" rx="10" fill="#8BAF8E" opacity="0.4"/>
+            <rect x="10" y="55" width="120" height="60" rx="10" fill="#5A8C65" opacity="0.6"/>
+            <rect x="10" y="40" width="120" height="60" rx="10" fill="#2D5A3D"/>
+            <!-- Top layer content -->
+            <text x="70" y="58" font-size="8" font-family="Inter,sans-serif" font-weight="700" fill="rgba(247,244,238,0.5)" text-anchor="middle" letter-spacing="0.1em">COMPONENTS</text>
+            <rect x="22" y="64" width="32" height="18" rx="5" fill="#E8967A"/>
+            <rect x="60" y="64" width="32" height="18" rx="5" fill="rgba(247,244,238,0.15)" stroke="rgba(247,244,238,0.3)" stroke-width="1"/>
+            <rect x="22" y="86" width="96" height="7" rx="3" fill="rgba(247,244,238,0.1)"/>
+            <!-- Floating completion badge -->
+            <rect x="82" y="16" width="54" height="30" rx="8" fill="#152E1F"/>
+            <text x="109" y="29" font-size="9" font-family="Inter,sans-serif" font-weight="700" fill="#F7F4EE" text-anchor="middle">Full DS</text>
+            <text x="109" y="41" font-size="7" font-family="Inter,sans-serif" fill="rgba(247,244,238,0.5)" text-anchor="middle">3–6 weeks</text>
+            <!-- Connection line -->
+            <path d="M82 31 L50 31" stroke="#152E1F" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 3"/>
+            <circle cx="50" cy="31" r="3" fill="#152E1F"/>
+            <!-- Bottom document rows -->
+            <rect x="22" y="110" width="96" height="6" rx="3" fill="rgba(90,140,101,0.4)"/>
+            <rect x="22" y="120" width="72" height="6" rx="3" fill="rgba(90,140,101,0.3)"/>
+            <rect x="22" y="130" width="48" height="6" rx="3" fill="rgba(90,140,101,0.2)"/>
+          </svg>
+        </div>
+
+        <div class="plan-name">Full System</div>
+        <div class="plan-desc">End-to-end design system with tokens, components, and documentation.</div>
+        <div class="plan-btn" style="background: #1C3A2A; color: #F7F4EE;">From $12,000</div>
+      </div>
+
+      <div class="pg-dots">
+        <div class="pg-d off"></div>
+        <div class="pg-d off"></div>
+        <div class="pg-d on"></div>
+      </div>
+    </div>
+
+  </div><!-- /cards-row -->
+
+  <!-- Footer trust row -->
+  <div class="scene-footer">
+    <div class="footer-item">
+      <div class="footer-dot" style="background:#0CAF60;"></div>
+      Available now
+    </div>
+    <div class="footer-item">
+      <div class="footer-dot" style="background:#E8967A;"></div>
+      Based in Spain · Remote worldwide
+    </div>
+    <div class="footer-item">
+      <div class="footer-dot" style="background:#2D5A3D;"></div>
+      NDA on request
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

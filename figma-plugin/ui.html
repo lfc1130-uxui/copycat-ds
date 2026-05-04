@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 12px;
+      background: #1e2235;
+      color: #c8cde0;
+      width: 340px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TABS ── */
+    .tabs {
+      flex-shrink: 0;
+      display: flex;
+      border-bottom: 1px solid #313750;
+    }
+    .tab {
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #636a88;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tab.active { color: #3d87ff; border-bottom-color: #3d87ff; }
+
+    /* ── PANELS ── */
+    .panel { display: none; padding: 16px; }
+    .panel.active {
+      display: block;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+      padding-right: 10px;
+    }
+
+    /* thin scrollbar — sits inside the padding, never overlaps content */
+    .panel::-webkit-scrollbar       { width: 4px; }
+    .panel::-webkit-scrollbar-track { background: transparent; }
+    .panel::-webkit-scrollbar-thumb {
+      background: #313750;
+      border-radius: 999px;
+    }
+    .panel::-webkit-scrollbar-thumb:hover { background: #464d6b; }
+
+    h1 { font-size: 13px; font-weight: 600; color: #f0f2f7; margin-bottom: 4px; }
+    p  { font-size: 11px; color: #636a88; margin-bottom: 14px; line-height: 1.5; }
+
+    label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #636a88;
+      margin-bottom: 6px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 160px;
+      background: #111422;
+      border: 1px solid #313750;
+      border-radius: 6px;
+      color: #c8cde0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      line-height: 1.5;
+      padding: 10px;
+      resize: none;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    textarea:focus { border-color: #3d87ff; }
+    textarea::placeholder { color: #464d6b; }
+
+    .actions { display: flex; gap: 8px; margin-top: 12px; }
+
+    button {
+      flex: 1;
+      height: 32px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-primary           { background: #0068ff; color: #fff; }
+    .btn-primary:hover     { background: #0054cc; }
+    .btn-primary:disabled  { background: #313750; color: #636a88; cursor: not-allowed; }
+    .btn-secondary         { background: #313750; color: #9198b4; }
+    .btn-secondary:hover   { background: #464d6b; }
+
+    /* ── LOG ── */
+    .log {
+      margin-top: 14px;
+      background: #111422;
+      border: 1px solid #313750;
+      border-radius: 6px;
+      padding: 10px;
+      min-height: 56px;
+      max-height: 160px;
+      overflow-y: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      line-height: 1.7;
+      color: #636a88;
+    }
+    .log .ok   { color: #0caf60; }
+    .log .err  { color: #f03030; }
+    .log .warn { color: #ff9a0d; }
+    .log .info { color: #3d87ff; }
+
+    /* ── EXPORT SECTIONS ── */
+    .export-section { margin-bottom: 12px; }
+    .export-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .export-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #636a88;
+    }
+    .export-actions { display: flex; gap: 4px; }
+    #out-vars, #out-ts { height: 110px; }
+
+    /* ── EXAMPLE SHORTCUTS ── */
+    .example-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .example-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #636a88;
+    }
+    .btn-example {
+      flex: none;
+      height: 22px;
+      padding: 0 10px;
+      background: #1e2235;
+      border: 1px solid #313750;
+      border-radius: 4px;
+      color: #9198b4;
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-example:hover { border-color: #3d87ff; color: #3d87ff; }
+
+    /* ── TEMPLATE CARDS ── */
+    .tpl-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+
+    .tpl-card {
+      background: #252a40;
+      border: 1px solid #313750;
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .tpl-card--soon { opacity: 0.45; pointer-events: none; }
+
+    .tpl-thumb {
+      width: 44px;
+      height: 60px;
+      background: #1e2235;
+      border: 1px solid #313750;
+      border-radius: 6px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tpl-info { flex: 1; min-width: 0; }
+    .tpl-name { font-size: 12px; font-weight: 600; color: #f0f2f7; margin-bottom: 3px; }
+    .tpl-desc { font-size: 10px; color: #636a88; line-height: 1.5; margin-bottom: 8px; }
+    .tpl-meta { display: flex; gap: 5px; margin-bottom: 8px; }
+    .tpl-badge {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.05em;
+      text-transform: uppercase; color: #636a88;
+      background: #313750; border-radius: 3px; padding: 2px 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" data-panel="variables">Variables</div>
+    <div class="tab"        data-panel="textstyles">Text Styles</div>
+    <div class="tab"        data-panel="components">Components</div>
+    <div class="tab"        data-panel="export">Export</div>
+    <div class="tab"        data-panel="templates">Templates</div>
+  </div>
+
+  <!-- PANEL: VARIABLES -->
+  <div class="panel active" id="panel-variables">
+    <h1>Import Variables</h1>
+    <p>Paste <code>tokens/tokens.json</code>. Creates Primitives + Semantic (Light / Dark).</p>
+    <label for="json-input">tokens.json</label>
+    <textarea id="json-input" spellcheck="false"
+      placeholder='{ "primitives": { ... }, "semantic/light": { ... }, "semantic/dark": { ... } }'></textarea>
+    <div class="actions">
+      <button id="btn-vars" class="btn-primary">Run</button>
+      <button id="btn-cancel-vars" class="btn-secondary">Cancel</button>
+    </div>
+    <div class="log" id="log-vars"><span class="info">Waiting for input...</span></div>
+  </div>
+
+  <!-- PANEL: TEXT STYLES -->
+  <div class="panel" id="panel-textstyles">
+    <h1>Import Text Styles</h1>
+    <p>Paste <code>tokens/text-styles.json</code>. Creates named Text Styles.</p>
+    <label for="ts-input">text-styles.json</label>
+    <textarea id="ts-input" spellcheck="false"
+      placeholder='[{ "name": "Heading/H1", "family": "Inter", "weight": "Bold", "size": 48, ... }]'></textarea>
+    <div class="actions">
+      <button id="btn-ts" class="btn-primary">Run</button>
+      <button id="btn-cancel-ts" class="btn-secondary">Cancel</button>
+    </div>
+    <div class="log" id="log-ts"><span class="info">Waiting for input...</span></div>
+  </div>
+
+  <!-- PANEL: COMPONENTS -->
+  <div class="panel" id="panel-components">
+    <h1>Create Component Set</h1>
+    <p>Paste a component schema JSON. Run Variables + Text Styles first.</p>
+    <div class="example-row">
+      <span class="example-label">Load example:</span>
+      <button class="btn-example" data-example="button">Button</button>
+      <button class="btn-example" data-example="badge">Badge</button>
+      <button class="btn-example" data-example="input">Input</button>
+      <button class="btn-example" data-example="select">Select</button>
+      <button class="btn-example" data-example="icon">Icon</button>
+    </div>
+    <label for="comp-input">component schema</label>
+    <textarea id="comp-input" spellcheck="false"
+      placeholder='{ "name": "Button", "axes": { "Variant": [...], "Size": [...], "State": [...] }, ... }'></textarea>
+    <div class="actions">
+      <button id="btn-comp" class="btn-primary">Generate</button>
+      <button id="btn-docs" class="btn-secondary">Generate Docs</button>
+      <button id="btn-cancel-comp" class="btn-secondary">Cancel</button>
+    </div>
+    <div class="log" id="log-comp"><span class="info">Ready.</span></div>
+  </div>
+
+  <!-- PANEL: EXPORT -->
+  <div class="panel" id="panel-export">
+    <h1>Export from Figma</h1>
+    <p>Pull current Variables and Text Styles back to JSON — paste into your local files.</p>
+
+    <!-- Export Variables -->
+    <div class="export-section">
+      <div class="export-section-header">
+        <span class="export-section-label">tokens.json</span>
+        <div class="export-actions">
+          <button id="btn-export-vars" class="btn-primary" style="height:26px;font-size:10px;padding:0 10px;flex:none;">Export</button>
+          <button id="btn-copy-vars"   class="btn-secondary" style="height:26px;font-size:10px;padding:0 10px;flex:none;" disabled>Copy</button>
+          <button id="btn-dl-vars"     class="btn-secondary" style="height:26px;font-size:10px;padding:0 10px;flex:none;" disabled>Download</button>
+        </div>
+      </div>
+      <textarea id="out-vars" spellcheck="false" readonly
+        placeholder="Click Export to read Variables from this Figma file..."></textarea>
+    </div>
+
+    <!-- Export Text Styles -->
+    <div class="export-section">
+      <div class="export-section-header">
+        <span class="export-section-label">text-styles.json</span>
+        <div class="export-actions">
+          <button id="btn-export-ts" class="btn-primary" style="height:26px;font-size:10px;padding:0 10px;flex:none;">Export</button>
+          <button id="btn-copy-ts"   class="btn-secondary" style="height:26px;font-size:10px;padding:0 10px;flex:none;" disabled>Copy</button>
+          <button id="btn-dl-ts"     class="btn-secondary" style="height:26px;font-size:10px;padding:0 10px;flex:none;" disabled>Download</button>
+        </div>
+      </div>
+      <textarea id="out-ts" spellcheck="false" readonly
+        placeholder="Click Export to read Text Styles from this Figma file..."></textarea>
+    </div>
+
+    <!-- Export Component Schema -->
+    <div class="export-section">
+      <div class="export-section-header">
+        <span class="export-section-label">Component schema</span>
+        <div class="export-actions">
+          <button id="btn-refresh-comp" class="btn-secondary" style="height:26px;font-size:10px;padding:0 10px;flex:none;">Refresh</button>
+          <button id="btn-export-comp"  class="btn-primary"   style="height:26px;font-size:10px;padding:0 10px;flex:none;" disabled>Export</button>
+          <button id="btn-copy-comp"    class="btn-secondary" style="height:26px;font-size:10px;padding:0 10px;flex:none;" disabled>Copy</button>
+          <button id="btn-dl-comp"      class="btn-secondary" style="height:26px;font-size:10px;padding:0 10px;flex:none;" disabled>Download</button>
+        </div>
+      </div>
+      <select id="sel-comp" style="width:100%;background:#252a40;color:#c8cde0;border:1px solid #313750;border-radius:6px;padding:6px 8px;font-size:11px;margin-bottom:6px;">
+        <option value="">— click Refresh to load component sets —</option>
+      </select>
+      <textarea id="out-comp" spellcheck="false" readonly
+        placeholder="Select a component and click Export..."></textarea>
+    </div>
+
+    <div class="log" id="log-export"><span class="info">Ready.</span></div>
+  </div>
+
+  <!-- PANEL: TEMPLATES -->
+  <div class="panel" id="panel-templates">
+    <h1>Templates</h1>
+    <p>Generate full-screen layouts using your design tokens. Run Variables + Text Styles first for token bindings.</p>
+
+    <div class="tpl-grid">
+
+      <!-- Sign In -->
+      <div class="tpl-card">
+        <div class="tpl-thumb">
+          <svg width="22" height="30" viewBox="0 0 22 30" fill="none">
+            <rect x="1" y="1" width="20" height="28" rx="3" stroke="#464d6b" stroke-width="1.25"/>
+            <rect x="5" y="4" width="12" height="1.5" rx="0.75" fill="#464d6b"/>
+            <rect x="4" y="8"  width="14" height="1.5" rx="0.75" fill="#313750"/>
+            <rect x="4" y="11" width="14" height="5"   rx="1.5"  fill="#252a40" stroke="#313750" stroke-width="0.75"/>
+            <rect x="4" y="18" width="14" height="5"   rx="1.5"  fill="#252a40" stroke="#313750" stroke-width="0.75"/>
+            <rect x="4" y="25" width="14" height="3"   rx="1.5"  fill="#3d87ff"/>
+          </svg>
+        </div>
+        <div class="tpl-info">
+          <div class="tpl-name">Sign In</div>
+          <div class="tpl-desc">Email + password form with social login options and trust footer.</div>
+          <div class="tpl-meta">
+            <span class="tpl-badge">390 × 844</span>
+            <span class="tpl-badge">Mobile</span>
+          </div>
+          <button id="btn-tpl-signin" class="btn-primary" style="width:100%;height:28px;font-size:11px;">Generate</button>
+        </div>
+      </div>
+
+      <!-- Sign Up — coming soon -->
+      <div class="tpl-card tpl-card--soon">
+        <div class="tpl-thumb">
+          <svg width="22" height="30" viewBox="0 0 22 30" fill="none">
+            <rect x="1" y="1" width="20" height="28" rx="3" stroke="#464d6b" stroke-width="1.25"/>
+            <rect x="4" y="7"  width="14" height="2" rx="1" fill="#313750"/>
+            <rect x="4" y="11" width="14" height="2" rx="1" fill="#313750"/>
+            <rect x="4" y="15" width="14" height="2" rx="1" fill="#313750"/>
+            <rect x="4" y="19" width="14" height="2" rx="1" fill="#313750"/>
+            <rect x="4" y="24" width="14" height="3" rx="1.5" fill="#313750"/>
+          </svg>
+        </div>
+        <div class="tpl-info">
+          <div class="tpl-name">Sign Up</div>
+          <div class="tpl-desc">Registration form with name, email, password and terms agreement.</div>
+          <div class="tpl-meta">
+            <span class="tpl-badge">390 × 844</span>
+            <span class="tpl-badge">Coming soon</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Forgot Password — coming soon -->
+      <div class="tpl-card tpl-card--soon">
+        <div class="tpl-thumb">
+          <svg width="22" height="30" viewBox="0 0 22 30" fill="none">
+            <rect x="1" y="1" width="20" height="28" rx="3" stroke="#464d6b" stroke-width="1.25"/>
+            <rect x="4" y="7"  width="14" height="2" rx="1" fill="#313750"/>
+            <rect x="4" y="11" width="14" height="2" rx="1" fill="#313750"/>
+            <rect x="7" y="17" width="8"  height="6" rx="2" fill="#313750"/>
+          </svg>
+        </div>
+        <div class="tpl-info">
+          <div class="tpl-name">Forgot Password</div>
+          <div class="tpl-desc">Email reset flow with OTP input and confirmation screen.</div>
+          <div class="tpl-meta">
+            <span class="tpl-badge">390 × 844</span>
+            <span class="tpl-badge">Coming soon</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Library Utilities -->
+    <div style="border-top:1px solid #313750;padding-top:12px;margin-top:4px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:#636a88;text-transform:uppercase;margin-bottom:10px;">Library Utilities</div>
+
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="font-size:11px;color:#9198b4;margin-bottom:2px;">
+          Open the component's library file in Figma, then run this to make the main container use <strong style="color:#c8cde0">Fill Container</strong> width on every variant.
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <input id="fix-comp-name" type="text" value="Input"
+            style="flex:1;background:#12152a;border:1px solid #313750;border-radius:5px;padding:5px 8px;
+                   color:#c8cde0;font-size:11px;outline:none;"
+            placeholder="Component name…" />
+          <button id="btn-fix-fill" class="btn-primary"
+            style="white-space:nowrap;height:28px;padding:0 12px;font-size:11px;">
+            Fix Fill
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="log" id="log-tpl"><span class="info">Ready.</span></div>
+  </div>
+
+  <script>
+    // ── TABS ─────────────────────────────────────────────────────────────────
+    document.querySelectorAll('.tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+        document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+      });
+    });
+
+    // ── LOG ───────────────────────────────────────────────────────────────────
+    function addLog(el, msg, type) {
+      var line = document.createElement('div');
+      if (type) line.className = type;
+      line.textContent = msg;
+      el.appendChild(line);
+      el.scrollTop = el.scrollHeight;
+    }
+    function clearLog(el) { el.innerHTML = ''; }
+
+    var logVars = document.getElementById('log-vars');
+    var logTs   = document.getElementById('log-ts');
+    var logComp = document.getElementById('log-comp');
+    var logTpl  = document.getElementById('log-tpl');
+
+    // ── VARIABLES ─────────────────────────────────────────────────────────────
+    var btnVars = document.getElementById('btn-vars');
+    btnVars.addEventListener('click', function() {
+      clearLog(logVars);
+      var tokens;
+      try { tokens = JSON.parse(document.getElementById('json-input').value); }
+      catch (e) { addLog(logVars, 'Invalid JSON: ' + e.message, 'err'); return; }
+      if (!tokens.primitives) { addLog(logVars, 'Missing "primitives" key', 'err'); return; }
+      btnVars.disabled = true;
+      addLog(logVars, 'Sending...', 'info');
+      parent.postMessage({ pluginMessage: { type: 'run-variables', tokens: tokens } }, '*');
+    });
+    document.getElementById('btn-cancel-vars').addEventListener('click', function() {
+      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
+    });
+
+    // ── TEXT STYLES ──────────────────────────────────────────────────────────
+    var btnTs = document.getElementById('btn-ts');
+    btnTs.addEventListener('click', function() {
+      clearLog(logTs);
+      var styles;
+      try { styles = JSON.parse(document.getElementById('ts-input').value); }
+      catch (e) { addLog(logTs, 'Invalid JSON: ' + e.message, 'err'); return; }
+      if (!Array.isArray(styles)) { addLog(logTs, 'Expected a JSON array', 'err'); return; }
+      btnTs.disabled = true;
+      addLog(logTs, 'Loading fonts...', 'info');
+      parent.postMessage({ pluginMessage: { type: 'run-text-styles', styles: styles } }, '*');
+    });
+    document.getElementById('btn-cancel-ts').addEventListener('click', function() {
+      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
+    });
+
+    // ── COMPONENT EXAMPLES ───────────────────────────────────────────────────
+    var EXAMPLES = {
+      button: {
+        "name": "Button",
+        "layout": "horizontal",
+        "label": "Button",
+        "variantAxis": "Variant",
+        "sizeAxis": "Size",
+        "stateAxis": "State",
+        "iconAxis": "Icon",
+        "axes": {
+          "Variant": ["Primary", "Secondary", "Ghost", "Danger"],
+          "Size": ["SM", "MD", "LG"],
+          "State": ["Default", "Hover", "Pressed", "Disabled", "Focus", "Loading"],
+          "Icon": ["None", "Leading", "Trailing"]
+        },
+        "sizes": {
+          "SM": { "paddingH": 20, "paddingV": 0, "iconPaddingH": 14, "iconSize": 14, "gap": 6, "height": 36, "textStyle": "Label/Default", "radiusFallback": 9999 },
+          "MD": { "paddingH": 28, "paddingV": 0, "iconPaddingH": 20, "iconSize": 16, "gap": 8, "height": 44, "textStyle": "Label/Large",   "radiusFallback": 9999 },
+          "LG": { "paddingH": 36, "paddingV": 0, "iconPaddingH": 26, "iconSize": 18, "gap": 8, "height": 52, "textStyle": "Label/Large",   "radiusFallback": 9999 }
+        },
+        "styles": {
+          "Primary": {
+            "Default":  { "bg": "color/brand",         "bgHex": "#0068ff", "text": "color/text/inverse",  "textHex": "#ffffff" },
+            "Hover":    { "bg": "color/brand/hover",    "bgHex": "#0054cc", "text": "color/text/inverse",  "textHex": "#ffffff" },
+            "Pressed":  { "bg": "color/brand/active",  "bgHex": "#0040a0", "text": "color/text/inverse",  "textHex": "#ffffff" },
+            "Disabled": { "bg": "color/bg/disabled",    "bgHex": "#e2e5ef", "text": "color/text/disabled", "textHex": "#9198b4" },
+            "Focus":    { "bg": "color/brand",          "bgHex": "#0068ff", "text": "color/text/inverse",  "textHex": "#ffffff", "focus": true },
+            "Loading":  { "bg": "color/brand",          "bgHex": "#0068ff", "text": "color/text/inverse",  "textHex": "#ffffff" }
+          },
+          "Secondary": {
+            "Default":  { "text": "color/brand", "textHex": "#0068ff", "border": "color/brand",           "borderHex": "#0068ff" },
+            "Hover":    { "bg": "color/brand/subtle", "bgHex": "#eff5ff", "text": "color/brand", "textHex": "#0068ff", "border": "color/brand", "borderHex": "#0068ff" },
+            "Pressed":  { "bg": "color/brand/muted",  "bgHex": "#dce8ff", "text": "color/brand", "textHex": "#0068ff", "border": "color/brand", "borderHex": "#0068ff" },
+            "Disabled": { "text": "color/text/disabled", "textHex": "#9198b4", "border": "color/border/disabled", "borderHex": "#c8cde0" },
+            "Focus":    { "text": "color/brand", "textHex": "#0068ff", "border": "color/brand", "borderHex": "#0068ff", "focus": true },
+            "Loading":  { "text": "color/brand", "textHex": "#0068ff", "border": "color/brand", "borderHex": "#0068ff" }
+          },
+          "Ghost": {
+            "Default":  { "text": "color/text/primary", "textHex": "#111422" },
+            "Hover":    { "bg": "color/bg/subtle", "bgHex": "#f0f2f7", "text": "color/text/primary", "textHex": "#111422" },
+            "Pressed":  { "bg": "color/bg/muted",  "bgHex": "#e2e5ef", "text": "color/text/primary", "textHex": "#111422" },
+            "Disabled": { "text": "color/text/disabled", "textHex": "#9198b4" },
+            "Focus":    { "text": "color/text/primary", "textHex": "#111422", "focus": true },
+            "Loading":  { "text": "color/text/primary", "textHex": "#111422" }
+          },
+          "Danger": {
+            "Default":  { "bg": "color/error",         "bgHex": "#f03030", "text": "color/text/inverse",  "textHex": "#ffffff" },
+            "Hover":    { "bg": "color/error/hover",   "bgHex": "#c81e1e", "text": "color/text/inverse",  "textHex": "#ffffff" },
+            "Pressed":  { "bg": "color/error/pressed", "bgHex": "#9e1111", "text": "color/text/inverse",  "textHex": "#ffffff" },
+            "Disabled": { "bg": "color/bg/disabled",   "bgHex": "#e2e5ef", "text": "color/text/disabled", "textHex": "#9198b4" },
+            "Focus":    { "bg": "color/error",         "bgHex": "#f03030", "text": "color/text/inverse",  "textHex": "#ffffff", "focus": true },
+            "Loading":  { "bg": "color/error",         "bgHex": "#f03030", "text": "color/text/inverse",  "textHex": "#ffffff" }
+          }
+        },
+        "doc": {
+          "status": "Stable",
+          "description": "Interactive UI element used for triggering actions. Available in four semantic variants — Primary, Secondary, Ghost, and Danger — and three sizes.",
+          "anatomyPreview": { "variant": "Primary", "size": "LG", "state": "Default", "Icon": "Leading" },
+          "anatomy": [
+            { "n": "1", "label": "Container",  "desc": "Pill-shaped frame. Height is fixed per size token (36 / 44 / 52px).", "pin": [15, 18] },
+            { "n": "2", "label": "Label",      "desc": "Inter Bold. Font size varies per size (12 / 14 / 16px).",              "pin": [55, 50] },
+            { "n": "3", "label": "Padding",    "desc": "Horizontal only: 20 / 28 / 36px (SM / MD / LG). Reduced on the icon side: 14 / 20 / 26px.", "pin": [90, 50] },
+            { "n": "4", "label": "Icon Slot",  "desc": "Optional 14 / 16 / 18px placeholder. Leading sits before the label, Trailing after. Replace with any icon at the same size.", "pin": [10, 50] },
+            { "n": "5", "label": "Spinner",    "desc": "Loading state only. Centred 270° arc at 14 / 16 / 18px. Ghost label (opacity 0) holds the button's natural width — no layout shift." }
+          ],
+          "usage": {
+            "do": {
+              "guidance": "Use Primary for the single most important action on a page. Pair it with Secondary as the secondary choice.",
+              "preview": [
+                { "variant": "Primary",   "size": "MD", "state": "Default" },
+                { "variant": "Secondary", "size": "MD", "state": "Default" }
+              ]
+            },
+            "dont": {
+              "guidance": "Don't stack multiple Primary buttons. Only one primary action should be visible at a time on a page.",
+              "preview": [
+                { "variant": "Primary", "size": "MD", "state": "Default" },
+                { "variant": "Primary", "size": "MD", "state": "Default" }
+              ]
+            }
+          },
+          "tokens": [
+            ["border-radius",       "9999px",      "Pill shape — consistent across all sizes"],
+            ["height (SM)",         "36px",         "Small button fixed height"],
+            ["height (MD)",         "44px",         "Medium button — default and most common"],
+            ["height (LG)",         "52px",         "Large button for hero CTAs"],
+            ["padding-h (SM)",      "0 20px",       "Horizontal padding — Small"],
+            ["padding-h (MD)",      "0 28px",       "Horizontal padding — Medium"],
+            ["padding-h (LG)",      "0 36px",       "Horizontal padding — Large"],
+            ["icon-padding (SM)",   "0 14px",       "Reduced padding on icon side — Small"],
+            ["icon-padding (MD)",   "0 20px",       "Reduced padding on icon side — Medium"],
+            ["icon-padding (LG)",   "0 26px",       "Reduced padding on icon side — Large"],
+            ["icon-size (SM)",      "14px",         "Icon slot / spinner diameter — Small"],
+            ["icon-size (MD)",      "16px",         "Icon slot / spinner diameter — Medium"],
+            ["icon-size (LG)",      "18px",         "Icon slot / spinner diameter — Large"],
+            ["color/brand",            "#0068ff",      "Primary fill, default state"],
+            ["color/error",            "#f03030",      "Danger fill, default state"],
+            ["color/bg/disabled",      "#e2e5ef",      "Disabled background — neutral gray, adapts per theme"],
+            ["color/text/disabled",    "#9198b4",      "Disabled label — neutral gray, no hue from any variant"],
+            ["color/border/disabled",  "#c8cde0",      "Disabled border — Secondary variant only"],
+            ["font-weight",         "Bold (700)",   "Label weight across all variants"],
+            ["focus shadow",        "0 0 0 3px",   "Focus ring — brand blue at 35% opacity"],
+            ["spinner duration",    "0.75s linear", "Loading spinner rotation speed"]
+          ],
+          "code": [
+            { "t": "// Primary — main page action",                                           "c": "comment" },
+            { "t": "<Button variant=\"primary\" size=\"lg\">Get started</Button>",             "c": "code" },
+            { "t": "<Button variant=\"primary\" size=\"md\">Save changes</Button>",            "c": "code" },
+            { "t": " ",                                                                         "c": "code" },
+            { "t": "// Icon — leading or trailing, any variant",                               "c": "comment" },
+            { "t": "<Button variant=\"primary\" size=\"md\" icon=\"leading\">Add item</Button>",   "c": "code" },
+            { "t": "<Button variant=\"primary\" size=\"md\" icon=\"trailing\">Continue</Button>",  "c": "code" },
+            { "t": " ",                                                                         "c": "code" },
+            { "t": "// Loading — button keeps its natural width, no layout shift",             "c": "comment" },
+            { "t": "<Button variant=\"primary\" size=\"md\" loading>Save changes</Button>",    "c": "code" },
+            { "t": " ",                                                                         "c": "code" },
+            { "t": "// Ghost — tertiary actions, toolbars, nav controls",                      "c": "comment" },
+            { "t": "<Button variant=\"ghost\" size=\"sm\">View details</Button>",              "c": "code" },
+            { "t": " ",                                                                         "c": "code" },
+            { "t": "// Danger — destructive, always an explicit label",                        "c": "comment" },
+            { "t": "<Button variant=\"danger\" size=\"md\">Delete account</Button>",           "c": "code" },
+            { "t": " ",                                                                         "c": "code" },
+            { "t": "// Disabled — neutral gray, no opacity dimming. Pair with a tooltip.",     "c": "comment" },
+            { "t": "<Button variant=\"primary\" disabled>Unavailable</Button>",                "c": "code" },
+            { "t": "<Button variant=\"secondary\" disabled>Unavailable</Button>",              "c": "code" }
+          ]
+        }
+      },
+
+      badge: {
+        "name": "Badge",
+        "layout": "horizontal",
+        "label": "Label",
+        "variantAxis": "Variant",
+        "sizeAxis": "Size",
+        "axes": {
+          "Variant": ["Default", "Success", "Warning", "Error", "Info"],
+          "Size": ["SM", "MD"]
+        },
+        "sizes": {
+          "SM": { "paddingH": 10, "paddingV": 0, "gap": 4, "height": 22, "textStyle": "Label/Small",   "radiusFallback": 9999 },
+          "MD": { "paddingH": 12, "paddingV": 0, "gap": 4, "height": 26, "textStyle": "Label/Default", "radiusFallback": 9999 }
+        },
+        "styles": {
+          "Default": { "bg": "color/bg/subtle",      "bgHex": "#f0f2f7", "text": "color/text/secondary", "textHex": "#464d6b" },
+          "Success": { "bg": "color/success/subtle", "bgHex": "#edfaf3", "text": "color/success",        "textHex": "#0caf60" },
+          "Warning": { "bg": "color/warning/subtle", "bgHex": "#fff8eb", "text": "color/warning",        "textHex": "#ff9a0d" },
+          "Error":   { "bg": "color/error/subtle",   "bgHex": "#fff0f0", "text": "color/error",          "textHex": "#f03030" },
+          "Info":    { "bg": "color/info/subtle",    "bgHex": "#eff5ff", "text": "color/info",           "textHex": "#0068ff" }
+        },
+        "doc": {
+          "status": "Stable",
+          "description": "Compact status label used to communicate state, category, or metadata. Pill-shaped with five semantic color variants and two sizes.",
+          "anatomyPreview": { "variant": "Success", "size": "MD" },
+          "anatomy": [
+            { "n": "1", "label": "Container", "desc": "Pill-shaped frame. Height is fixed per size token.",       "pin": [15, 25] },
+            { "n": "2", "label": "Label",     "desc": "Inter Semi Bold. Font size varies per size (10 / 12px).", "pin": [50, 65] },
+            { "n": "3", "label": "Padding",   "desc": "Horizontal only: 10 / 12px (SM / MD).",                   "pin": [88, 50] }
+          ],
+          "usage": {
+            "do": {
+              "guidance": "Match the variant to the semantic state. Use Success for active or verified, Warning for pending or expiring, Error for failed or rejected.",
+              "preview": [
+                { "variant": "Success", "size": "MD" },
+                { "variant": "Warning", "size": "MD" },
+                { "variant": "Error",   "size": "MD" }
+              ]
+            },
+            "dont": {
+              "guidance": "Don't use Default when the state has semantic meaning. Pick the correct variant so colour communicates intent.",
+              "preview": [
+                { "variant": "Default", "size": "MD" },
+                { "variant": "Default", "size": "MD" },
+                { "variant": "Default", "size": "MD" }
+              ]
+            }
+          },
+          "tokens": [
+            ["border-radius",   "9999px",         "Pill shape — consistent across both sizes"],
+            ["height (SM)",     "22px",            "Small badge fixed height"],
+            ["height (MD)",     "26px",            "Medium badge — default size"],
+            ["padding-h (SM)",  "0 10px",          "Horizontal padding — Small"],
+            ["padding-h (MD)",  "0 12px",          "Horizontal padding — Medium"],
+            ["font-size (SM)",  "10px",            "Label size — Small"],
+            ["font-size (MD)",  "12px",            "Label size — Medium"],
+            ["font-weight",     "Semi Bold (600)", "Label weight across all variants"],
+            ["color/success",   "#06703d",         "Success text color"],
+            ["color/warning",   "#b55900",         "Warning text color"],
+            ["color/error",     "#9e1111",         "Error text color"]
+          ],
+          "code": [
+            { "t": "// Success — active, verified, completed",         "c": "comment" },
+            { "t": "<Badge variant=\"success\">Active</Badge>",         "c": "code" },
+            { "t": "<Badge variant=\"success\">Verified</Badge>",       "c": "code" },
+            { "t": " ",                                                  "c": "code" },
+            { "t": "// Warning — pending, expiring, review needed",     "c": "comment" },
+            { "t": "<Badge variant=\"warning\">Pending</Badge>",        "c": "code" },
+            { "t": "<Badge variant=\"warning\">Expiring soon</Badge>",  "c": "code" },
+            { "t": " ",                                                  "c": "code" },
+            { "t": "// Error — failed, rejected, blocked",              "c": "comment" },
+            { "t": "<Badge variant=\"error\">Failed</Badge>",           "c": "code" },
+            { "t": "<Badge variant=\"error\">Rejected</Badge>",         "c": "code" },
+            { "t": " ",                                                  "c": "code" },
+            { "t": "// Info — feature flags, release status",           "c": "comment" },
+            { "t": "<Badge variant=\"info\">Beta</Badge>",              "c": "code" },
+            { "t": "<Badge variant=\"info\">New</Badge>",               "c": "code" },
+            { "t": " ",                                                  "c": "code" },
+            { "t": "// Small — tight spaces, table cells, inline",      "c": "comment" },
+            { "t": "<Badge variant=\"success\" size=\"sm\">Active</Badge>", "c": "code" },
+            { "t": "<Badge variant=\"error\"   size=\"sm\">Failed</Badge>", "c": "code" }
+          ]
+        }
+      },
+
+      input: {
+        "name": "Input",
+        "type": "input",
+        "layout": "vertical",
+        "label": "Label",
+        "variantAxis": "State",
+        "sizeAxis": "Size",
+        "labelStyle": "Label/Small",
+        "placeholderStyle": "Body/Small",
+        "helperStyle": "Label/Small",
+        "axes": {
+          "State": ["Default", "Focus", "Error", "Success", "Loading", "Disabled", "ReadOnly"],
+          "Icon": ["None", "Leading"],
+          "Helper": ["None", "On"],
+          "Required": ["False", "True"],
+          "Size": ["SM", "MD", "LG"]
+        },
+        "sizes": {
+          "SM": { "paddingH": 12, "paddingV": 0, "height": 32, "textStyle": "Label/Default", "radiusFallback": 4 },
+          "MD": { "paddingH": 12, "paddingV": 0, "height": 40, "textStyle": "Label/Default", "radiusFallback": 6 },
+          "LG": { "paddingH": 12, "paddingV": 0, "height": 48, "textStyle": "Label/Default", "radiusFallback": 8 }
+        },
+        "styles": {
+          "Default":  { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/border/default",  "borderHex": "#e2e5ef", "text": "color/text/tertiary",  "textHex": "#9198b4" },
+          "Focus":    { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/border/focus",    "borderHex": "#0068ff", "text": "color/text/primary",   "textHex": "#111422", "focus": true },
+          "Error":    { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/error",           "borderHex": "#f03030", "text": "color/text/primary",   "textHex": "#111422" },
+          "Success":  { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/success",         "borderHex": "#0caf60", "text": "color/text/primary",   "textHex": "#111422" },
+          "Loading":  { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/border/default",  "borderHex": "#e2e5ef", "text": "color/text/tertiary",  "textHex": "#9198b4" },
+          "Disabled": { "bg": "color/bg/disabled", "bgHex": "#e2e5ef", "border": "color/border/disabled", "borderHex": "#c8cde0", "text": "color/text/disabled",  "textHex": "#9198b4" },
+          "ReadOnly": { "bg": "color/bg/subtle",   "bgHex": "#f0f2f7", "border": "color/border/default",  "borderHex": "#e2e5ef", "text": "color/text/primary",   "textHex": "#111422" }
+        },
+        "doc": {
+          "status": "Stable",
+          "description": "Single-line text field with validation states, icon slots, and prefix/suffix support. Used wherever a user needs to enter free-form data.",
+          "anatomyPreview": { "state": "Default", "size": "MD", "Icon": "Leading", "Helper": "On", "Required": "True" },
+          "anatomy": [
+            { "n": "1", "label": "Wrapper",      "desc": "The visible border box. Carries the border color and background per state.",        "pin": [93, 50] },
+            { "n": "2", "label": "Leading icon", "desc": "Optional icon slot on the left. 8px gap to the placeholder text.",               "pin": [5,  50] },
+            { "n": "3", "label": "Field",        "desc": "The native input element. Fills all remaining width inside the wrapper.",        "pin": [45, 50] },
+            { "n": "4", "label": "Label",        "desc": "Above the wrapper. Semi Bold 12px. Asterisk appended when required=true.",       "pin": [6,  11] },
+            { "n": "5", "label": "Helper text",  "desc": "Below the wrapper. Secondary color by default; red on error, green on success.", "pin": [6,  89] }
+          ],
+          "usage": {
+            "do": {
+              "guidance": "Always pair an input with a visible label and helper text that describes the expected format or constraints.",
+              "preview": [
+                { "variant": "Default", "size": "SM" }
+              ]
+            },
+            "dont": {
+              "guidance": "Don't rely on placeholder text alone as a label — it disappears when the user starts typing, leaving the field without context.",
+              "preview": [
+                { "variant": "Disabled", "size": "SM" }
+              ]
+            }
+          },
+          "tokens": [
+            ["color/bg/surface",      "#ffffff",  "Field background — Default, Focus, Error, Success, Loading"],
+            ["color/border/default",  "#e2e5ef",  "Border — Default, Loading, ReadOnly states"],
+            ["color/border/focus",    "#0068ff",  "Border — Focus state"],
+            ["color/border/disabled", "#c8cde0",  "Border — Disabled state"],
+            ["color/text/primary",    "#111422",  "Input text — active states (Focus, Error, Success, ReadOnly)"],
+            ["color/text/tertiary",   "#9198b4",  "Placeholder text — Default and Loading states"],
+            ["color/text/disabled",   "#9198b4",  "Text color — Disabled state"],
+            ["color/bg/disabled",     "#e2e5ef",  "Background — Disabled state"],
+            ["color/bg/subtle",       "#f0f2f7",  "Background — ReadOnly state"],
+            ["color/error",           "#f03030",  "Border — Error state"],
+            ["color/success",         "#0caf60",  "Border — Success state"],
+            ["borderRadius/sm",       "4px",      "Corner radius — SM size"],
+            ["borderRadius/md",       "6px",      "Corner radius — MD size"],
+            ["borderRadius/lg",       "8px",      "Corner radius — LG size"]
+          ],
+          "code": [
+            { "t": "// Basic",                                                                                         "c": "comment" },
+            { "t": "<Input label=\"Account number\" placeholder=\"Enter 10-digit number\" />",                         "c": "code" },
+            { "t": " ",                                                                                                 "c": "code" },
+            { "t": "// Validation states",                                                                             "c": "comment" },
+            { "t": "<Input validationState=\"error\"   errorMessage=\"Account not found\" />",                         "c": "code" },
+            { "t": "<Input validationState=\"success\" helperText=\"Account verified\" />",                            "c": "code" },
+            { "t": "<Input validationState=\"loading\" helperText=\"Checking…\" />",                                   "c": "code" },
+            { "t": " ",                                                                                                 "c": "code" },
+            { "t": "// With icons and prefix/suffix",                                                                  "c": "comment" },
+            { "t": "<Input leadingIcon=\"search\" placeholder=\"Search transactions\" />",                             "c": "code" },
+            { "t": "<Input prefix=\"$\" suffix=\"USD\" placeholder=\"0.00\" />",                                       "c": "code" },
+            { "t": " ",                                                                                                 "c": "code" },
+            { "t": "// Password",                                                                                      "c": "comment" },
+            { "t": "<Input type=\"password\" label=\"Password\" helperText=\"At least 8 characters\" />",              "c": "code" },
+            { "t": " ",                                                                                                 "c": "code" },
+            { "t": "// Disabled / Read-only",                                                                          "c": "comment" },
+            { "t": "<Input disabled />",                                                                               "c": "code" },
+            { "t": "<Input readOnly defaultValue=\"ACC-00129834\" helperText=\"Contact support to change\" />",        "c": "code" }
+          ]
+        }
+      },
+
+      select: {
+        "name": "Select",
+        "type": "select",
+        "layout": "vertical",
+        "label": "Label",
+        "variantAxis": "State",
+        "sizeAxis": "Size",
+        "labelStyle": "Label/Small",
+        "placeholderStyle": "Body/Small",
+        "axes": {
+          "State": ["Default", "Focus", "Error", "Success", "Loading", "Disabled"],
+          "Value": ["Empty", "Filled"],
+          "Icon":  ["None", "Leading"],
+          "Size":  ["SM", "MD", "LG"]
+        },
+        "sizes": {
+          "SM": { "paddingH": 12, "height": 32, "radius": "borderRadius/sm", "radiusFallback": 4 },
+          "MD": { "paddingH": 12, "height": 40, "radius": "borderRadius/md", "radiusFallback": 6 },
+          "LG": { "paddingH": 12, "height": 48, "radius": "borderRadius/lg", "radiusFallback": 8 }
+        },
+        "styles": {
+          "Default":  { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/border/default",  "borderHex": "#e2e5ef", "text": "color/text/primary",  "textHex": "#111422" },
+          "Focus":    { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/border/focus",    "borderHex": "#0068ff", "text": "color/text/primary",  "textHex": "#111422", "focus": true },
+          "Error":    { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/error",           "borderHex": "#f03030", "text": "color/text/primary",  "textHex": "#111422" },
+          "Success":  { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/success",         "borderHex": "#0caf60", "text": "color/text/primary",  "textHex": "#111422" },
+          "Loading":  { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/border/default",  "borderHex": "#e2e5ef", "text": "color/text/primary",  "textHex": "#111422" },
+          "Disabled": { "bg": "color/bg/disabled", "bgHex": "#e2e5ef", "border": "color/border/disabled", "borderHex": "#c8cde0", "text": "color/text/disabled", "textHex": "#9198b4" }
+        },
+        "doc": {
+          "status": "Stable",
+          "description": "Dropdown selector for choosing a single value from a list of options. Use for 5+ options — fewer options should use Radio buttons instead.",
+          "anatomyPreview": { "variant": "Default", "size": "MD", "Icon": "Leading", "Value": "Filled" },
+          "anatomy": [
+            { "n": "1", "label": "Container",     "desc": "The visible trigger box. Carries the border color and background per state.", "pin": [93, 68] },
+            { "n": "2", "label": "Label",         "desc": "Above the trigger. Semi Bold 12px. Describes what is being selected.",       "pin": [6,  15] },
+            { "n": "3", "label": "Leading icon",  "desc": "Optional icon slot on the left. Provides visual context for the selection.", "pin": [4,  68] },
+            { "n": "4", "label": "Value text",    "desc": "Shows the placeholder (tertiary) or selected value (primary text color).",   "pin": [45, 68] },
+            { "n": "5", "label": "Chevron icon",  "desc": "Trailing indicator. Rotates 180° when the dropdown is open.",               "pin": [90, 68] }
+          ],
+          "usage": {
+            "do": {
+              "guidance": "Use Select when there are 5 or more options. Always pair with a label that clearly describes what the user is choosing.",
+              "preview": [{ "variant": "Default", "size": "SM", "Value": "Empty", "Icon": "None" }]
+            },
+            "dont": {
+              "guidance": "Don't use Select for fewer than 4 options — Radio buttons are clearer. Don't rely on the placeholder text as the only label.",
+              "preview": [{ "variant": "Disabled", "size": "SM", "Value": "Empty", "Icon": "None" }]
+            }
+          },
+          "tokens": [
+            ["color/bg/surface",      "#ffffff",  "Background — Default, Focus, Error, Success, Loading"],
+            ["color/border/default",  "#e2e5ef",  "Border — Default and Loading states"],
+            ["color/border/focus",    "#0068ff",  "Border — Focus (open) state"],
+            ["color/border/disabled", "#c8cde0",  "Border — Disabled state"],
+            ["color/text/primary",    "#111422",  "Selected value text — all active states"],
+            ["color/text/tertiary",   "#9198b4",  "Placeholder text — unselected (Empty value)"],
+            ["color/text/disabled",   "#9198b4",  "Text — Disabled state"],
+            ["color/bg/disabled",     "#e2e5ef",  "Background — Disabled state"],
+            ["color/error",           "#f03030",  "Border and trailing icon — Error state"],
+            ["color/success",         "#0caf60",  "Border and trailing icon — Success state"],
+            ["borderRadius/sm",       "4px",      "Corner radius — SM size"],
+            ["borderRadius/md",       "6px",      "Corner radius — MD size"],
+            ["borderRadius/lg",       "8px",      "Corner radius — LG size"]
+          ],
+          "code": [
+            { "t": "// Basic",                                                                                  "c": "comment" },
+            { "t": "<Select label=\"Account\" placeholder=\"Choose…\" options={options} />",                    "c": "code" },
+            { "t": " ",                                                                                          "c": "code" },
+            { "t": "// Controlled",                                                                             "c": "comment" },
+            { "t": "<Select value={country} onChange={setCountry} options={COUNTRY_OPTIONS} />",                "c": "code" },
+            { "t": " ",                                                                                          "c": "code" },
+            { "t": "// Validation states",                                                                      "c": "comment" },
+            { "t": "<Select validationState=\"error\"   errorMessage=\"Please select an account\" />",          "c": "code" },
+            { "t": "<Select validationState=\"success\" helperText=\"Account verified\" />",                    "c": "code" },
+            { "t": " ",                                                                                          "c": "code" },
+            { "t": "// With leading icon",                                                                      "c": "comment" },
+            { "t": "<Select label=\"Account type\" leadingIcon=\"grid\" options={ACCOUNT_OPTIONS} />",          "c": "code" },
+            { "t": " ",                                                                                          "c": "code" },
+            { "t": "// Disabled",                                                                               "c": "comment" },
+            { "t": "<Select disabled defaultValue=\"current\" options={options} />",                            "c": "code" }
+          ]
+        }
+      },
+
+      icon: {
+        "name": "Icon",
+        "type": "icon-set",
+        "icons": [
+          // sync-start:icon-examples
+          { "name": "home", "svg": "<path d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/><polyline points='9 22 9 12 15 12 15 22'/>" },
+          { "name": "menu", "svg": "<line x1='3' y1='12' x2='21' y2='12'/><line x1='3' y1='6' x2='21' y2='6'/><line x1='3' y1='18' x2='21' y2='18'/>" },
+          { "name": "chevron-up", "svg": "<polyline points='18 15 12 9 6 15'/>" },
+          { "name": "chevron-down", "svg": "<polyline points='6 9 12 15 18 9'/>" },
+          { "name": "chevron-left", "svg": "<polyline points='15 18 9 12 15 6'/>" },
+          { "name": "chevron-right", "svg": "<polyline points='9 18 15 12 9 6'/>" },
+          { "name": "arrow-left", "svg": "<line x1='19' y1='12' x2='5' y2='12'/><polyline points='12 19 5 12 12 5'/>" },
+          { "name": "arrow-right", "svg": "<line x1='5' y1='12' x2='19' y2='12'/><polyline points='12 5 19 12 12 19'/>" },
+          { "name": "external-link", "svg": "<path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/><polyline points='15 3 21 3 21 9'/><line x1='10' y1='14' x2='21' y2='3'/>" },
+          { "name": "search", "svg": "<circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/>" },
+          { "name": "plus", "svg": "<line x1='12' y1='5' x2='12' y2='19'/><line x1='5' y1='12' x2='19' y2='12'/>" },
+          { "name": "minus", "svg": "<line x1='5' y1='12' x2='19' y2='12'/>" },
+          { "name": "close", "svg": "<line x1='18' y1='6' x2='6' y2='18'/><line x1='6' y1='6' x2='18' y2='18'/>" },
+          { "name": "check", "svg": "<polyline points='20 6 9 17 4 12'/>" },
+          { "name": "edit", "svg": "<path d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'/><path d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'/>" },
+          { "name": "trash", "svg": "<polyline points='3 6 5 6 21 6'/><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'/><line x1='10' y1='11' x2='10' y2='17'/><line x1='14' y1='11' x2='14' y2='17'/>" },
+          { "name": "copy", "svg": "<rect x='9' y='9' width='13' height='13' rx='2' ry='2'/><path d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/>" },
+          { "name": "share", "svg": "<circle cx='18' cy='5' r='3'/><circle cx='6' cy='12' r='3'/><circle cx='18' cy='19' r='3'/><line x1='8.59' y1='13.51' x2='15.42' y2='17.49'/><line x1='15.41' y1='6.51' x2='8.59' y2='10.49'/>" },
+          { "name": "download", "svg": "<path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/><polyline points='7 10 12 15 17 10'/><line x1='12' y1='15' x2='12' y2='3'/>" },
+          { "name": "upload", "svg": "<path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/><polyline points='17 8 12 3 7 8'/><line x1='12' y1='3' x2='12' y2='15'/>" },
+          { "name": "refresh", "svg": "<polyline points='23 4 23 10 17 10'/><polyline points='1 20 1 14 7 14'/><path d='M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'/>" },
+          { "name": "user", "svg": "<path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/><circle cx='12' cy='7' r='4'/>" },
+          { "name": "users", "svg": "<path d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/><circle cx='9' cy='7' r='4'/><path d='M23 21v-2a4 4 0 0 0-3-3.87'/><path d='M16 3.13a4 4 0 0 1 0 7.75'/>" },
+          { "name": "lock", "svg": "<rect x='3' y='11' width='18' height='11' rx='2' ry='2'/><path d='M7 11V7a5 5 0 0 1 10 0v4'/>" },
+          { "name": "unlock", "svg": "<rect x='3' y='11' width='18' height='11' rx='2' ry='2'/><path d='M7 11V7a5 5 0 0 1 9.9-1'/>" },
+          { "name": "eye", "svg": "<path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'/><circle cx='12' cy='12' r='3'/>" },
+          { "name": "eye-off", "svg": "<path d='M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24'/><line x1='1' y1='1' x2='23' y2='23'/>" },
+          { "name": "info", "svg": "<circle cx='12' cy='12' r='10'/><line x1='12' y1='8' x2='12' y2='12'/><line x1='12' y1='16' x2='12.01' y2='16'/>" },
+          { "name": "warning", "svg": "<path d='M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z'/><line x1='12' y1='9' x2='12' y2='13'/><line x1='12' y1='17' x2='12.01' y2='17'/>" },
+          { "name": "error", "svg": "<circle cx='12' cy='12' r='10'/><line x1='15' y1='9' x2='9' y2='15'/><line x1='9' y1='9' x2='15' y2='15'/>" },
+          { "name": "check-circle", "svg": "<path d='M22 11.08V12a10 10 0 1 1-5.93-9.14'/><polyline points='22 4 12 14.01 9 11.01'/>" },
+          { "name": "bell", "svg": "<path d='M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9'/><path d='M13.73 21a2 2 0 0 1-3.46 0'/>" },
+          { "name": "question", "svg": "<circle cx='12' cy='12' r='10'/><path d='M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3'/><line x1='12' y1='17' x2='12.01' y2='17'/>" },
+          { "name": "star", "svg": "<polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/>" },
+          { "name": "heart", "svg": "<path d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'/>" },
+          { "name": "bookmark", "svg": "<path d='M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z'/>" },
+          { "name": "tag", "svg": "<path d='M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z'/><line x1='7' y1='7' x2='7.01' y2='7'/>" },
+          { "name": "filter", "svg": "<polygon points='22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3'/>" },
+          { "name": "sort", "svg": "<path d='M8 15l4 4 4-4'/><path d='M8 9l4-4 4 4'/>" },
+          { "name": "image", "svg": "<rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><circle cx='8.5' cy='8.5' r='1.5'/><polyline points='21 15 16 10 5 21'/>" },
+          { "name": "camera", "svg": "<path d='M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z'/><circle cx='12' cy='13' r='4'/>" },
+          { "name": "play", "svg": "<polygon points='5 3 19 12 5 21 5 3'/>" },
+          { "name": "pause", "svg": "<rect x='6' y='4' width='4' height='16'/><rect x='14' y='4' width='4' height='16'/>" },
+          { "name": "file", "svg": "<path d='M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z'/><polyline points='13 2 13 9 20 9'/>" },
+          { "name": "folder", "svg": "<path d='M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z'/>" },
+          { "name": "link", "svg": "<path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/>" },
+          { "name": "mail", "svg": "<path d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/><polyline points='22,6 12,13 2,6'/>" },
+          { "name": "message", "svg": "<path d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/>" },
+          { "name": "phone", "svg": "<path d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.72 3.41 2 2 0 0 1 3.7 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16z'/>" },
+          { "name": "grid", "svg": "<rect x='3' y='3' width='7' height='7'/><rect x='14' y='3' width='7' height='7'/><rect x='14' y='14' width='7' height='7'/><rect x='3' y='14' width='7' height='7'/>" },
+          { "name": "list", "svg": "<line x1='8' y1='6' x2='21' y2='6'/><line x1='8' y1='12' x2='21' y2='12'/><line x1='8' y1='18' x2='21' y2='18'/><line x1='3' y1='6' x2='3.01' y2='6'/><line x1='3' y1='12' x2='3.01' y2='12'/><line x1='3' y1='18' x2='3.01' y2='18'/>" },
+          { "name": "more-horizontal", "svg": "<circle cx='12' cy='12' r='1'/><circle cx='19' cy='12' r='1'/><circle cx='5' cy='12' r='1'/>" },
+          { "name": "more-vertical", "svg": "<circle cx='12' cy='12' r='1'/><circle cx='12' cy='5' r='1'/><circle cx='12' cy='19' r='1'/>" },
+          { "name": "calendar", "svg": "<rect x='3' y='4' width='18' height='18' rx='2' ry='2'/><line x1='16' y1='2' x2='16' y2='6'/><line x1='8' y1='2' x2='8' y2='6'/><line x1='3' y1='10' x2='21' y2='10'/>" },
+          { "name": "clock", "svg": "<circle cx='12' cy='12' r='10'/><polyline points='12 6 12 12 16 14'/>" },
+          { "name": "globe", "svg": "<circle cx='12' cy='12' r='10'/><line x1='2' y1='12' x2='22' y2='12'/><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/>" },
+          { "name": "settings", "svg": "<circle cx='12' cy='12' r='3'/><path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z'/>" }
+    // sync-end:icon-examples
+        ]
+      }
+    };
+
+    document.querySelectorAll('.btn-example').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var key = btn.dataset.example;
+        if (EXAMPLES[key]) {
+          document.getElementById('comp-input').value = JSON.stringify(EXAMPLES[key], null, 2);
+        }
+      });
+    });
+
+    // ── COMPONENTS ───────────────────────────────────────────────────────────
+    var btnComp = document.getElementById('btn-comp');
+    btnComp.addEventListener('click', function() {
+      clearLog(logComp);
+      var schema;
+      try { schema = JSON.parse(document.getElementById('comp-input').value); }
+      catch (e) { addLog(logComp, 'Invalid JSON: ' + e.message, 'err'); return; }
+      if (!schema.name) { addLog(logComp, 'Missing "name" field', 'err'); return; }
+      if (!schema.axes && schema.type !== 'icon-set') { addLog(logComp, 'Missing "axes" field', 'err'); return; }
+      btnComp.disabled = true;
+      addLog(logComp, 'Generating ' + schema.name + '...', 'info');
+      parent.postMessage({ pluginMessage: { type: 'run-component', schema: schema } }, '*');
+    });
+    document.getElementById('btn-cancel-comp').addEventListener('click', function() {
+      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
+    });
+
+    // ── GENERATE DOCS ────────────────────────────────────────────────────────
+    var btnDocs = document.getElementById('btn-docs');
+    btnDocs.addEventListener('click', function() {
+      clearLog(logComp);
+      var schema;
+      try { schema = JSON.parse(document.getElementById('comp-input').value); }
+      catch (e) { addLog(logComp, 'Invalid JSON: ' + e.message, 'err'); return; }
+      if (!schema.name) { addLog(logComp, 'Missing "name" field', 'err'); return; }
+      btnDocs.disabled = true;
+      btnComp.disabled = true;
+      addLog(logComp, 'Building docs template for ' + schema.name + '...', 'info');
+      parent.postMessage({ pluginMessage: { type: 'run-docs', schema: schema } }, '*');
+    });
+
+    // ── EXPORT ───────────────────────────────────────────────────────────────
+    var logExport   = document.getElementById('log-export');
+    var outVars     = document.getElementById('out-vars');
+    var outTs       = document.getElementById('out-ts');
+    var btnCopyVars = document.getElementById('btn-copy-vars');
+    var btnDlVars   = document.getElementById('btn-dl-vars');
+    var btnCopyTs   = document.getElementById('btn-copy-ts');
+    var btnDlTs     = document.getElementById('btn-dl-ts');
+
+    document.getElementById('btn-export-vars').addEventListener('click', function() {
+      clearLog(logExport);
+      addLog(logExport, 'Reading Variables from Figma...', 'info');
+      outVars.value = '';
+      btnCopyVars.disabled = true;
+      btnDlVars.disabled   = true;
+      parent.postMessage({ pluginMessage: { type: 'run-export-vars' } }, '*');
+    });
+
+    document.getElementById('btn-export-ts').addEventListener('click', function() {
+      clearLog(logExport);
+      addLog(logExport, 'Reading Text Styles from Figma...', 'info');
+      outTs.value = '';
+      btnCopyTs.disabled = true;
+      btnDlTs.disabled   = true;
+      parent.postMessage({ pluginMessage: { type: 'run-export-ts' } }, '*');
+    });
+
+    btnCopyVars.addEventListener('click', function() {
+      navigator.clipboard.writeText(outVars.value).then(function() {
+        var orig = btnCopyVars.textContent;
+        btnCopyVars.textContent = 'Copied!';
+        setTimeout(function() { btnCopyVars.textContent = orig; }, 1500);
+      });
+    });
+
+    btnCopyTs.addEventListener('click', function() {
+      navigator.clipboard.writeText(outTs.value).then(function() {
+        var orig = btnCopyTs.textContent;
+        btnCopyTs.textContent = 'Copied!';
+        setTimeout(function() { btnCopyTs.textContent = orig; }, 1500);
+      });
+    });
+
+    function downloadJson(content, filename) {
+      var a = document.createElement('a');
+      a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(content);
+      a.download = filename;
+      a.click();
+    }
+
+    btnDlVars.addEventListener('click', function() { downloadJson(outVars.value, 'tokens.json'); });
+    btnDlTs.addEventListener('click',   function() { downloadJson(outTs.value,   'text-styles.json'); });
+
+    // ── EXPORT COMPONENT SCHEMA ───────────────────────────────────────────────
+    var selComp     = document.getElementById('sel-comp');
+    var outComp     = document.getElementById('out-comp');
+    var btnExportComp = document.getElementById('btn-export-comp');
+    var btnCopyComp   = document.getElementById('btn-copy-comp');
+    var btnDlComp     = document.getElementById('btn-dl-comp');
+    var currentCompName = '';
+
+    function loadCompList() {
+      addLog(logExport, 'Scanning for component sets...', 'info');
+      selComp.innerHTML = '<option value="">— loading... —</option>';
+      btnExportComp.disabled = true;
+      parent.postMessage({ pluginMessage: { type: 'run-get-components' } }, '*');
+    }
+
+    document.getElementById('btn-refresh-comp').addEventListener('click', loadCompList);
+
+    // ── TEMPLATES ────────────────────────────────────────────────────────────
+    var btnFixFill   = document.getElementById('btn-fix-fill');
+    var fixCompName  = document.getElementById('fix-comp-name');
+    btnFixFill.addEventListener('click', function() {
+      var name = fixCompName.value.trim();
+      if (!name) return;
+      clearLog(logTpl);
+      btnFixFill.disabled = true;
+      addLog(logTpl, 'Searching for "' + name + '"…', 'info');
+      parent.postMessage({ pluginMessage: { type: 'fix-component-fill', name: name } }, '*');
+    });
+
+    var btnTplSignin = document.getElementById('btn-tpl-signin');
+    btnTplSignin.addEventListener('click', function() {
+      clearLog(logTpl);
+      btnTplSignin.disabled = true;
+      addLog(logTpl, 'Starting Sign In build...', 'info');
+      parent.postMessage({ pluginMessage: { type: 'run-template', template: 'sign-in' } }, '*');
+    });
+
+    // Auto-load list when Export tab is activated
+    document.querySelectorAll('.tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        if (tab.dataset.panel === 'export') loadCompList();
+      });
+    });
+
+    selComp.addEventListener('change', function() {
+      btnExportComp.disabled = !selComp.value;
+      outComp.value = '';
+      btnCopyComp.disabled = true;
+      btnDlComp.disabled   = true;
+    });
+
+    btnExportComp.addEventListener('click', function() {
+      if (!selComp.value) return;
+      clearLog(logExport);
+      addLog(logExport, 'Reading "' + selComp.options[selComp.selectedIndex].text + '" from Figma...', 'info');
+      outComp.value = '';
+      btnCopyComp.disabled = true;
+      btnDlComp.disabled   = true;
+      parent.postMessage({ pluginMessage: { type: 'run-export-comp', id: selComp.value } }, '*');
+    });
+
+    btnCopyComp.addEventListener('click', function() {
+      navigator.clipboard.writeText(outComp.value).then(function() {
+        var orig = btnCopyComp.textContent;
+        btnCopyComp.textContent = 'Copied!';
+        setTimeout(function() { btnCopyComp.textContent = orig; }, 1500);
+      });
+    });
+
+    btnDlComp.addEventListener('click', function() {
+      downloadJson(outComp.value, currentCompName + '.json');
+    });
+
+    // ── MESSAGES FROM PLUGIN ─────────────────────────────────────────────────
+    window.onmessage = function(event) {
+      var msg = event.data.pluginMessage;
+      if (!msg) return;
+
+      if (msg.type === 'log-vars')  addLog(logVars, msg.text, msg.level);
+      if (msg.type === 'log-ts')    addLog(logTs,   msg.text, msg.level);
+      if (msg.type === 'log-comp')  addLog(logComp, msg.text, msg.level);
+      if (msg.type === 'log-tpl')   addLog(logTpl,  msg.text, msg.level);
+
+      if (msg.type === 'done-vars') { addLog(logVars, 'Done! Check Variables panel.', 'ok'); btnVars.disabled = false; }
+      if (msg.type === 'done-ts')   { addLog(logTs,   'Done! Check Text Styles (Aa).', 'ok'); btnTs.disabled = false; }
+      if (msg.type === 'done-comp') { addLog(logComp, msg.text || 'Done!', 'ok'); btnComp.disabled = false; btnDocs.disabled = false; }
+      if (msg.type === 'done-docs') { addLog(logComp, msg.text || 'Docs done!', 'ok'); btnComp.disabled = false; btnDocs.disabled = false; }
+
+      if (msg.type === 'error-vars') { addLog(logVars, 'Error: ' + msg.text, 'err'); btnVars.disabled = false; }
+      if (msg.type === 'error-ts')   { addLog(logTs,   'Error: ' + msg.text, 'err'); btnTs.disabled = false; }
+      if (msg.type === 'error-comp') { addLog(logComp, 'Error: ' + msg.text, 'err'); btnComp.disabled = false; btnDocs.disabled = false; }
+      if (msg.type === 'error-docs') { addLog(logComp, 'Docs error: ' + msg.text, 'err'); btnComp.disabled = false; btnDocs.disabled = false; }
+
+      if (msg.type === 'done-tpl')  { addLog(logTpl, msg.text || 'Done!', 'ok');     btnTplSignin.disabled = false; }
+      if (msg.type === 'error-tpl') { addLog(logTpl, 'Error: ' + msg.text, 'err');   btnTplSignin.disabled = false; }
+
+      if (msg.type === 'log-fix')   addLog(logTpl, msg.text, msg.level);
+      if (msg.type === 'done-fix')  { addLog(logTpl, msg.text || 'Done!', 'ok');    btnFixFill.disabled = false; }
+      if (msg.type === 'error-fix') { addLog(logTpl, 'Error: ' + msg.text, 'err'); btnFixFill.disabled = false; }
+
+      if (msg.type === 'export-vars-done') {
+        outVars.value = msg.json;
+        btnCopyVars.disabled = false;
+        btnDlVars.disabled   = false;
+        addLog(logExport, 'tokens.json ready — ' + msg.count + ' tokens exported.', 'ok');
+      }
+      if (msg.type === 'export-ts-done') {
+        outTs.value = msg.json;
+        btnCopyTs.disabled = false;
+        btnDlTs.disabled   = false;
+        addLog(logExport, 'text-styles.json ready — ' + msg.count + ' styles exported.', 'ok');
+      }
+      if (msg.type === 'export-vars-error') { addLog(logExport, 'Error (tokens): ' + msg.text, 'err'); }
+      if (msg.type === 'export-ts-error')   { addLog(logExport, 'Error (text styles): ' + msg.text, 'err'); }
+
+      if (msg.type === 'comp-list') {
+        selComp.innerHTML = msg.list.length
+          ? '<option value="">— select a component —</option>'
+          : '<option value="">— no component sets found on this page —</option>';
+        msg.list.forEach(function(c) {
+          var opt = document.createElement('option');
+          opt.value = c.id;
+          opt.textContent = c.name;
+          selComp.appendChild(opt);
+        });
+        btnExportComp.disabled = true;
+        addLog(logExport, msg.list.length + ' component set(s) found.', msg.list.length ? 'ok' : 'info');
+      }
+
+      if (msg.type === 'export-comp-done') {
+        outComp.value = msg.json;
+        currentCompName = msg.name;
+        btnCopyComp.disabled = false;
+        btnDlComp.disabled   = false;
+        addLog(logExport, msg.name + '.json ready — download and replace your local schema file.', 'ok');
+      }
+      if (msg.type === 'export-comp-error') { addLog(logExport, 'Error (component): ' + msg.text, 'err'); }
+    };
+  </script>
+</body>
+</html>

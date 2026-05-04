@@ -1,0 +1,42 @@
+{
+  "name": "Input",
+  "type": "input",
+  "layout": "vertical",
+  "label": "Label",
+  "variantAxis": "State",
+  "sizeAxis": "Size",
+  "labelStyle": "Label/Small",
+  "placeholderStyle": "Body/Small",
+  "helperStyle": "Label/Small",
+  "axes": {
+    "State": ["Default", "Focus", "Error", "Success", "Loading", "Disabled", "ReadOnly"],
+    "Icon": ["None", "Leading"],
+    "Helper": ["None", "On"],
+    "Required": ["False", "True"],
+    "Size": ["SM", "MD", "LG"]
+  },
+  "layers": {
+    "Field": {
+      "nodeType": "rectangle",
+      "widthSizing": "fill",
+      "heightSizing": "fixed",
+      "note": "The Field rectangle (input box) only — W/Fill container, H/Fixed. The parent Label+Field wrapper keeps its own sizing; only this layer stretches."
+    }
+  },
+  "sizes": {
+    "SM": { "paddingH": 12, "paddingV": 0, "height": 32, "textStyle": "Label/Default", "radius": "borderRadius/sm", "radiusFallback": 4 },
+    "MD": { "paddingH": 12, "paddingV": 0, "height": 40, "textStyle": "Label/Default", "radius": "borderRadius/md", "radiusFallback": 6 },
+    "LG": { "paddingH": 12, "paddingV": 0, "height": 48, "textStyle": "Label/Default", "radius": "borderRadius/lg", "radiusFallback": 8 }
+  },
+  "styles": {
+    "Default":  { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/border/default",  "borderHex": "#e2e5ef", "text": "color/text/tertiary",  "textHex": "#9198b4" },
+    "Focus":    { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/border/focus",    "borderHex": "#0068ff", "text": "color/text/primary",   "textHex": "#111422", "focus": true },
+    "Error":    { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/error",           "borderHex": "#f03030", "text": "color/text/primary",   "textHex": "#111422" },
+    "Success":  { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/success",         "borderHex": "#0caf60", "text": "color/text/primary",   "textHex": "#111422" },
+    "Loading":  { "bg": "color/bg/surface",  "bgHex": "#ffffff", "border": "color/border/default",  "borderHex": "#e2e5ef", "text": "color/text/tertiary",  "textHex": "#9198b4" },
+    "Disabled": { "bg": "color/bg/disabled", "bgHex": "#e2e5ef", "border": "color/border/disabled", "borderHex": "#c8cde0", "text": "color/text/disabled",  "textHex": "#9198b4" },
+    "ReadOnly": { "bg": "color/bg/subtle",   "bgHex": "#f0f2f7", "border": "color/border/default",  "borderHex": "#e2e5ef", "text": "color/text/primary",   "textHex": "#111422" }
+  },
+  "disabledNote": "Disabled uses color/bg/disabled and color/text/disabled tokens — no opacity. ReadOnly uses color/bg/subtle with a default border to signal non-editable but readable.",
+  "responsiveNote": "The Field layer dimension is W/Fill container. Place the Input inside an auto-layout frame and set the instance to Fill to make it stretch responsively."
+}

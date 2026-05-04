@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portfolio Testimonial — Felipe Caracas</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet"/>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream:      #F7F4EE;
+    --cream-dark: #EDE9E0;
+    --green-dark: #152E1F;
+    --green-mid:  #2D5A3D;
+    --green-soft: #EBF2EA;
+    --peach:      #E8967A;
+    --text:       #1A1A1A;
+    --text-mid:   rgba(26,26,26,0.55);
+    --text-dim:   rgba(26,26,26,0.35);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Section wrapper ── */
+  .section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 60px;
+    position: relative;
+  }
+
+  /* ── Ambient bg blobs ── */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+  }
+
+  /* ── Content wrapper ── */
+  .content {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Top label ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--text-dim);
+  }
+
+  /* ── Main layout: stat | quote | stat ── */
+  .main-row {
+    display: grid;
+    grid-template-columns: 220px 1fr 220px;
+    gap: 48px;
+    align-items: center;
+    margin-bottom: 64px;
+  }
+
+  /* ── Flanking stat cards ── */
+  .stat-card {
+    background: var(--green-dark);
+    border-radius: 20px;
+    padding: 28px 24px 24px;
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,150,122,0.2) 0%, transparent 70%);
+    bottom: -40px;
+    right: -40px;
+  }
+
+  .stat-card-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(247,244,238,0.4);
+    margin-bottom: 14px;
+  }
+
+  .stat-card-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 500;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+
+  .stat-card-number sup {
+    font-size: 0.4em;
+    vertical-align: super;
+    letter-spacing: 0;
+    color: var(--peach);
+  }
+
+  .stat-card-desc {
+    font-size: 12px;
+    line-height: 1.55;
+    color: rgba(247,244,238,0.55);
+  }
+
+  .stat-card-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 16px;
+    background: rgba(247,244,238,0.08);
+    border: 1px solid rgba(247,244,238,0.14);
+    border-radius: 100px;
+    padding: 4px 10px;
+    font-size: 10px;
+    color: rgba(247,244,238,0.5);
+  }
+
+  .tag-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #0CAF60;
+    flex-shrink: 0;
+  }
+
+  /* ── Center quote block ── */
+  .quote-block {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* Avatar */
+  .avatar-wrap {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    margin-bottom: 32px;
+  }
+
+  .avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--cream);
+    box-shadow: 0 0 0 1px rgba(26,26,26,0.08), 0 8px 24px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #C8D8B0, #8BAF8E);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Initials placeholder */
+  .avatar-initials {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--green-dark);
+    opacity: 0.7;
+  }
+
+  /* Verified badge */
+  .avatar-badge {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 22px;
+    height: 22px;
+    background: var(--peach);
+    border-radius: 50%;
+    border: 2px solid var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .avatar-badge svg {
+    width: 10px;
+    height: 10px;
+    stroke: #fff;
+    stroke-width: 2.5;
+    fill: none;
+  }
+
+  /* Opening quote mark */
+  .quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    line-height: 0.6;
+    color: var(--peach);
+    opacity: 0.4;
+    margin-bottom: 16px;
+    align-self: flex-start;
+    padding-left: 8px;
+  }
+
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 28px;
+    text-align: center;
+  }
+
+  .quote-text strong {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--green-mid);
+  }
+
+  .quote-author {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .author-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .author-role {
+    font-size: 12px;
+    color: var(--text-mid);
+  }
+
+  .author-company {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 4px 12px;
+    background: var(--green-soft);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--green-mid);
+  }
+
+  /* ── Bottom project cards ── */
+  .projects-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    border-top: 1px solid rgba(26,26,26,0.08);
+    padding-top: 40px;
+  }
+
+  .project-card {
+    padding: 24px;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid rgba(26,26,26,0.06);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .project-card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+    transform: translateY(-2px);
+  }
+
+  .project-card-eyebrow {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .project-card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .project-card-desc {
+    font-size: 12px;
+    color: var(--text-mid);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .project-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .project-tag {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: var(--green-soft);
+    color: var(--green-mid);
+  }
+
+  .project-arrow {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(26,26,26,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .project-arrow svg {
+    width: 12px;
+    height: 12px;
+    stroke: var(--text);
+    stroke-width: 2;
+    fill: none;
+  }
+
+  /* Accent strip at top of card */
+  .card-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  /* Stars */
+  .stars {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 16px;
+  }
+
+  .star {
+    width: 12px;
+    height: 12px;
+    color: var(--peach);
+  }
+
+  /* Pagination dots */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 40px;
+  }
+
+  .pg-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(26,26,26,0.15);
+  }
+
+  .pg-dot.active {
+    width: 20px;
+    border-radius: 3px;
+    background: var(--green-dark);
+  }
+</style>
+</head>
+<body>
+
+<!-- Ambient -->
+<div class="ambient">
+  <div class="blob" style="width:500px;height:500px;background:radial-gradient(circle,rgba(139,175,142,0.18) 0%,transparent 70%);top:-100px;left:-100px;"></div>
+  <div class="blob" style="width:400px;height:400px;background:radial-gradient(circle,rgba(232,150,122,0.12) 0%,transparent 70%);bottom:0;right:-80px;"></div>
+</div>
+
+<div class="section">
+<div class="content">
+
+  <div class="section-label">Client stories</div>
+
+  <!-- Main row: stat | quote | stat -->
+  <div class="main-row">
+
+    <!-- Left stat -->
+    <div class="stat-card">
+      <div class="stat-card-label">Time saved</div>
+      <div class="stat-card-number">3<sup>×</sup></div>
+      <p class="stat-card-desc">Faster from brief to final delivery using a shared design system.</p>
+      <div class="stat-card-tag">
+        <div class="tag-dot"></div>
+        Design Systems
+      </div>
+    </div>
+
+    <!-- Center quote -->
+    <div class="quote-block">
+      <div class="avatar-wrap">
+        <div class="avatar">
+          <span class="avatar-initials">MR</span>
+        </div>
+        <div class="avatar-badge">
+          <svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <div class="quote-mark">"</div>
+
+      <p class="quote-text">
+        Felipe didn't just deliver a design system — he gave our team
+        <strong>a shared language</strong>. Handoffs went from days to hours.
+        Every engineer knew exactly what to build.
+      </p>
+
+      <div class="stars">
+        <svg class="star" viewBox="0 0 12 12" fill="currentColor"><path d="M6 1l1.4 2.9L11 4.4l-2.5 2.4.6 3.4L6 8.7l-3.1 1.5.6-3.4L1 4.4l3.6-.5z"/></svg>
+        <svg class="star" viewBox="0 0 12 12" fill="currentColor"><path d="M6 1l1.4 2.9L11 4.4l-2.5 2.4.6 3.4L6 8.7l-3.1 1.5.6-3.4L1 4.4l3.6-.5z"/></svg>
+        <svg class="star" viewBox="0 0 12 12" fill="currentColor"><path d="M6 1l1.4 2.9L11 4.4l-2.5 2.4.6 3.4L6 8.7l-3.1 1.5.6-3.4L1 4.4l3.6-.5z"/></svg>
+        <svg class="star" viewBox="0 0 12 12" fill="currentColor"><path d="M6 1l1.4 2.9L11 4.4l-2.5 2.4.6 3.4L6 8.7l-3.1 1.5.6-3.4L1 4.4l3.6-.5z"/></svg>
+        <svg class="star" viewBox="0 0 12 12" fill="currentColor"><path d="M6 1l1.4 2.9L11 4.4l-2.5 2.4.6 3.4L6 8.7l-3.1 1.5.6-3.4L1 4.4l3.6-.5z"/></svg>
+      </div>
+
+      <div class="quote-author">
+        <div class="author-name">María Rodríguez</div>
+        <div class="author-role">Head of Product, Openbank</div>
+        <div class="author-company">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="#2D5A3D" stroke-width="1"/><path d="M3 5h4M5 3v4" stroke="#2D5A3D" stroke-width="1" stroke-linecap="round"/></svg>
+          Verified client
+        </div>
+      </div>
+    </div>
+
+    <!-- Right stat -->
+    <div class="stat-card" style="background:linear-gradient(160deg,#1E3D2C,#152E1F);">
+      <div class="stat-card-label">Conversion lift</div>
+      <div class="stat-card-number">+38<sup>%</sup></div>
+      <p class="stat-card-desc">Average uplift in sign-up rate after UX redesign across 4 client projects.</p>
+      <div class="stat-card-tag">
+        <div class="tag-dot"></div>
+        Product Design
+      </div>
+    </div>
+
+  </div><!-- /main-row -->
+
+  <!-- Pagination -->
+  <div class="pagination" style="margin-bottom:64px;">
+    <div class="pg-dot active"></div>
+    <div class="pg-dot"></div>
+    <div class="pg-dot"></div>
+    <div class="pg-dot"></div>
+  </div>
+
+  <!-- Project cards -->
+  <div class="projects-row">
+
+    <div class="project-card">
+      <div class="card-strip" style="background:linear-gradient(90deg,#2D5A3D,#5A8C65);"></div>
+      <div class="project-card-eyebrow">Case study · 2024</div>
+      <div class="project-card-title">Copycat Design System</div>
+      <p class="project-card-desc">Token architecture, 80+ components, and documentation for a fintech SaaS used by 40+ teams.</p>
+      <div class="project-card-footer">
+        <div class="project-tag">Design Systems</div>
+        <div class="project-arrow">
+          <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="card-strip" style="background:linear-gradient(90deg,#E8967A,#D4785C);"></div>
+      <div class="project-card-eyebrow">Case study · 2023</div>
+      <div class="project-card-title">Openbank Mobile Redesign</div>
+      <p class="project-card-desc">Full UX overhaul of the iOS and Android banking app, from research to developer handoff.</p>
+      <div class="project-card-footer">
+        <div class="project-tag" style="background:#FAE8E2;color:#C05A3C;">Product Design</div>
+        <div class="project-arrow">
+          <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="card-strip" style="background:linear-gradient(90deg,#8BAF8E,#5A8C65);"></div>
+      <div class="project-card-eyebrow">Case study · 2023</div>
+      <div class="project-card-title">MercadoLibre Brand System</div>
+      <p class="project-card-desc">Visual identity refresh and brand guidelines for a Latin American e-commerce platform.</p>
+      <div class="project-card-footer">
+        <div class="project-tag" style="background:#DFF0DF;color:#2D5A3D;">Brand & Identity</div>
+        <div class="project-arrow">
+          <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /projects-row -->
+
+</div>
+</div>
+
+</body>
+</html>

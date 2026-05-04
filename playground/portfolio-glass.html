@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portfolio Glass — Felipe Caracas</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet"/>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0C1A12;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─────────────────────────────
+   BACKGROUND MESH
+───────────────────────────── */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: #0E1E14;
+}
+
+.bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+/* ─────────────────────────────
+   SECTION
+───────────────────────────── */
+.section {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 80px 64px 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─────────────────────────────
+   HEADER
+───────────────────────────── */
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 56px;
+}
+
+.header-left {}
+
+.eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(232,150,122,0.7);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: rgba(232,150,122,0.5);
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 500;
+  color: #F7F4EE;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.section-title em {
+  font-style: italic;
+  color: rgba(247,244,238,0.55);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 6px;
+}
+
+.filter-pill {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 7px 16px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(247,244,238,0.5);
+  cursor: pointer;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(10px);
+}
+
+.filter-pill.active {
+  background: rgba(247,244,238,0.1);
+  border-color: rgba(247,244,238,0.22);
+  color: #F7F4EE;
+}
+
+/* ─────────────────────────────
+   MAIN GRID
+───────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
+  flex: 1;
+}
+
+/* ─────────────────────────────
+   GLASS CARD BASE
+───────────────────────────── */
+.glass-card {
+  background: rgba(255,255,255,0.055);
+  backdrop-filter: blur(28px) saturate(1.6);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.18);
+}
+
+/* Inner shine at top */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  z-index: 10;
+}
+
+/* Card spans */
+.card-main  { grid-column: 1; grid-row: 1 / 3; }
+.card-tr    { grid-column: 2; grid-row: 1; }
+.card-br    { grid-column: 2; grid-row: 2; }
+
+/* ─────────────────────────────
+   CARD CONTENT LAYOUT
+───────────────────────────── */
+.card-body {
+  padding: 28px 28px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.card-tag {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.08);
+  color: rgba(247,244,238,0.5);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.card-year {
+  font-size: 11px;
+  color: rgba(247,244,238,0.3);
+  font-weight: 400;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #F7F4EE;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: rgba(247,244,238,0.45);
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 28px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  z-index: 2;
+}
+
+.card-chips {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+}
+
+.chip {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.06);
+  color: rgba(247,244,238,0.45);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.card-arrow-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(247,244,238,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-arrow-btn svg {
+  width: 13px;
+  height: 13px;
+  stroke: rgba(247,244,238,0.7);
+  stroke-width: 2;
+  fill: none;
+}
+
+/* ─────────────────────────────
+   MOCKUP AREA
+───────────────────────────── */
+.mockup-area {
+  position: relative;
+  z-index: 2;
+  margin: 0 28px;
+  /* let it flow down and clip at card edge */
+}
+
+/* ── Browser mockup ── */
+.browser {
+  background: #1A2820;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  box-shadow:
+    0 -2px 0 rgba(255,255,255,0.08) inset,
+    0 32px 80px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-bottom: none;
+}
+
+.browser-bar {
+  background: #141F19;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.browser-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.bdot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.browser-url {
+  flex: 1;
+  height: 22px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 5px;
+  font-size: 10px;
+  color: rgba(247,244,238,0.3);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+.lock-icon {
+  width: 8px;
+  height: 8px;
+  opacity: 0.4;
+}
+
+.browser-screen {
+  overflow: hidden;
+  background: #F7F4EE;
+}
+
+/* DS Explorer screen content */
+.ds-screen {
+  display: flex;
+  height: 320px;
+}
+
+.ds-left-nav {
+  width: 180px;
+  background: #fff;
+  border-right: 1px solid #EBEBEB;
+  padding: 16px 0;
+  flex-shrink: 0;
+}
+
+.nav-section-label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #BBBBBB;
+  padding: 0 14px;
+  margin-bottom: 6px;
+  margin-top: 12px;
+  font-family: 'Inter', sans-serif;
+}
+
+.nav-item {
+  font-size: 11px;
+  padding: 5px 14px;
+  color: #666;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.nav-item.active {
+  background: #EBF2EA;
+  color: #1C3A2A;
+  font-weight: 600;
+  border-right: 2px solid #2D5A3D;
+}
+
+.nav-item-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+.ds-main-area {
+  flex: 1;
+  background: #F8F7F4;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.ds-main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.ds-main-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1A1A1A;
+  font-family: 'Inter', sans-serif;
+}
+
+.ds-main-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.ds-btn {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.ds-btn-primary {
+  background: #1C3A2A;
+  color: #F7F4EE;
+}
+
+.ds-btn-outline {
+  background: transparent;
+  color: #555;
+  border: 1px solid #DDD;
+}
+
+/* Component grid inside browser */
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.comp-cell {
+  background: #fff;
+  border: 1px solid #EBEBEB;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.comp-cell-label {
+  font-size: 8px;
+  font-weight: 600;
+  color: #AAA;
+  letter-spacing: 0.06em;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Mini button variants inside comp cells */
+.mini-btn {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 9px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Mini input inside comp cells */
+.mini-input {
+  width: 100%;
+  height: 22px;
+  border: 1px solid #DCDCDC;
+  border-radius: 4px;
+  background: #fff;
+  padding: 0 7px;
+  font-size: 9px;
+  color: #AAA;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+}
+
+/* Mini badge row */
+.mini-badges {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.mini-badge {
+  font-size: 8px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Phone mockup ── */
+.phone-container {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0 0;
+}
+
+.phone {
+  width: 130px;
+  background: #111;
+  border-radius: 26px;
+  padding: 10px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.12),
+    0 24px 60px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.phone-notch {
+  width: 40px;
+  height: 10px;
+  background: #111;
+  border-radius: 0 0 8px 8px;
+  margin: 0 auto 6px;
+  position: relative;
+  z-index: 2;
+}
+
+.phone-screen-inner {
+  background: #1C3A2A;
+  border-radius: 18px;
+  overflow: hidden;
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-status-bar {
+  padding: 6px 12px 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.phone-time {
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(247,244,238,0.9);
+  font-family: 'Inter', sans-serif;
+}
+
+.phone-indicators {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.phone-bar {
+  width: 3px;
+  border-radius: 1px;
+  background: rgba(247,244,238,0.7);
+}
+
+.phone-app-header {
+  padding: 4px 12px 10px;
+}
+
+.phone-app-greeting {
+  font-size: 8px;
+  color: rgba(247,244,238,0.5);
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 2px;
+}
+
+.phone-app-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #F7F4EE;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.phone-app-body {
+  flex: 1;
+  background: #F8F7F4;
+  border-radius: 16px 16px 0 0;
+  padding: 12px;
+  overflow: hidden;
+}
+
+.phone-metric-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.phone-metric-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 8px;
+  padding: 7px 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.phone-metric-label {
+  font-size: 7px;
+  color: #AAA;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 2px;
+}
+
+.phone-metric-val {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1A1A1A;
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+}
+
+.phone-metric-sub {
+  font-size: 6px;
+  color: #0CAF60;
+  font-family: 'Inter', sans-serif;
+  margin-top: 1px;
+}
+
+.phone-mini-chart-area {
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.phone-chart-label {
+  font-size: 7px;
+  color: #AAA;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 5px;
+}
+
+/* ── Tablet / floating glass panels (card-tr) ── */
+.tablet-mockup {
+  position: relative;
+  width: 100%;
+  padding: 16px 24px 0;
+}
+
+.tablet {
+  background: #1A1A1A;
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.1),
+    0 20px 50px rgba(0,0,0,0.5);
+}
+
+.tablet-screen {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tablet-top-bar {
+  background: #F5F5F5;
+  padding: 7px 12px;
+  border-bottom: 1px solid #EBEBEB;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.t-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: #333;
+  font-family: 'Inter', sans-serif;
+}
+
+.t-badge {
+  font-size: 8px;
+  padding: 1px 6px;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+.tablet-body {
+  flex: 1;
+  padding: 10px 12px;
+  background: #FAFAFA;
+  overflow: hidden;
+}
+
+.token-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.token-chip {
+  border-radius: 5px;
+  padding: 5px 5px 4px;
+  text-align: center;
+}
+
+.token-chip-label {
+  font-size: 7px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  margin-top: 3px;
+  opacity: 0.6;
+}
+
+/* floating stat pill overlaid on tablet area */
+.float-pill {
+  position: absolute;
+  right: 8px;
+  bottom: 20px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  z-index: 3;
+}
+
+.float-pill-val {
+  font-size: 22px;
+  font-weight: 700;
+  color: #F7F4EE;
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+}
+
+.float-pill-label {
+  font-size: 9px;
+  color: rgba(247,244,238,0.5);
+  font-family: 'Inter', sans-serif;
+  margin-top: 2px;
+}
+
+/* ── Small card (card-br) ── */
+.small-card-content {
+  padding: 24px 24px 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.testimonial-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-style: italic;
+  color: rgba(247,244,238,0.75);
+  line-height: 1.55;
+  flex: 1;
+  margin-top: 8px;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 0 20px;
+}
+
+.author-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.author-info-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #F7F4EE;
+  font-family: 'Inter', sans-serif;
+}
+
+.author-info-role {
+  font-size: 11px;
+  color: rgba(247,244,238,0.4);
+  font-family: 'Inter', sans-serif;
+}
+
+.stars-row {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.star-icon {
+  color: #E8967A;
+  font-size: 11px;
+  line-height: 1;
+}
+</style>
+</head>
+<body>
+
+<!-- Background mesh -->
+<div class="bg">
+  <div class="bg-blob" style="width:700px;height:700px;background:radial-gradient(circle,rgba(45,90,61,0.7) 0%,transparent 65%);top:-200px;left:-100px;"></div>
+  <div class="bg-blob" style="width:500px;height:500px;background:radial-gradient(circle,rgba(232,150,122,0.3) 0%,transparent 65%);top:100px;right:-80px;"></div>
+  <div class="bg-blob" style="width:600px;height:600px;background:radial-gradient(circle,rgba(21,46,31,0.9) 0%,transparent 70%);bottom:-100px;left:200px;"></div>
+  <div class="bg-blob" style="width:300px;height:300px;background:radial-gradient(circle,rgba(139,175,142,0.25) 0%,transparent 70%);bottom:100px;right:100px;"></div>
+</div>
+
+<div class="section">
+
+  <!-- Header -->
+  <div class="section-header">
+    <div class="header-left">
+      <div class="eyebrow">Selected work</div>
+      <h2 class="section-title">Craft in every<br><em>pixel &amp; token</em></h2>
+    </div>
+    <div class="header-right">
+      <div class="filter-pill active">All</div>
+      <div class="filter-pill">Systems</div>
+      <div class="filter-pill">Product</div>
+      <div class="filter-pill">Brand</div>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="grid">
+
+    <!-- ── CARD MAIN: Design System browser ── -->
+    <div class="glass-card card-main">
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-tag">Design System</div>
+          <div class="card-year">2024</div>
+        </div>
+        <div class="card-title">Copycat DS</div>
+        <div class="card-desc">End-to-end token architecture, 80+ components, and living docs for a fintech SaaS platform.</div>
+      </div>
+
+      <!-- Browser mockup -->
+      <div class="mockup-area">
+        <div class="browser">
+          <div class="browser-bar">
+            <div class="browser-dots">
+              <div class="bdot" style="background:#FF5F57;"></div>
+              <div class="bdot" style="background:#FEBC2E;"></div>
+              <div class="bdot" style="background:#28C840;"></div>
+            </div>
+            <div class="browser-url">
+              <svg class="lock-icon" viewBox="0 0 8 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <rect x="1" y="4" width="6" height="5.5" rx="1"/><path d="M2.5 4V2.8a1.5 1.5 0 013 0V4"/>
+              </svg>
+              copycat.design/system
+            </div>
+          </div>
+          <div class="browser-screen">
+            <div class="ds-screen">
+              <!-- Left nav -->
+              <div class="ds-left-nav">
+                <div class="nav-section-label">Foundation</div>
+                <div class="nav-item">
+                  <div class="nav-item-dot"></div> Colors
+                </div>
+                <div class="nav-item active">
+                  <div class="nav-item-dot"></div> Tokens
+                </div>
+                <div class="nav-item">
+                  <div class="nav-item-dot"></div> Typography
+                </div>
+                <div class="nav-section-label">Components</div>
+                <div class="nav-item">
+                  <div class="nav-item-dot"></div> Button
+                </div>
+                <div class="nav-item">
+                  <div class="nav-item-dot"></div> Input
+                </div>
+                <div class="nav-item">
+                  <div class="nav-item-dot"></div> Card
+                </div>
+                <div class="nav-item">
+                  <div class="nav-item-dot"></div> Badge
+                </div>
+                <div class="nav-section-label">Patterns</div>
+                <div class="nav-item">
+                  <div class="nav-item-dot"></div> Forms
+                </div>
+                <div class="nav-item">
+                  <div class="nav-item-dot"></div> Tables
+                </div>
+              </div>
+
+              <!-- Main area -->
+              <div class="ds-main-area">
+                <div class="ds-main-header">
+                  <div class="ds-main-title">Components</div>
+                  <div class="ds-main-actions">
+                    <button class="ds-btn ds-btn-outline">Figma ↗</button>
+                    <button class="ds-btn ds-btn-primary">+ New</button>
+                  </div>
+                </div>
+                <div class="comp-grid">
+                  <!-- Button cell -->
+                  <div class="comp-cell">
+                    <div class="comp-cell-label">Button</div>
+                    <span class="mini-btn" style="background:#1C3A2A;color:#F7F4EE;">Primary</span>
+                    <span class="mini-btn" style="background:transparent;color:#1C3A2A;border:1px solid #1C3A2A;">Outline</span>
+                    <span class="mini-btn" style="background:#F0F0F0;color:#555;">Ghost</span>
+                  </div>
+                  <!-- Input cell -->
+                  <div class="comp-cell">
+                    <div class="comp-cell-label">Input</div>
+                    <div class="mini-input" style="border-color:#DCDCDC;color:#AAA;">Placeholder</div>
+                    <div class="mini-input" style="border-color:#2D5A3D;color:#333;">Active state</div>
+                    <div class="mini-input" style="border-color:#E8967A;color:#AAA;background:#FFF8F6;">Error state</div>
+                  </div>
+                  <!-- Badge cell -->
+                  <div class="comp-cell">
+                    <div class="comp-cell-label">Badge</div>
+                    <div class="mini-badges">
+                      <span class="mini-badge" style="background:#EBF2EA;color:#2D5A3D;">Active</span>
+                      <span class="mini-badge" style="background:#FAE8E2;color:#C05A3C;">Error</span>
+                      <span class="mini-badge" style="background:#F0F0F0;color:#666;">Draft</span>
+                      <span class="mini-badge" style="background:#E8F4FF;color:#0068FF;">Info</span>
+                    </div>
+                  </div>
+                  <!-- Card cell -->
+                  <div class="comp-cell">
+                    <div class="comp-cell-label">Card</div>
+                    <div style="background:#F8F7F4;border-radius:5px;padding:7px;border:1px solid #EBEBEB;">
+                      <div style="font-size:8px;font-weight:600;color:#1A1A1A;font-family:'Inter',sans-serif;margin-bottom:3px;">Card Title</div>
+                      <div style="font-size:7px;color:#AAA;font-family:'Inter',sans-serif;">Subtitle text here</div>
+                    </div>
+                  </div>
+                  <!-- Color token cell -->
+                  <div class="comp-cell">
+                    <div class="comp-cell-label">Color tokens</div>
+                    <div style="display:flex;gap:3px;">
+                      <div style="width:16px;height:16px;border-radius:3px;background:#152E1F;"></div>
+                      <div style="width:16px;height:16px;border-radius:3px;background:#2D5A3D;"></div>
+                      <div style="width:16px;height:16px;border-radius:3px;background:#E8967A;"></div>
+                      <div style="width:16px;height:16px;border-radius:3px;background:#F7F4EE;"></div>
+                      <div style="width:16px;height:16px;border-radius:3px;background:#8BAF8E;"></div>
+                    </div>
+                    <div style="font-size:7px;color:#AAA;font-family:'Inter',sans-serif;">5 semantic groups</div>
+                  </div>
+                  <!-- Checkbox/Radio cell -->
+                  <div class="comp-cell">
+                    <div class="comp-cell-label">Controls</div>
+                    <div style="display:flex;flex-direction:column;gap:4px;">
+                      <div style="display:flex;align-items:center;gap:5px;">
+                        <div style="width:11px;height:11px;border-radius:2px;background:#1C3A2A;display:flex;align-items:center;justify-content:center;">
+                          <svg width="7" height="7" viewBox="0 0 7 7" fill="none"><path d="M1 3.5l2 2 3-3" stroke="#F7F4EE" stroke-width="1.2" stroke-linecap="round"/></svg>
+                        </div>
+                        <span style="font-size:8px;color:#333;font-family:'Inter',sans-serif;">Checked</span>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:5px;">
+                        <div style="width:11px;height:11px;border-radius:2px;border:1.5px solid #DDD;"></div>
+                        <span style="font-size:8px;color:#AAA;font-family:'Inter',sans-serif;">Unchecked</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="card-chips">
+          <div class="chip">Figma</div>
+          <div class="chip">Tokens</div>
+          <div class="chip">80+ components</div>
+        </div>
+        <div class="card-arrow-btn">
+          <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CARD TR: Mobile app with floating pill ── -->
+    <div class="glass-card card-tr">
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-tag">Product Design</div>
+          <div class="card-year">2023</div>
+        </div>
+        <div class="card-title">Openbank App</div>
+        <div class="card-desc" style="font-size:12px;margin-bottom:0;">iOS &amp; Android banking redesign — from 0-to-1 discovery to pixel-perfect handoff.</div>
+      </div>
+
+      <div class="tablet-mockup">
+        <!-- Phone -->
+        <div class="phone-container">
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen-inner">
+              <div class="phone-status-bar">
+                <div class="phone-time">9:41</div>
+                <div class="phone-indicators">
+                  <div class="phone-bar" style="height:6px;"></div>
+                  <div class="phone-bar" style="height:8px;"></div>
+                  <div class="phone-bar" style="height:10px;"></div>
+                  <div class="phone-bar" style="height:7px;opacity:0.4;"></div>
+                </div>
+              </div>
+              <div class="phone-app-header">
+                <div class="phone-app-greeting">Good morning</div>
+                <div class="phone-app-title">Felipe C.</div>
+              </div>
+              <div class="phone-app-body">
+                <div class="phone-metric-row">
+                  <div class="phone-metric-card">
+                    <div class="phone-metric-label">Balance</div>
+                    <div class="phone-metric-val" style="font-size:13px;">€4,820</div>
+                    <div class="phone-metric-sub">+2.4%</div>
+                  </div>
+                  <div class="phone-metric-card">
+                    <div class="phone-metric-label">Savings</div>
+                    <div class="phone-metric-val" style="font-size:13px;">€1,240</div>
+                    <div class="phone-metric-sub">On track</div>
+                  </div>
+                </div>
+                <div class="phone-mini-chart-area">
+                  <div class="phone-chart-label">Spending · Nov</div>
+                  <svg width="100%" height="36" viewBox="0 0 200 36" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#2D5A3D" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#2D5A3D" stop-opacity="0"/>
+                      </linearGradient>
+                    </defs>
+                    <polygon points="0,28 30,22 60,26 90,14 120,18 150,8 200,12 200,36 0,36" fill="url(#pg)"/>
+                    <polyline points="0,28 30,22 60,26 90,14 120,18 150,8 200,12" fill="none" stroke="#2D5A3D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="200" cy="12" r="3" fill="#2D5A3D"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating glass pill -->
+        <div class="float-pill">
+          <div class="float-pill-val">+38%</div>
+          <div class="float-pill-label">Conversion lift</div>
+        </div>
+      </div>
+
+      <div class="card-footer" style="margin-top:auto;">
+        <div class="card-chips">
+          <div class="chip">UX Research</div>
+          <div class="chip">iOS</div>
+          <div class="chip">Android</div>
+        </div>
+        <div class="card-arrow-btn">
+          <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CARD BR: Testimonial ── -->
+    <div class="glass-card card-br">
+      <div class="small-card-content">
+        <div class="card-meta">
+          <div class="card-tag">Client Story</div>
+          <div class="stars-row">
+            <span class="star-icon">★</span><span class="star-icon">★</span>
+            <span class="star-icon">★</span><span class="star-icon">★</span>
+            <span class="star-icon">★</span>
+          </div>
+        </div>
+        <p class="testimonial-quote">
+          "Felipe gave our team a shared language. Handoffs went from days to hours — and every engineer knew exactly what to build."
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#2D5A3D,#8BAF8E);color:#F7F4EE;">M</div>
+          <div>
+            <div class="author-info-name">María Rodríguez</div>
+            <div class="author-info-role">Head of Product · Openbank</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+</div>
+
+</body>
+</html>

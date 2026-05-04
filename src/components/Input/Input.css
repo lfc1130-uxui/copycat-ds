@@ -1,0 +1,213 @@
+/* ── ROOT ───────────────────────────────────────────────────────────────── */
+
+.input-root {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.input-root--full { width: 100%; }
+
+/* ── LABEL ──────────────────────────────────────────────────────────────── */
+
+.input-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+  color: var(--color-text-primary);
+}
+
+.input-required { color: var(--color-error); }
+
+/* ── WRAPPER (the visible box) ──────────────────────────────────────────── */
+
+.input-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-bg-surface);
+  border: var(--border-1) solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--duration-150) var(--ease-in-out),
+    box-shadow   var(--duration-150) var(--ease-in-out),
+    background   var(--duration-150) var(--ease-in-out);
+}
+
+.input-wrapper--full { width: 100%; }
+
+/* Focus-within — the ring lives on the wrapper */
+.input-wrapper:focus-within:not(.input-wrapper--disabled):not(.input-wrapper--readonly) {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px rgba(0, 104, 255, 0.18);
+}
+
+/* ── SIZES ──────────────────────────────────────────────────────────────── */
+
+.input-wrapper--sm { height: 32px; border-radius: var(--radius-sm); }
+.input-wrapper--md { height: 40px; border-radius: var(--radius-md); }
+.input-wrapper--lg { height: 48px; border-radius: var(--radius-lg); }
+
+/* ── FIELD (the <input> element) ────────────────────────────────────────── */
+
+.input-field {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 var(--space-3);
+  background: transparent;
+  border: none;
+  outline: none;
+  text-align: left;
+  direction: ltr;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text-primary);
+}
+
+.input-wrapper--sm .input-field { font-size: var(--text-sm); }
+.input-wrapper--lg .input-field { font-size: var(--text-md); }
+
+.input-field::placeholder { color: var(--color-text-tertiary); }
+
+/* Leading icon: tighter gap between icon and text */
+.input-wrapper--has-leading-icon .input-field { padding-left: var(--space-2); }
+/* Prefix sits flush against the field — no double padding */
+.input-wrapper--has-prefix .input-field { padding-left: 0; }
+/* Trailing slot (icon/spinner) sits flush — field keeps its right padding otherwise */
+.input-wrapper--has-trailing .input-field { padding-right: 0; }
+
+/* ── ICONS ──────────────────────────────────────────────────────────────── */
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-text-tertiary);
+}
+
+.input-icon--leading  { padding-left: var(--space-2); }
+.input-icon--trailing { padding-right: var(--space-3); }
+
+.input-icon--interactive {
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  transition: color var(--duration-100) var(--ease-in-out);
+}
+.input-icon--interactive:hover { color: var(--color-text-primary); }
+
+.input-icon--success { color: var(--color-success); }
+.input-icon--error   { color: var(--color-error); }
+
+/* ── PREFIX / SUFFIX ────────────────────────────────────────────────────── */
+
+.input-prefix,
+.input-suffix {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.input-wrapper--sm .input-prefix,
+.input-wrapper--sm .input-suffix { font-size: var(--text-sm); }
+
+.input-prefix {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+.input-suffix {
+  border-left: var(--border-1) solid var(--color-border-default);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+/* ── VALIDATION STATES ──────────────────────────────────────────────────── */
+
+.input-wrapper--error {
+  border-color: var(--color-error);
+}
+.input-wrapper--error:focus-within {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px rgba(240, 48, 48, 0.15);
+}
+
+.input-wrapper--success {
+  border-color: var(--color-success);
+}
+.input-wrapper--success:focus-within {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 3px rgba(12, 175, 96, 0.15);
+}
+
+/* ── DISABLED ───────────────────────────────────────────────────────────── */
+
+.input-wrapper--disabled {
+  background: var(--color-bg-disabled);
+  border-color: var(--color-border-disabled);
+  cursor: not-allowed;
+}
+.input-wrapper--disabled .input-field {
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+.input-wrapper--disabled .input-field::placeholder {
+  color: var(--color-text-disabled);
+}
+.input-wrapper--disabled .input-prefix,
+.input-wrapper--disabled .input-suffix,
+.input-wrapper--disabled .input-icon {
+  color: var(--color-text-disabled);
+}
+
+/* ── READONLY ───────────────────────────────────────────────────────────── */
+
+.input-wrapper--readonly {
+  background: var(--color-bg-subtle);
+}
+.input-wrapper--readonly .input-field {
+  cursor: default;
+}
+
+/* ── SPINNER (loading state) ────────────────────────────────────────────── */
+
+.input-spinner {
+  flex-shrink: 0;
+  margin-right: var(--space-3);
+  border-radius: 50%;
+  animation: input-spin 0.75s linear infinite;
+  border: 2px solid var(--color-border-default);
+  border-top-color: var(--color-brand);
+}
+
+.input-wrapper--sm .input-spinner { width: 12px; height: 12px; }
+.input-wrapper--md .input-spinner { width: 14px; height: 14px; }
+.input-wrapper--lg .input-spinner { width: 16px; height: 16px; }
+
+@keyframes input-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── HELPER TEXT ────────────────────────────────────────────────────────── */
+
+.input-helper {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.input-helper--error   { color: var(--color-error-text); }
+.input-helper--success { color: var(--color-success-text); }
