@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>CopyCat · Dashboard</title>
+  <link rel="stylesheet" href="../src/styles/tokens.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      background: var(--color-bg-page);
+      transition: background var(--duration-300) var(--ease-in-out);
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      background: var(--color-bg-page);
+      transition: background var(--duration-300) var(--ease-in-out);
+    }
+
+    /* ── APP SHELL ─────────────────────────────────────── */
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      position: relative;
+      background: var(--color-bg-page);
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      transition: background var(--duration-300) var(--ease-in-out);
+    }
+
+    /* ambient orbs */
+    .app::before {
+      content: '';
+      position: fixed;
+      top: -15%;
+      left: -20%;
+      width: 70%;
+      height: 55%;
+      background: radial-gradient(circle, rgba(0,104,255,0.10) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .app::after {
+      content: '';
+      position: fixed;
+      bottom: 5%;
+      right: -25%;
+      width: 60%;
+      height: 50%;
+      background: radial-gradient(circle, rgba(91,33,182,0.07) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .scroll-content {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 88px;
+      scrollbar-width: none;
+    }
+    .scroll-content::-webkit-scrollbar { display: none; }
+
+    /* ── HEADER ─────────────────────────────────────────── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-5) var(--space-5) var(--space-3);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--color-bg-page);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: background var(--duration-300);
+    }
+
+    .header-left { display: flex; align-items: center; gap: var(--space-2); }
+
+    .logo {
+      width: 34px; height: 34px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--blue-400), var(--blue-700));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: var(--weight-bold);
+      color: white; letter-spacing: -0.04em;
+      box-shadow: 0 2px 10px rgba(0,104,255,0.35);
+    }
+
+    .account-pill {
+      display: flex; align-items: center; gap: 5px;
+      padding: 5px 10px;
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-size: var(--text-sm); font-weight: var(--weight-medium);
+      color: var(--color-text-primary);
+      transition: all var(--duration-150);
+      user-select: none;
+    }
+    .account-pill:hover { background: var(--color-bg-muted); border-color: var(--color-border-strong); }
+
+    .header-right { display: flex; align-items: center; gap: var(--space-2); }
+
+    .hdr-btn {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-full);
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border-default);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-text-secondary);
+      transition: all var(--duration-150);
+    }
+    .hdr-btn:hover { background: var(--color-bg-muted); color: var(--color-text-primary); }
+    .hdr-btn:active { transform: scale(0.92); }
+
+    .notif-wrap { position: relative; }
+    .notif-dot {
+      position: absolute; top: 6px; right: 6px;
+      width: 7px; height: 7px;
+      background: var(--color-error);
+      border-radius: 50%;
+      border: 2px solid var(--color-bg-page);
+    }
+
+    .avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-300), var(--blue-600));
+      border: 2px solid var(--color-border-default);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: var(--weight-semibold); color: white;
+      cursor: pointer; transition: border-color var(--duration-150);
+    }
+    .avatar:hover { border-color: var(--color-brand); }
+
+    /* ── HERO BALANCE CARD ──────────────────────────────── */
+    .hero { padding: var(--space-2) var(--space-5) var(--space-5); }
+
+    .balance-card {
+      border-radius: 24px;
+      padding: var(--space-6);
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, #001433 0%, #002880 35%, #0057ff 70%, #1a6eff 100%);
+      box-shadow: 0 24px 64px rgba(0,80,255,0.40), 0 4px 16px rgba(0,0,0,0.25),
+                  inset 0 1px 0 rgba(255,255,255,0.18);
+    }
+
+    /* shimmer orb */
+    .balance-card::before {
+      content: '';
+      position: absolute;
+      top: -40%; left: -20%;
+      width: 80%; height: 120%;
+      background: radial-gradient(ellipse, rgba(255,255,255,0.10) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    /* purple accent */
+    .balance-card::after {
+      content: '';
+      position: absolute;
+      bottom: -30%; right: -20%;
+      width: 70%; height: 80%;
+      background: radial-gradient(ellipse, rgba(110,40,255,0.30) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* grid overlay */
+    .card-grid {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 36px 36px;
+    }
+
+    .card-inner { position: relative; z-index: 1; }
+
+    .card-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: var(--space-5);
+    }
+
+    .card-tag {
+      font-size: 10px; font-weight: var(--weight-semibold);
+      color: rgba(255,255,255,0.55); text-transform: uppercase;
+      letter-spacing: 0.12em;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .live-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 6px rgba(74,222,128,0.8);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    .card-opts {
+      background: none; border: none; cursor: pointer;
+      color: rgba(255,255,255,0.5); display: flex; align-items: center;
+      transition: color var(--duration-150);
+    }
+    .card-opts:hover { color: white; }
+
+    .balance-currency {
+      font-size: var(--text-sm); font-weight: var(--weight-medium);
+      color: rgba(255,255,255,0.60); margin-bottom: 6px;
+    }
+
+    .balance-row {
+      display: flex; align-items: baseline; gap: var(--space-2);
+      margin-bottom: var(--space-3);
+    }
+
+    .balance-int {
+      font-size: 48px; font-weight: var(--weight-bold);
+      color: white; line-height: 1; letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+      transition: filter var(--duration-200) var(--ease-in-out);
+    }
+    .balance-dec {
+      font-size: 24px; font-weight: var(--weight-semibold);
+      color: rgba(255,255,255,0.65); font-variant-numeric: tabular-nums;
+      transition: filter var(--duration-200) var(--ease-in-out);
+    }
+    .balance-int.blurred, .balance-dec.blurred { filter: blur(10px); }
+
+    .balance-controls {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: var(--space-5);
+    }
+
+    .trend-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+      background: rgba(74,222,128,0.15);
+      border: 1px solid rgba(74,222,128,0.25);
+      font-size: 11px; font-weight: var(--weight-semibold);
+      color: #86efac;
+    }
+
+    .hide-toggle {
+      display: flex; align-items: center; gap: 4px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: var(--radius-full);
+      color: rgba(255,255,255,0.75);
+      font-size: 11px; font-weight: var(--weight-medium);
+      padding: 4px 10px; cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: background var(--duration-150);
+    }
+    .hide-toggle:hover { background: rgba(255,255,255,0.22); }
+
+    .card-foot {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .card-dots { display: flex; align-items: center; gap: 6px; }
+    .dot-cluster { display: flex; gap: 3px; }
+    .dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.45); }
+    .card-last4 {
+      font-size: var(--text-base); font-weight: var(--weight-medium);
+      color: rgba(255,255,255,0.85); letter-spacing: 0.06em;
+    }
+
+    .mastercard { display: flex; }
+    .mc-left  { width: 26px; height: 26px; border-radius: 50%; background: #eb001b; opacity: 0.9; }
+    .mc-right { width: 26px; height: 26px; border-radius: 50%; background: #f79e1b; opacity: 0.9; margin-left: -10px; }
+
+    /* ── QUICK ACTIONS ──────────────────────────────────── */
+    .actions { padding: 0 var(--space-5) var(--space-5); }
+    .actions-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--space-3); }
+
+    .act-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      background: none; border: none; cursor: pointer; padding: var(--space-2) 0;
+    }
+
+    .act-icon {
+      width: 54px; height: 54px; border-radius: 18px;
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-default);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-brand);
+      transition: all var(--duration-150) var(--ease-in-out);
+    }
+    .act-btn:hover  .act-icon {
+      background: var(--color-brand-subtle);
+      border-color: var(--color-brand);
+      box-shadow: 0 0 18px rgba(0,104,255,0.22);
+      transform: translateY(-2px);
+    }
+    .act-btn:active .act-icon { transform: scale(0.91); }
+
+    .act-label {
+      font-size: 11px; font-weight: var(--weight-medium);
+      color: var(--color-text-secondary);
+    }
+
+    /* ── SECTION ─────────────────────────────────────────── */
+    .section { padding: 0 var(--space-5) var(--space-5); }
+
+    .sec-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: var(--space-3);
+    }
+    .sec-title {
+      font-size: var(--text-base); font-weight: var(--weight-semibold);
+      color: var(--color-text-primary);
+    }
+    .sec-link {
+      font-size: var(--text-sm); font-weight: var(--weight-medium);
+      color: var(--color-brand); background: none; border: none; cursor: pointer; padding: 0;
+    }
+    .sec-link:hover { text-decoration: underline; }
+
+    /* ── ACCOUNTS ────────────────────────────────────────── */
+    .accounts-row {
+      display: flex; gap: var(--space-3);
+      overflow-x: auto; scrollbar-width: none;
+      padding-bottom: 4px; -webkit-overflow-scrolling: touch;
+    }
+    .accounts-row::-webkit-scrollbar { display: none; }
+
+    .acct-card {
+      flex-shrink: 0; width: 138px;
+      padding: var(--space-4);
+      border-radius: var(--radius-xl);
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-default);
+      cursor: pointer;
+      transition: all var(--duration-150) var(--ease-in-out);
+    }
+    .acct-card:hover {
+      border-color: var(--color-brand);
+      box-shadow: 0 0 0 1px var(--color-brand), 0 6px 20px rgba(0,104,255,0.12);
+      transform: translateY(-2px);
+    }
+    .acct-card:active { transform: scale(0.97); }
+    .acct-card.sel {
+      border-color: var(--color-brand);
+      background: linear-gradient(140deg, var(--color-brand-subtle), var(--color-bg-surface));
+      box-shadow: 0 0 0 1px var(--color-brand), 0 6px 20px rgba(0,104,255,0.15);
+    }
+
+    .acct-flag  { font-size: 20px; margin-bottom: var(--space-2); }
+    .acct-code  { font-size: 10px; font-weight: var(--weight-semibold); color: var(--color-text-tertiary); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+    .acct-bal   { font-size: var(--text-md); font-weight: var(--weight-bold); color: var(--color-text-primary); font-variant-numeric: tabular-nums; margin-bottom: 2px; }
+    .acct-chg   { font-size: 11px; font-weight: var(--weight-medium); }
+    .acct-chg.up   { color: var(--color-success); }
+    .acct-chg.down { color: var(--color-error); }
+
+    .acct-add {
+      flex-shrink: 0; width: 138px;
+      border-radius: var(--radius-xl);
+      border: 1.5px dashed var(--color-border-default);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 6px; min-height: 104px; cursor: pointer;
+      transition: border-color var(--duration-150);
+    }
+    .acct-add:hover { border-color: var(--color-brand); }
+    .acct-add span { font-size: 11px; color: var(--color-text-tertiary); }
+
+    /* ── SPEND CHART ─────────────────────────────────────── */
+    .chart-card {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-4);
+    }
+
+    .chart-head {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: var(--space-4);
+    }
+    .chart-amount {
+      font-size: var(--text-2xl); font-weight: var(--weight-bold);
+      font-variant-numeric: tabular-nums; color: var(--color-text-primary);
+      line-height: 1;
+    }
+    .chart-sub { font-size: var(--text-xs); color: var(--color-text-tertiary); margin-top: 4px; }
+
+    .period-tabs {
+      display: flex; gap: 2px;
+      background: var(--color-bg-subtle); border-radius: var(--radius-full);
+      padding: 2px;
+    }
+    .ptab {
+      padding: 4px 9px; border-radius: var(--radius-full);
+      font-size: 11px; font-weight: var(--weight-medium);
+      color: var(--color-text-secondary);
+      background: none; border: none; cursor: pointer;
+      transition: all var(--duration-150);
+    }
+    .ptab.on {
+      background: var(--color-bg-surface);
+      color: var(--color-text-primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .chart-bars {
+      display: flex; align-items: flex-end; gap: 5px; height: 80px;
+    }
+    .bar-wrap {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; gap: 5px; height: 100%; justify-content: flex-end;
+    }
+    .bar {
+      width: 100%; min-height: 4px; border-radius: 3px 3px 2px 2px;
+      background: var(--color-bg-muted);
+      transition: height var(--duration-300) var(--ease-out);
+    }
+    .bar.on {
+      background: linear-gradient(180deg, var(--blue-400), var(--blue-600));
+      box-shadow: 0 0 10px rgba(0,104,255,0.40);
+    }
+    .bar-lbl { font-size: 9px; color: var(--color-text-tertiary); }
+    .bar-lbl.on { color: var(--color-brand); font-weight: var(--weight-semibold); }
+
+    /* ── TRANSACTIONS ────────────────────────────────────── */
+    .tx-list { display: flex; flex-direction: column; gap: 2px; }
+
+    .tx-item {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: 11px var(--space-4); border-radius: var(--radius-lg);
+      background: var(--color-bg-surface); cursor: pointer;
+      transition: background var(--duration-150);
+    }
+    .tx-item:hover { background: var(--color-bg-subtle); }
+
+    .tx-ico {
+      width: 42px; height: 42px; border-radius: var(--radius-xl);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+
+    .tx-info { flex: 1; min-width: 0; }
+    .tx-name {
+      font-size: var(--text-base); font-weight: var(--weight-medium);
+      color: var(--color-text-primary); white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .tx-meta { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+
+    .tx-amt {
+      font-size: var(--text-base); font-weight: var(--weight-semibold);
+      font-variant-numeric: tabular-nums; white-space: nowrap;
+    }
+    .tx-amt.cr { color: var(--color-success); }
+    .tx-amt.db { color: var(--color-text-primary); }
+
+    /* ── BOTTOM NAV ──────────────────────────────────────── */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 430px; z-index: 100;
+      display: flex; align-items: center; justify-content: space-around;
+      padding: 10px var(--space-5) 18px;
+      background: var(--color-bg-surface);
+      border-top: 1px solid var(--color-border-default);
+    }
+
+    .html.dark .bottom-nav { background: rgba(17,20,34,0.88); backdrop-filter: blur(20px); }
+
+    .nav-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      background: none; border: none; cursor: pointer;
+      padding: 6px 14px; border-radius: var(--radius-xl);
+      position: relative; transition: all var(--duration-150);
+    }
+    .nav-btn .ni { color: var(--color-text-tertiary); transition: color var(--duration-150); }
+    .nav-btn .nl { font-size: 9px; font-weight: var(--weight-medium); color: var(--color-text-tertiary); transition: color var(--duration-150); }
+
+    .nav-btn.on .ni { color: var(--color-brand); }
+    .nav-btn.on .nl { color: var(--color-brand); }
+    .nav-btn.on::before {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 18px; height: 2px;
+      background: var(--color-brand); border-radius: var(--radius-full);
+      box-shadow: 0 0 8px rgba(0,104,255,0.7);
+    }
+
+    .nav-fab {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue-400), var(--blue-700));
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: white; margin-bottom: 6px;
+      box-shadow: 0 4px 18px rgba(0,104,255,0.50);
+      transition: all var(--duration-150);
+    }
+    .nav-fab:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(0,104,255,0.65); }
+    .nav-fab:active { transform: scale(0.93); }
+
+    /* Desktop frame */
+    @media (min-width: 500px) {
+      body { background: var(--color-bg-subtle); padding: 24px 0; align-items: flex-start; }
+      .app {
+        border-radius: 44px; min-height: calc(100vh - 48px);
+        box-shadow: var(--shadow-2xl), 0 0 0 1px var(--color-border-default);
+        overflow: hidden;
+      }
+      .bottom-nav { border-radius: 0 0 44px 44px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="scroll-content">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">CC</div>
+        <button class="account-pill">
+          Personal
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 5 6 8 9 5"/></svg>
+        </button>
+      </div>
+      <div class="header-right">
+        <div class="notif-wrap">
+          <button class="hdr-btn">
+            <div class="notif-dot"></div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+        </div>
+        <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()">
+          <svg id="themeIco" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+        <div class="avatar">AL</div>
+      </div>
+    </header>
+
+    <!-- BALANCE CARD -->
+    <section class="hero">
+      <div class="balance-card">
+        <div class="card-grid"></div>
+        <div class="card-inner">
+          <div class="card-top">
+            <span class="card-tag">
+              <span class="live-dot"></span>
+              Total Balance
+            </span>
+            <button class="card-opts">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+            </button>
+          </div>
+
+          <div class="balance-currency">US Dollar · USD</div>
+          <div class="balance-row">
+            <span class="balance-int" id="bInt">24,831</span>
+            <span class="balance-dec" id="bDec">.50</span>
+          </div>
+
+          <div class="balance-controls">
+            <span class="trend-chip">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+              +2.4% this month
+            </span>
+            <button class="hide-toggle" id="hideBtn" onclick="toggleBalance()">
+              <svg id="eyeIco" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span id="hideLabel">Hide</span>
+            </button>
+          </div>
+
+          <div class="card-foot">
+            <div class="card-dots">
+              <div class="dot-cluster"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+              <div class="dot-cluster"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+              <div class="dot-cluster"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+              <span class="card-last4">4582</span>
+            </div>
+            <div class="mastercard"><div class="mc-left"></div><div class="mc-right"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUICK ACTIONS -->
+    <section class="actions">
+      <div class="actions-grid">
+        <button class="act-btn">
+          <div class="act-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+          <span class="act-label">Send</span>
+        </button>
+        <button class="act-btn">
+          <div class="act-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </div>
+          <span class="act-label">Receive</span>
+        </button>
+        <button class="act-btn">
+          <div class="act-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          </div>
+          <span class="act-label">Exchange</span>
+        </button>
+        <button class="act-btn">
+          <div class="act-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <span class="act-label">Pay</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ACCOUNTS -->
+    <section class="section">
+      <div class="sec-head">
+        <span class="sec-title">Accounts</span>
+        <button class="sec-link">Manage</button>
+      </div>
+      <div class="accounts-row">
+        <div class="acct-card sel">
+          <div class="acct-flag">🇺🇸</div>
+          <div class="acct-code">USD</div>
+          <div class="acct-bal">$12,430</div>
+          <div class="acct-chg up">↑ +1.2%</div>
+        </div>
+        <div class="acct-card">
+          <div class="acct-flag">🇪🇺</div>
+          <div class="acct-code">EUR</div>
+          <div class="acct-bal">€8,201</div>
+          <div class="acct-chg up">↑ +0.8%</div>
+        </div>
+        <div class="acct-card">
+          <div class="acct-flag">🇬🇧</div>
+          <div class="acct-code">GBP</div>
+          <div class="acct-bal">£4,200</div>
+          <div class="acct-chg down">↓ −0.3%</div>
+        </div>
+        <div class="acct-card">
+          <div class="acct-flag">🇯🇵</div>
+          <div class="acct-code">JPY</div>
+          <div class="acct-bal">¥312k</div>
+          <div class="acct-chg up">↑ +0.5%</div>
+        </div>
+        <div class="acct-add">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Add currency</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEND CHART -->
+    <section class="section">
+      <div class="chart-card">
+        <div class="chart-head">
+          <div>
+            <div class="chart-amount">$3,240</div>
+            <div class="chart-sub">Spent in December</div>
+          </div>
+          <div class="period-tabs">
+            <button class="ptab" onclick="setPeriod(this)">1W</button>
+            <button class="ptab on" onclick="setPeriod(this)">1M</button>
+            <button class="ptab" onclick="setPeriod(this)">3M</button>
+            <button class="ptab" onclick="setPeriod(this)">1Y</button>
+          </div>
+        </div>
+        <div class="chart-bars">
+          <div class="bar-wrap"><div class="bar" style="height:38%"></div><div class="bar-lbl">Jul</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:55%"></div><div class="bar-lbl">Aug</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:42%"></div><div class="bar-lbl">Sep</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:71%"></div><div class="bar-lbl">Oct</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:48%"></div><div class="bar-lbl">Nov</div></div>
+          <div class="bar-wrap"><div class="bar on" style="height:60%"></div><div class="bar-lbl on">Dec</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRANSACTIONS -->
+    <section class="section">
+      <div class="sec-head">
+        <span class="sec-title">Recent Activity</span>
+        <button class="sec-link">See all</button>
+      </div>
+      <div class="tx-list">
+        <div class="tx-item">
+          <div class="tx-ico" style="background:rgba(240,48,48,0.10)">🛍️</div>
+          <div class="tx-info"><div class="tx-name">Spotify Premium</div><div class="tx-meta">Today · Subscription</div></div>
+          <span class="tx-amt db">−$9.99</span>
+        </div>
+        <div class="tx-item">
+          <div class="tx-ico" style="background:rgba(0,104,255,0.10)">✈️</div>
+          <div class="tx-info"><div class="tx-name">Delta Airlines</div><div class="tx-meta">Yesterday · Travel</div></div>
+          <span class="tx-amt db">−$340.00</span>
+        </div>
+        <div class="tx-item">
+          <div class="tx-ico" style="background:rgba(12,175,96,0.12)">💰</div>
+          <div class="tx-info"><div class="tx-name">Salary Deposit</div><div class="tx-meta">Dec 1 · Income</div></div>
+          <span class="tx-amt cr">+$3,200.00</span>
+        </div>
+        <div class="tx-item">
+          <div class="tx-ico" style="background:rgba(255,154,13,0.12)">☕</div>
+          <div class="tx-info"><div class="tx-name">Starbucks</div><div class="tx-meta">Nov 30 · Food & Drink</div></div>
+          <span class="tx-amt db">−$6.50</span>
+        </div>
+        <div class="tx-item">
+          <div class="tx-ico" style="background:rgba(99,106,136,0.12)">🏠</div>
+          <div class="tx-info"><div class="tx-name">Rent Payment</div><div class="tx-meta">Nov 28 · Housing</div></div>
+          <span class="tx-amt db">−$1,800.00</span>
+        </div>
+        <div class="tx-item">
+          <div class="tx-ico" style="background:rgba(91,33,182,0.10)">🎮</div>
+          <div class="tx-info"><div class="tx-name">Steam Store</div><div class="tx-meta">Nov 26 · Entertainment</div></div>
+          <span class="tx-amt db">−$59.99</span>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /scroll-content -->
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-btn on" onclick="setNav(this)">
+      <svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="nl">Home</span>
+    </button>
+    <button class="nav-btn" onclick="setNav(this)">
+      <svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      <span class="nl">Cards</span>
+    </button>
+    <button class="nav-fab">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+    </button>
+    <button class="nav-btn" onclick="setNav(this)">
+      <svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span class="nl">Analytics</span>
+    </button>
+    <button class="nav-btn" onclick="setNav(this)">
+      <svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nl">Profile</span>
+    </button>
+  </nav>
+</div>
+
+<script>
+  let hidden = false;
+  let dark = false;
+
+  function toggleTheme() {
+    dark = !dark;
+    document.documentElement.classList.toggle('dark', dark);
+    const ico = document.getElementById('themeIco');
+    ico.innerHTML = dark
+      ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+      : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+  }
+
+  function toggleBalance() {
+    hidden = !hidden;
+    document.getElementById('bInt').classList.toggle('blurred', hidden);
+    document.getElementById('bDec').classList.toggle('blurred', hidden);
+    document.getElementById('hideLabel').textContent = hidden ? 'Show' : 'Hide';
+    const ico = document.getElementById('eyeIco');
+    ico.innerHTML = hidden
+      ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
+      : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+  }
+
+  function setNav(el) {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('on'));
+    el.classList.add('on');
+  }
+
+  function setPeriod(el) {
+    document.querySelectorAll('.ptab').forEach(t => t.classList.remove('on'));
+    el.classList.add('on');
+  }
+</script>
+</body>
+</html>
