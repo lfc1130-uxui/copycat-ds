@@ -753,31 +753,31 @@
 
   // [r, g, b, alpha]
   const TINTS = {
-    hero: [0,   60, 200, 0.055],
-    f3:   [110, 20, 215, 0.065],
-    f4:   [0,  160, 100, 0.045],
-    f5:   [55,   0, 190, 0.060],
+    hero: [0,   60, 200, 0.22],
+    f3:   [110, 20, 215, 0.26],
+    f4:   [0,  160, 100, 0.18],
+    f5:   [55,   0, 190, 0.24],
   };
 
-  let tCurrent = { r: 0,  g: 60, b: 200, a: 0.055 };
-  let tTarget  = { r: 0,  g: 60, b: 200, a: 0.055 };
+  let tCurrent = { r: 0,  g: 60, b: 200, a: 0.22 };
+  let tTarget  = { r: 0,  g: 60, b: 200, a: 0.22 };
 
   function lerp(a, b, t) { return a + (b - a) * t; }
 
   function animateTint() {
-    tCurrent.r = lerp(tCurrent.r, tTarget.r, 0.025);
-    tCurrent.g = lerp(tCurrent.g, tTarget.g, 0.025);
-    tCurrent.b = lerp(tCurrent.b, tTarget.b, 0.025);
+    tCurrent.r = lerp(tCurrent.r, tTarget.r, 0.04);
+    tCurrent.g = lerp(tCurrent.g, tTarget.g, 0.04);
+    tCurrent.b = lerp(tCurrent.b, tTarget.b, 0.04);
 
     const m = document.documentElement.getAttribute('data-mode') || 'vivid';
-    const alpha = m === 'light' ? tTarget.a * 0.5 : tTarget.a;
+    const alpha = m === 'light' ? tTarget.a * 0.35 : tTarget.a;
 
     const rr = Math.round(tCurrent.r);
     const rg = Math.round(tCurrent.g);
     const rb = Math.round(tCurrent.b);
 
     bgTint.style.background =
-      `radial-gradient(ellipse 75% 75% at 50% 50%, rgba(${rr},${rg},${rb},${alpha}) 0%, transparent 72%)`;
+      `radial-gradient(ellipse 100% 100% at 50% 50%, rgba(${rr},${rg},${rb},${alpha}) 0%, transparent 70%)`;
 
     requestAnimationFrame(animateTint);
   }
