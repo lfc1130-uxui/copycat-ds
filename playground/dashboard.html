@@ -36,59 +36,44 @@
       transition: background var(--duration-300) var(--ease-in-out);
     }
 
-    /* ambient orbs */
     .app::before {
       content: '';
-      position: fixed;
-      top: -15%;
-      left: -20%;
-      width: 70%;
-      height: 55%;
+      position: fixed; top: -15%; left: -20%; width: 70%; height: 55%;
       background: radial-gradient(circle, rgba(0,104,255,0.10) 0%, transparent 65%);
-      pointer-events: none;
-      z-index: 0;
+      pointer-events: none; z-index: 0;
     }
     .app::after {
       content: '';
-      position: fixed;
-      bottom: 5%;
-      right: -25%;
-      width: 60%;
-      height: 50%;
+      position: fixed; bottom: 5%; right: -25%; width: 60%; height: 50%;
       background: radial-gradient(circle, rgba(91,33,182,0.07) 0%, transparent 65%);
-      pointer-events: none;
-      z-index: 0;
+      pointer-events: none; z-index: 0;
     }
 
     .scroll-content {
-      position: relative;
-      z-index: 1;
-      flex: 1;
-      overflow-y: auto;
-      padding-bottom: 88px;
-      scrollbar-width: none;
+      position: relative; z-index: 1; flex: 1;
+      overflow-y: auto; padding-bottom: 108px; scrollbar-width: none;
     }
     .scroll-content::-webkit-scrollbar { display: none; }
 
-    /* ── HEADER ─────────────────────────────────────────── */
+    /* ── HEADER — 3-column: controls | logo | avatar ─── */
     .header {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: space-between;
       padding: var(--space-5) var(--space-5) var(--space-3);
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      position: sticky; top: 0; z-index: 50;
       background: var(--color-bg-page);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       transition: background var(--duration-300);
     }
 
-    .header-left { display: flex; align-items: center; gap: var(--space-2); }
+    .header-left  { display: flex; align-items: center; gap: var(--space-2); }
+    .header-center { display: flex; justify-content: center; }
+    .header-right { display: flex; align-items: center; justify-content: flex-end; }
 
     .logo {
-      width: 34px; height: 34px;
+      width: 36px; height: 36px;
       border-radius: var(--radius-lg);
       background: linear-gradient(135deg, var(--blue-400), var(--blue-700));
       display: flex; align-items: center; justify-content: center;
@@ -96,22 +81,6 @@
       color: white; letter-spacing: -0.04em;
       box-shadow: 0 2px 10px rgba(0,104,255,0.35);
     }
-
-    .account-pill {
-      display: flex; align-items: center; gap: 5px;
-      padding: 5px 10px;
-      background: var(--color-bg-subtle);
-      border: 1px solid var(--color-border-default);
-      border-radius: var(--radius-full);
-      cursor: pointer;
-      font-size: var(--text-sm); font-weight: var(--weight-medium);
-      color: var(--color-text-primary);
-      transition: all var(--duration-150);
-      user-select: none;
-    }
-    .account-pill:hover { background: var(--color-bg-muted); border-color: var(--color-border-strong); }
-
-    .header-right { display: flex; align-items: center; gap: var(--space-2); }
 
     .hdr-btn {
       width: 36px; height: 36px;
@@ -130,19 +99,19 @@
     .notif-dot {
       position: absolute; top: 6px; right: 6px;
       width: 7px; height: 7px;
-      background: var(--color-error);
-      border-radius: 50%;
+      background: var(--color-error); border-radius: 50%;
       border: 2px solid var(--color-bg-page);
     }
 
     .avatar {
-      width: 36px; height: 36px;
+      width: 38px; height: 38px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--blue-300), var(--blue-600));
+      background: var(--color-bg-subtle);
       border: 2px solid var(--color-border-default);
       display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: var(--weight-semibold); color: white;
-      cursor: pointer; transition: border-color var(--duration-150);
+      font-size: 20px; cursor: pointer;
+      transition: border-color var(--duration-150);
+      user-select: none;
     }
     .avatar:hover { border-color: var(--color-brand); }
 
@@ -152,33 +121,23 @@
     .balance-card {
       border-radius: 24px;
       padding: var(--space-6);
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
       background: linear-gradient(145deg, #001433 0%, #002880 35%, #0057ff 70%, #1a6eff 100%);
-      box-shadow: 0 24px 64px rgba(0,80,255,0.40), 0 4px 16px rgba(0,0,0,0.25),
+      /* [REDUCED] shadow intensity */
+      box-shadow: 0 14px 36px rgba(0,80,255,0.22), 0 3px 10px rgba(0,0,0,0.14),
                   inset 0 1px 0 rgba(255,255,255,0.18);
+      transition: padding var(--duration-300) var(--ease-in-out);
     }
-
-    /* shimmer orb */
     .balance-card::before {
-      content: '';
-      position: absolute;
-      top: -40%; left: -20%;
-      width: 80%; height: 120%;
+      content: ''; position: absolute; top: -40%; left: -20%; width: 80%; height: 120%;
       background: radial-gradient(ellipse, rgba(255,255,255,0.10) 0%, transparent 60%);
       pointer-events: none;
     }
-    /* purple accent */
     .balance-card::after {
-      content: '';
-      position: absolute;
-      bottom: -30%; right: -20%;
-      width: 70%; height: 80%;
+      content: ''; position: absolute; bottom: -30%; right: -20%; width: 70%; height: 80%;
       background: radial-gradient(ellipse, rgba(110,40,255,0.30) 0%, transparent 60%);
       pointer-events: none;
     }
-
-    /* grid overlay */
     .card-grid {
       position: absolute; inset: 0; pointer-events: none; z-index: 0;
       background-image:
@@ -189,79 +148,31 @@
 
     .card-inner { position: relative; z-index: 1; }
 
+    /* card-top always visible — holds tag + hide toggle */
     .card-top {
       display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: var(--space-5);
+      margin-bottom: var(--space-4);
     }
-
     .card-tag {
       font-size: 10px; font-weight: var(--weight-semibold);
-      color: rgba(255,255,255,0.55); text-transform: uppercase;
-      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.12em;
       display: flex; align-items: center; gap: 5px;
     }
     .live-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: #4ade80;
-      box-shadow: 0 0 6px rgba(74,222,128,0.8);
+      background: #4ade80; box-shadow: 0 0 6px rgba(74,222,128,0.8);
       animation: pulse 2s ease-in-out infinite;
     }
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.6; transform: scale(0.85); }
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.6; transform: scale(0.85); }
     }
-
-    .card-opts {
-      background: none; border: none; cursor: pointer;
-      color: rgba(255,255,255,0.5); display: flex; align-items: center;
-      transition: color var(--duration-150);
-    }
-    .card-opts:hover { color: white; }
-
-    .balance-currency {
-      font-size: var(--text-sm); font-weight: var(--weight-medium);
-      color: rgba(255,255,255,0.60); margin-bottom: 6px;
-    }
-
-    .balance-row {
-      display: flex; align-items: baseline; gap: var(--space-2);
-      margin-bottom: var(--space-3);
-    }
-
-    .balance-int {
-      font-size: 48px; font-weight: var(--weight-bold);
-      color: white; line-height: 1; letter-spacing: -0.03em;
-      font-variant-numeric: tabular-nums;
-      transition: filter var(--duration-200) var(--ease-in-out);
-    }
-    .balance-dec {
-      font-size: 24px; font-weight: var(--weight-semibold);
-      color: rgba(255,255,255,0.65); font-variant-numeric: tabular-nums;
-      transition: filter var(--duration-200) var(--ease-in-out);
-    }
-    .balance-int.blurred, .balance-dec.blurred { filter: blur(10px); }
-
-    .balance-controls {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: var(--space-5);
-    }
-
-    .trend-chip {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 3px 9px;
-      border-radius: var(--radius-full);
-      background: rgba(74,222,128,0.15);
-      border: 1px solid rgba(74,222,128,0.25);
-      font-size: 11px; font-weight: var(--weight-semibold);
-      color: #86efac;
-    }
-
     .hide-toggle {
       display: flex; align-items: center; gap: 4px;
       background: rgba(255,255,255,0.12);
       border: 1px solid rgba(255,255,255,0.18);
       border-radius: var(--radius-full);
-      color: rgba(255,255,255,0.75);
+      color: rgba(255,255,255,0.80);
       font-size: 11px; font-weight: var(--weight-medium);
       padding: 4px 10px; cursor: pointer;
       backdrop-filter: blur(8px);
@@ -269,18 +180,60 @@
     }
     .hide-toggle:hover { background: rgba(255,255,255,0.22); }
 
-    .card-foot {
-      display: flex; align-items: center; justify-content: space-between;
+    /* [NEW] collapsible section: eyebrow + balance number + trend */
+    .balance-collapse {
+      overflow: hidden;
+      max-height: 160px;
+      opacity: 1;
+      margin-bottom: var(--space-4);
+      transition:
+        max-height 350ms cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 200ms ease,
+        margin-bottom 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .balance-collapse.gone {
+      max-height: 0;
+      opacity: 0;
+      margin-bottom: 0;
     }
 
-    .card-dots { display: flex; align-items: center; gap: 6px; }
-    .dot-cluster { display: flex; gap: 3px; }
+    .balance-currency {
+      font-size: var(--text-sm); font-weight: var(--weight-medium);
+      color: rgba(255,255,255,0.60); margin-bottom: 6px;
+    }
+    .balance-row {
+      display: flex; align-items: baseline; gap: var(--space-2);
+      margin-bottom: var(--space-3);
+    }
+    .balance-int {
+      font-size: 48px; font-weight: var(--weight-bold);
+      color: white; line-height: 1; letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+    }
+    .balance-dec {
+      font-size: 24px; font-weight: var(--weight-semibold);
+      color: rgba(255,255,255,0.65); font-variant-numeric: tabular-nums;
+    }
+    .trend-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 9px; border-radius: var(--radius-full);
+      background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.25);
+      font-size: 11px; font-weight: var(--weight-semibold); color: #86efac;
+    }
+
+    /* card footer — always visible */
+    .card-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: var(--space-3);
+      border-top: 1px solid rgba(255,255,255,0.10);
+    }
+    .card-dots { display: flex; align-items: center; gap: 8px; }
+    .dot-row { display: flex; gap: 3px; }
     .dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.45); }
     .card-last4 {
       font-size: var(--text-base); font-weight: var(--weight-medium);
       color: rgba(255,255,255,0.85); letter-spacing: 0.06em;
     }
-
     .mastercard { display: flex; }
     .mc-left  { width: 26px; height: 26px; border-radius: 50%; background: #eb001b; opacity: 0.9; }
     .mc-right { width: 26px; height: 26px; border-radius: 50%; background: #f79e1b; opacity: 0.9; margin-left: -10px; }
@@ -293,39 +246,24 @@
       display: flex; flex-direction: column; align-items: center; gap: 8px;
       background: none; border: none; cursor: pointer; padding: var(--space-2) 0;
     }
-
     .act-icon {
       width: 54px; height: 54px; border-radius: 18px;
-      background: var(--color-bg-surface);
-      border: 1px solid var(--color-border-default);
+      background: var(--color-bg-surface); border: 1px solid var(--color-border-default);
       display: flex; align-items: center; justify-content: center;
       color: var(--color-brand);
       transition: all var(--duration-150) var(--ease-in-out);
     }
     .act-btn:hover  .act-icon {
-      background: var(--color-brand-subtle);
-      border-color: var(--color-brand);
-      box-shadow: 0 0 18px rgba(0,104,255,0.22);
-      transform: translateY(-2px);
+      background: var(--color-brand-subtle); border-color: var(--color-brand);
+      box-shadow: 0 0 18px rgba(0,104,255,0.22); transform: translateY(-2px);
     }
     .act-btn:active .act-icon { transform: scale(0.91); }
+    .act-label { font-size: 11px; font-weight: var(--weight-medium); color: var(--color-text-secondary); }
 
-    .act-label {
-      font-size: 11px; font-weight: var(--weight-medium);
-      color: var(--color-text-secondary);
-    }
-
-    /* ── SECTION ─────────────────────────────────────────── */
+    /* ── SECTIONS ─────────────────────────────────────────── */
     .section { padding: 0 var(--space-5) var(--space-5); }
-
-    .sec-head {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: var(--space-3);
-    }
-    .sec-title {
-      font-size: var(--text-base); font-weight: var(--weight-semibold);
-      color: var(--color-text-primary);
-    }
+    .sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-3); }
+    .sec-title { font-size: var(--text-base); font-weight: var(--weight-semibold); color: var(--color-text-primary); }
     .sec-link {
       font-size: var(--text-sm); font-weight: var(--weight-medium);
       color: var(--color-brand); background: none; border: none; cursor: pointer; padding: 0;
@@ -341,8 +279,7 @@
     .accounts-row::-webkit-scrollbar { display: none; }
 
     .acct-card {
-      flex-shrink: 0; width: 138px;
-      padding: var(--space-4);
+      flex-shrink: 0; width: 138px; padding: var(--space-4);
       border-radius: var(--radius-xl);
       background: var(--color-bg-surface);
       border: 1px solid var(--color-border-default);
@@ -361,83 +298,66 @@
       box-shadow: 0 0 0 1px var(--color-brand), 0 6px 20px rgba(0,104,255,0.15);
     }
 
-    .acct-flag  { font-size: 20px; margin-bottom: var(--space-2); }
-    .acct-code  { font-size: 10px; font-weight: var(--weight-semibold); color: var(--color-text-tertiary); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-    .acct-bal   { font-size: var(--text-md); font-weight: var(--weight-bold); color: var(--color-text-primary); font-variant-numeric: tabular-nums; margin-bottom: 2px; }
-    .acct-chg   { font-size: 11px; font-weight: var(--weight-medium); }
+    .acct-flag { font-size: 20px; margin-bottom: var(--space-2); }
+    /* [FIXED] use secondary instead of tertiary — visible in dark mode */
+    .acct-code {
+      font-size: 10px; font-weight: var(--weight-bold);
+      color: var(--color-text-secondary);
+      letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 4px;
+    }
+    .acct-bal  { font-size: var(--text-md); font-weight: var(--weight-bold); color: var(--color-text-primary); font-variant-numeric: tabular-nums; margin-bottom: 2px; }
+    .acct-chg  { font-size: 11px; font-weight: var(--weight-medium); }
     .acct-chg.up   { color: var(--color-success); }
     .acct-chg.down { color: var(--color-error); }
 
     .acct-add {
-      flex-shrink: 0; width: 138px;
+      flex-shrink: 0; width: 138px; min-height: 104px;
       border-radius: var(--radius-xl);
       border: 1.5px dashed var(--color-border-default);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 6px; min-height: 104px; cursor: pointer;
-      transition: border-color var(--duration-150);
+      gap: 6px; cursor: pointer;
+      color: var(--color-text-tertiary);
+      transition: border-color var(--duration-150), color var(--duration-150);
     }
-    .acct-add:hover { border-color: var(--color-brand); }
-    .acct-add span { font-size: 11px; color: var(--color-text-tertiary); }
+    .acct-add:hover { border-color: var(--color-brand); color: var(--color-brand); }
+    .acct-add span { font-size: 11px; }
 
     /* ── SPEND CHART ─────────────────────────────────────── */
     .chart-card {
-      background: var(--color-bg-surface);
-      border: 1px solid var(--color-border-default);
-      border-radius: var(--radius-xl);
-      padding: var(--space-4);
+      background: var(--color-bg-surface); border: 1px solid var(--color-border-default);
+      border-radius: var(--radius-xl); padding: var(--space-4);
     }
-
-    .chart-head {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      margin-bottom: var(--space-4);
-    }
+    .chart-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: var(--space-4); }
     .chart-amount {
       font-size: var(--text-2xl); font-weight: var(--weight-bold);
-      font-variant-numeric: tabular-nums; color: var(--color-text-primary);
-      line-height: 1;
+      font-variant-numeric: tabular-nums; color: var(--color-text-primary); line-height: 1;
     }
     .chart-sub { font-size: var(--text-xs); color: var(--color-text-tertiary); margin-top: 4px; }
 
     .period-tabs {
-      display: flex; gap: 2px;
-      background: var(--color-bg-subtle); border-radius: var(--radius-full);
-      padding: 2px;
+      display: flex; gap: 2px; background: var(--color-bg-subtle);
+      border-radius: var(--radius-full); padding: 2px;
     }
     .ptab {
       padding: 4px 9px; border-radius: var(--radius-full);
       font-size: 11px; font-weight: var(--weight-medium);
-      color: var(--color-text-secondary);
-      background: none; border: none; cursor: pointer;
+      color: var(--color-text-secondary); background: none; border: none; cursor: pointer;
       transition: all var(--duration-150);
     }
-    .ptab.on {
-      background: var(--color-bg-surface);
-      color: var(--color-text-primary);
-      box-shadow: var(--shadow-sm);
-    }
+    .ptab.on { background: var(--color-bg-surface); color: var(--color-text-primary); box-shadow: var(--shadow-sm); }
 
-    .chart-bars {
-      display: flex; align-items: flex-end; gap: 5px; height: 80px;
-    }
+    .chart-bars { display: flex; align-items: flex-end; gap: 5px; height: 80px; }
     .bar-wrap {
       flex: 1; display: flex; flex-direction: column;
       align-items: center; gap: 5px; height: 100%; justify-content: flex-end;
     }
-    .bar {
-      width: 100%; min-height: 4px; border-radius: 3px 3px 2px 2px;
-      background: var(--color-bg-muted);
-      transition: height var(--duration-300) var(--ease-out);
-    }
-    .bar.on {
-      background: linear-gradient(180deg, var(--blue-400), var(--blue-600));
-      box-shadow: 0 0 10px rgba(0,104,255,0.40);
-    }
+    .bar { width: 100%; min-height: 4px; border-radius: 3px 3px 2px 2px; background: var(--color-bg-muted); }
+    .bar.on { background: linear-gradient(180deg, var(--blue-400), var(--blue-600)); box-shadow: 0 0 10px rgba(0,104,255,0.40); }
     .bar-lbl { font-size: 9px; color: var(--color-text-tertiary); }
     .bar-lbl.on { color: var(--color-brand); font-weight: var(--weight-semibold); }
 
     /* ── TRANSACTIONS ────────────────────────────────────── */
     .tx-list { display: flex; flex-direction: column; gap: 2px; }
-
     .tx-item {
       display: flex; align-items: center; gap: var(--space-3);
       padding: 11px var(--space-4); border-radius: var(--radius-lg);
@@ -445,49 +365,48 @@
       transition: background var(--duration-150);
     }
     .tx-item:hover { background: var(--color-bg-subtle); }
-
-    .tx-ico {
-      width: 42px; height: 42px; border-radius: var(--radius-xl);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; flex-shrink: 0;
-    }
-
+    .tx-ico { width: 42px; height: 42px; border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
     .tx-info { flex: 1; min-width: 0; }
-    .tx-name {
-      font-size: var(--text-base); font-weight: var(--weight-medium);
-      color: var(--color-text-primary); white-space: nowrap;
-      overflow: hidden; text-overflow: ellipsis;
-    }
+    .tx-name { font-size: var(--text-base); font-weight: var(--weight-medium); color: var(--color-text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .tx-meta { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
-
-    .tx-amt {
-      font-size: var(--text-base); font-weight: var(--weight-semibold);
-      font-variant-numeric: tabular-nums; white-space: nowrap;
-    }
+    .tx-amt { font-size: var(--text-base); font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; white-space: nowrap; }
     .tx-amt.cr { color: var(--color-success); }
     .tx-amt.db { color: var(--color-text-primary); }
 
-    /* ── BOTTOM NAV ──────────────────────────────────────── */
+    /* ── BOTTOM NAV — floating pill with glass ───────────── */
     .bottom-nav {
-      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 100%; max-width: 430px; z-index: 100;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 48px);
+      max-width: 382px;
+      z-index: 100;
       display: flex; align-items: center; justify-content: space-around;
-      padding: 10px var(--space-5) 18px;
-      background: var(--color-bg-surface);
-      border-top: 1px solid var(--color-border-default);
+      padding: 10px var(--space-3);
+      /* glass light */
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.60);
+      border-radius: 28px;
+      backdrop-filter: blur(28px) saturate(1.6);
+      -webkit-backdrop-filter: blur(28px) saturate(1.6);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
     }
-
-    .html.dark .bottom-nav { background: rgba(17,20,34,0.88); backdrop-filter: blur(20px); }
+    /* glass dark */
+    .dark .bottom-nav {
+      background: rgba(17, 20, 34, 0.72);
+      border-color: rgba(49, 55, 80, 0.50);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.40), 0 2px 8px rgba(0, 0, 0, 0.20);
+    }
 
     .nav-btn {
       display: flex; flex-direction: column; align-items: center; gap: 3px;
       background: none; border: none; cursor: pointer;
-      padding: 6px 14px; border-radius: var(--radius-xl);
+      padding: 6px 12px; border-radius: var(--radius-xl);
       position: relative; transition: all var(--duration-150);
     }
     .nav-btn .ni { color: var(--color-text-tertiary); transition: color var(--duration-150); }
     .nav-btn .nl { font-size: 9px; font-weight: var(--weight-medium); color: var(--color-text-tertiary); transition: color var(--duration-150); }
-
     .nav-btn.on .ni { color: var(--color-brand); }
     .nav-btn.on .nl { color: var(--color-brand); }
     .nav-btn.on::before {
@@ -502,7 +421,7 @@
       background: linear-gradient(135deg, var(--blue-400), var(--blue-700));
       border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      color: white; margin-bottom: 6px;
+      color: white; margin-bottom: 4px;
       box-shadow: 0 4px 18px rgba(0,104,255,0.50);
       transition: all var(--duration-150);
     }
@@ -517,7 +436,6 @@
         box-shadow: var(--shadow-2xl), 0 0 0 1px var(--color-border-default);
         overflow: hidden;
       }
-      .bottom-nav { border-radius: 0 0 44px 44px; }
     }
   </style>
 </head>
@@ -525,16 +443,9 @@
 <div class="app" id="app">
   <div class="scroll-content">
 
-    <!-- HEADER -->
+    <!-- HEADER: left=actions, center=logo, right=avatar -->
     <header class="header">
       <div class="header-left">
-        <div class="logo">CC</div>
-        <button class="account-pill">
-          Personal
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 5 6 8 9 5"/></svg>
-        </button>
-      </div>
-      <div class="header-right">
         <div class="notif-wrap">
           <button class="hdr-btn">
             <div class="notif-dot"></div>
@@ -544,7 +455,12 @@
         <button class="hdr-btn" id="themeBtn" onclick="toggleTheme()">
           <svg id="themeIco" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         </button>
-        <div class="avatar">AL</div>
+      </div>
+      <div class="header-center">
+        <div class="logo">CC</div>
+      </div>
+      <div class="header-right">
+        <div class="avatar">🙂</div>
       </div>
     </header>
 
@@ -553,26 +469,12 @@
       <div class="balance-card">
         <div class="card-grid"></div>
         <div class="card-inner">
+
+          <!-- always visible: label + hide toggle -->
           <div class="card-top">
             <span class="card-tag">
               <span class="live-dot"></span>
               Total Balance
-            </span>
-            <button class="card-opts">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-            </button>
-          </div>
-
-          <div class="balance-currency">US Dollar · USD</div>
-          <div class="balance-row">
-            <span class="balance-int" id="bInt">24,831</span>
-            <span class="balance-dec" id="bDec">.50</span>
-          </div>
-
-          <div class="balance-controls">
-            <span class="trend-chip">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-              +2.4% this month
             </span>
             <button class="hide-toggle" id="hideBtn" onclick="toggleBalance()">
               <svg id="eyeIco" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -580,15 +482,31 @@
             </button>
           </div>
 
+          <!-- collapsible: eyebrow + balance number + trend -->
+          <div class="balance-collapse" id="balanceCollapse">
+            <div class="balance-currency">US Dollar · USD</div>
+            <div class="balance-row">
+              <span class="balance-int">24,831</span>
+              <span class="balance-dec">.50</span>
+            </div>
+            <span class="trend-chip">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+              +2.4% this month
+            </span>
+          </div>
+
+          <!-- always visible: card number + network -->
           <div class="card-foot">
             <div class="card-dots">
-              <div class="dot-cluster"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-              <div class="dot-cluster"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-              <div class="dot-cluster"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+              <div class="dot-row">
+                <div class="dot"></div><div class="dot"></div>
+                <div class="dot"></div><div class="dot"></div>
+              </div>
               <span class="card-last4">4582</span>
             </div>
             <div class="mastercard"><div class="mc-left"></div><div class="mc-right"></div></div>
           </div>
+
         </div>
       </div>
     </section>
@@ -597,27 +515,19 @@
     <section class="actions">
       <div class="actions-grid">
         <button class="act-btn">
-          <div class="act-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </div>
+          <div class="act-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
           <span class="act-label">Send</span>
         </button>
         <button class="act-btn">
-          <div class="act-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          </div>
+          <div class="act-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
           <span class="act-label">Receive</span>
         </button>
         <button class="act-btn">
-          <div class="act-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-          </div>
+          <div class="act-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
           <span class="act-label">Exchange</span>
         </button>
         <button class="act-btn">
-          <div class="act-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-          </div>
+          <div class="act-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
           <span class="act-label">Pay</span>
         </button>
       </div>
@@ -729,7 +639,7 @@
 
   </div><!-- /scroll-content -->
 
-  <!-- BOTTOM NAV -->
+  <!-- BOTTOM NAV — floating glass pill -->
   <nav class="bottom-nav">
     <button class="nav-btn on" onclick="setNav(this)">
       <svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -768,8 +678,7 @@
 
   function toggleBalance() {
     hidden = !hidden;
-    document.getElementById('bInt').classList.toggle('blurred', hidden);
-    document.getElementById('bDec').classList.toggle('blurred', hidden);
+    document.getElementById('balanceCollapse').classList.toggle('gone', hidden);
     document.getElementById('hideLabel').textContent = hidden ? 'Show' : 'Hide';
     const ico = document.getElementById('eyeIco');
     ico.innerHTML = hidden
