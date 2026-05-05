@@ -373,7 +373,7 @@
     .tx-amt.cr { color: var(--color-success); }
     .tx-amt.db { color: var(--color-text-primary); }
 
-    /* ── BOTTOM NAV — floating pill with glass ───────────── */
+    /* ── BOTTOM NAV — floating glass pill ───────────────── */
     .bottom-nav {
       position: fixed;
       bottom: 20px;
@@ -384,19 +384,39 @@
       z-index: 100;
       display: flex; align-items: center; justify-content: space-around;
       padding: 10px var(--space-3);
-      /* glass light */
-      background: rgba(255, 255, 255, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.60);
       border-radius: 28px;
-      backdrop-filter: blur(28px) saturate(1.6);
-      -webkit-backdrop-filter: blur(28px) saturate(1.6);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.06);
+
+      /* glassmorphism light — low opacity exposes the blur */
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.28) 0%,
+        rgba(240, 245, 255, 0.16) 100%
+      );
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(32px) saturate(2.2) brightness(1.06);
+      -webkit-backdrop-filter: blur(32px) saturate(2.2) brightness(1.06);
+      box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.14),
+        0 4px 12px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.90),   /* top bevel highlight */
+        inset 0 -1px 0 rgba(255, 255, 255, 0.20);  /* bottom inner edge */
     }
-    /* glass dark */
+
+    /* glassmorphism dark */
     .dark .bottom-nav {
-      background: rgba(17, 20, 34, 0.72);
-      border-color: rgba(49, 55, 80, 0.50);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.40), 0 2px 8px rgba(0, 0, 0, 0.20);
+      background: linear-gradient(
+        135deg,
+        rgba(60, 72, 120, 0.22) 0%,
+        rgba(10, 12, 26, 0.38) 100%
+      );
+      border-color: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(32px) saturate(1.9) brightness(0.88);
+      -webkit-backdrop-filter: blur(32px) saturate(1.9) brightness(0.88);
+      box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.60),
+        0 4px 12px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.25);
     }
 
     .nav-btn {
